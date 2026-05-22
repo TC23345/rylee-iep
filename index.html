@@ -145,7 +145,13 @@
     }
     .deliverable-section-body p.placeholder {
       color: var(--text-muted); font-style: italic;
+      font-size: .84rem; line-height: 1.65;
+      padding: 10px 14px; margin-bottom: 10px;
+      background: rgba(212,168,75,.05);
+      border-left: 3px solid var(--border);
+      border-radius: 0 6px 6px 0;
     }
+    .deliverable-section-body p.placeholder:last-child { margin-bottom: 0; }
     .deliverable-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .deliverable-link {
       display: inline-flex; align-items: center; gap: 6px;
@@ -668,11 +674,26 @@
     }
   }
 
+  const CONTEXT_PLACEHOLDERS = `[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+
+[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
+
+[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]`;
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function renderSectionBody(body) {
-    if (!body || body === '[Paragraph]') {
-      return '<p class="placeholder">[Paragraph]</p>';
-    }
-    return marked.parse(body);
+    const text = (!body || body.trim() === '[Paragraph]') ? CONTEXT_PLACEHOLDERS : body;
+    return text.split(/\n\n+/).map(block => {
+      const t = block.trim();
+      if (!t) return '';
+      if (t.startsWith('[')) {
+        return `<p class="placeholder">${escapeHtml(t)}</p>`;
+      }
+      return marked.parse(t);
+    }).join('');
   }
 
   function renderModuleBelow(mod) {
