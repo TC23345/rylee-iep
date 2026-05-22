@@ -637,7 +637,7 @@
       const body = m[2].trim();
       const titleLine = text.match(new RegExp(`## Module ${n}: ([^\n]+)`));
       const title = titleLine ? titleLine[1] : '';
-      sections[n] = `## Module ${n}: ${title}\n\n${body}`;
+      sections[n] = `## ${title}\n\n${body}`;
     }
     return sections;
   }
@@ -812,9 +812,8 @@
     currentModule = n;
     moduleContentSections[n] = await loadModuleContent(n);
     const el = document.getElementById('module-main-content');
-    const statusBadge = mod.status === 'scaffold'
-      ? '<span class="badge badge-scaffold" style="margin-left:8px">Scaffold</span>'
-      : '<span class="badge badge-cohort" style="margin-left:8px;opacity:.7">Pending</span>';
+    const planDate = mod.actionPlanDate || 'MM-DD-YYYY';
+    const statusBadge = `<span class="badge badge-scaffold">Module ${mod.n} Action Plan: [${planDate}]</span>`;
 
     const mdChunk = moduleMdSections[n];
     const sourceHtml = mdChunk
