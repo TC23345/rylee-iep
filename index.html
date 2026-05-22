@@ -122,20 +122,22 @@
       margin: 40px 0 32px; max-width: 72ch;
     }
     .module-below { max-width: 72ch; }
-    .module-below-heading {
-      font-size: .92rem; font-weight: 600; letter-spacing: .04em;
-      text-transform: uppercase; color: var(--text-muted);
-      margin-bottom: 16px;
+    .deliverable-section {
+      padding-bottom: 28px; margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
     }
-    .module-main-deliverables {
-      list-style: none; margin: 0; padding: 0; max-width: 72ch;
+    .deliverable-section:last-child {
+      border-bottom: none; margin-bottom: 0; padding-bottom: 0;
     }
-    .module-main-deliverables > li {
-      padding: 16px 0; border-bottom: 1px solid var(--border);
+    .module-below h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.28rem; font-weight: 600;
+      color: var(--text); margin: 0 0 14px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+      line-height: 1.35;
     }
-    .module-main-deliverables > li:last-child { border-bottom: none; }
-    .module-main-deliverables .deliverable-text {
-      font-size: .9rem; line-height: 1.6; color: var(--text); margin-bottom: 10px;
+    .deliverable-section-body {
+      min-height: 24px;
     }
     .deliverable-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .deliverable-link {
@@ -747,15 +749,12 @@
       <div class="module-source md-body">${sourceHtml}</div>
       <hr class="module-section-divider" />
       <div class="module-below" id="module-below-${n}">
-        <h3 class="module-below-heading">Skills</h3>
-        <ul class="module-main-deliverables">
-          ${mod.deliverables.map(d => `
-            <li>
-              ${d.text ? `<p class="deliverable-text">${d.text}</p>` : ''}
-              ${renderDeliverableLinks(d, mod)}
-            </li>
-          `).join('')}
-        </ul>
+        ${mod.deliverables.map(d => `
+          <section class="deliverable-section">
+            <h2>${d.text}</h2>
+            <div class="deliverable-section-body"></div>
+          </section>
+        `).join('')}
       </div>`;
     document.getElementById('topbar-title').textContent = `Module ${mod.n} — ${mod.short}`;
   }

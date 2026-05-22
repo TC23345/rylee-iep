@@ -30,30 +30,15 @@ This repo doubles as a **module-by-module action-plan dashboard**: scan this REA
 
 Status legend: `(scaffold)` drafted from public outline, unvalidated · `(in review)` course watched, debrief in progress · `(validated)` course content merged, skill is canonical · `—` not yet authored.
 
-Tick each deliverable as Rylee completes it. The arrow on each line points at the skill that walks her through it.
+Tick each deliverable as Rylee completes it. Open a module from the sidebar to work through its skills.
 
-1. **The Business of Private Pay** (scaffold)
+1. **The Business of Private Pay** —
 
    - [ ] Pick a name and register your new business entity with your state
-
-        → [business-name](.claude/skills/business-name/SKILL.md)
-        → [entity-setup](.claude/skills/entity-setup/SKILL.md)
-
    - [ ] Update your liability insurance to include your new private practice
-
-        → [liability-insurance](.claude/skills/liability-insurance/SKILL.md)
-
    - [ ] Clearly define your set of services and fee structure
-
-        → [services-fees](.claude/skills/services-fees/SKILL.md)
-
    - [ ] Set up your back end systems for file organization and contracts
-
-        → [backend-systems](.claude/skills/backend-systems/SKILL.md)
-
    - [ ] Create your custom client intake process so you can get started right away
-
-        → [intake-process](.claude/skills/intake-process/SKILL.md)
 
 2. **Navigating the Special Education System** —
 
