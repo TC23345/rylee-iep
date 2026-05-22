@@ -109,9 +109,23 @@
     .module-label.done { text-decoration: line-through; opacity: .6; }
     .module-num { color: var(--gold-dim); font-size: .7rem; font-family: 'DM Mono', monospace; margin-right: 2px; }
 
-    .module-main-desc {
-      font-size: .95rem; line-height: 1.75; color: #3A342B;
-      margin-bottom: 28px; max-width: 72ch;
+    .module-meta { max-width: 72ch; margin-bottom: 8px; }
+    .module-source { max-width: 72ch; margin-bottom: 0; }
+    .module-source h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 600;
+      margin-top: 0; margin-bottom: 12px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+    .module-section-divider {
+      border: none; border-top: 1px solid var(--border);
+      margin: 40px 0 32px; max-width: 72ch;
+    }
+    .module-below { max-width: 72ch; }
+    .module-below-heading {
+      font-size: .92rem; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 16px;
     }
     .module-main-deliverables {
       list-style: none; margin: 0; padding: 0; max-width: 72ch;
@@ -596,10 +610,35 @@
     { file: 'intake-process.md', title: 'Intake process', desc: 'Operational steps from inquiry to signed engagement.', skill: 'intake-process' },
   ];
 
+  let moduleMdSections = {};
+
+  function parseModulesMd(text) {
+    const sections = {};
+    const re = /## Module (\d+):[^\n]*\n([\s\S]*?)(?=\n---\n|$)/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      const n = parseInt(m[1], 10);
+      const body = m[2].trim();
+      const titleLine = text.match(new RegExp(`## Module ${n}: ([^\n]+)`));
+      const title = titleLine ? titleLine[1] : '';
+      sections[n] = `## Module ${n}: ${title}\n\n${body}`;
+    }
+    return sections;
+  }
+
+  async function loadModulesMd() {
+    try {
+      const res = await fetch('./modules.md');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      moduleMdSections = parseModulesMd(await res.text());
+    } catch (err) {
+      console.warn('Could not load modules.md', err);
+    }
+  }
+
   const MODULES = [
     {
       n: 1, short: 'Business of Private Pay', title: 'The Business of Private Pay', status: 'scaffold',
-      desc: 'Right off the gate you will learn the basics of starting your own practice so you can take “research private practice insurance and licensing” off your to-do list.',
       deliverables: [
         { text: 'Pick a name and register your new business entity with your state', links: [
           { slug: 'business-name' }, { slug: 'entity-setup' },
@@ -612,7 +651,6 @@
     },
     {
       n: 2, short: 'Navigating Special Ed', title: 'Navigating the Special Education System', status: 'pending',
-      desc: 'Even if you are a novice in Special Education, you will learn the ins and outs of the Special Education System so you can show up confidently in an IEP meeting and help your clients through the process.',
       deliverables: [
         { text: 'Learn the meaning of special education methodology, terms, and philosophies', links: [{ slug: 'sped-methodology' }] },
         { text: 'Build a foundation for IEP Advocacy based on your knowledge of special education', links: [{ slug: 'advocacy-foundation' }] },
@@ -621,7 +659,6 @@
     },
     {
       n: 3, short: 'Expert at IEPs', title: 'Becoming an Expert at IEPs', status: 'pending',
-      desc: 'Not confident in the ins and outs of IEPs? No problem. I will teach you everything you need to know about IEPs so you can step confidently into your role as an advocate for your clients.',
       deliverables: [
         { text: 'Learn and understand the 6 steps in the IEP process', links: [{ slug: 'iep-process-steps' }] },
         { text: 'Describe and define the eligibility for an IEP', links: [{ slug: 'iep-eligibility' }] },
@@ -630,7 +667,6 @@
     },
     {
       n: 4, short: 'Starting the Practice', title: 'Starting your IEP Advocacy Practice', status: 'pending',
-      desc: 'Now that you have the foundations of IEP Advocacy, you will put this all together and start your private pay practice!',
       deliverables: [
         { text: 'Identify who your ideal client is', links: [{ slug: 'ideal-client' }] },
         { text: 'Streamline your intake system', links: [{ slug: 'intake-streamline' }] },
@@ -639,7 +675,6 @@
     },
     {
       n: 5, short: 'First 5 Clients', title: 'Getting your First 5 Clients', status: 'pending',
-      desc: 'Once your practice is all set up, you are ready to find your first 5 clients!',
       deliverables: [
         { text: 'Identify your key referral sources, so you can create meaningful connections to meet new potential clients', links: [{ slug: 'referral-sources' }] },
         { text: 'Set up your presence online, so you can attract and nurture clients from there', links: [{ slug: 'online-presence' }] },
@@ -648,7 +683,6 @@
     },
     {
       n: 6, short: 'Working with Clients', title: 'Working with Clients', status: 'pending',
-      desc: 'Now that you know how to sign your next 5 clients, you will develop the systems and processes to support them long term.',
       deliverables: [
         { text: 'Learn the cycle of support for your clients', links: [{ slug: 'client-support-cycle' }] },
         { text: 'Formulate a plan to support new clients and long term clients', links: [{ slug: 'client-plans' }] },
@@ -657,7 +691,6 @@
     },
     {
       n: 7, short: 'Advanced SpEd Knowledge', title: 'Advanced Special Education Knowledge', status: 'pending',
-      desc: 'Serving your clients can sometimes come with some unique experiences and advanced situations. I will prepare you with advanced knowledge you will need in these situations.',
       deliverables: [
         { text: 'Learn about Independent Education Evaluations', links: [{ slug: 'iee' }] },
         { text: 'Understand ESY', links: [{ slug: 'esy-disputes' }] },
@@ -668,7 +701,6 @@
     },
     {
       n: 8, short: 'Going Full Time', title: 'Taking your Business Full Time', status: 'pending',
-      desc: 'When your practice is thriving, it\'s time to consider taking your business full time!',
       deliverables: [
         { text: 'Learn when is the right time to let go of direct client work and go full time', links: [{ slug: 'full-time-timing' }] },
         { text: 'Make a plan for the future so you can sustain your success long term', links: [{ slug: 'long-term-plan' }] },
@@ -704,20 +736,27 @@
     const statusBadge = mod.status === 'scaffold'
       ? '<span class="badge badge-scaffold" style="margin-left:8px">Scaffold</span>'
       : '<span class="badge badge-cohort" style="margin-left:8px;opacity:.7">Pending</span>';
+
+    const mdChunk = moduleMdSections[n];
+    const sourceHtml = mdChunk
+      ? marked.parse(mdChunk)
+      : `<p style="color:var(--text-muted);font-style:italic;">Could not load module content from <code>modules.md</code>.</p>`;
+
     el.innerHTML = `
-      <div class="page-header md-body">
-        <h1>Module ${mod.n}: ${mod.title}${statusBadge}</h1>
-      </div>
-      <p class="module-main-desc">${mod.desc}</p>
-      <h3 style="font-size:.92rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">Inside this module, you will:</h3>
-      <ul class="module-main-deliverables">
-        ${mod.deliverables.map(d => `
-          <li>
-            <p class="deliverable-text">${d.text}</p>
-            ${renderDeliverableLinks(d, mod)}
-          </li>
-        `).join('')}
-      </ul>`;
+      <div class="module-meta">${statusBadge}</div>
+      <div class="module-source md-body">${sourceHtml}</div>
+      <hr class="module-section-divider" />
+      <div class="module-below" id="module-below-${n}">
+        <h3 class="module-below-heading">Skills</h3>
+        <ul class="module-main-deliverables">
+          ${mod.deliverables.map(d => `
+            <li>
+              ${d.text ? `<p class="deliverable-text">${d.text}</p>` : ''}
+              ${renderDeliverableLinks(d, mod)}
+            </li>
+          `).join('')}
+        </ul>
+      </div>`;
     document.getElementById('topbar-title').textContent = `Module ${mod.n} — ${mod.short}`;
   }
 
@@ -801,16 +840,6 @@
   document.querySelectorAll('.nav-item[data-page]').forEach(btn => {
     btn.addEventListener('click', () => showPage(btn.dataset.page));
   });
-
-  const hash = location.hash.replace('#', '');
-  const moduleMatch = hash.match(/^module-(\d)$/);
-  if (moduleMatch) {
-    showModule(parseInt(moduleMatch[1], 10));
-  } else if (['overview', 'business', 'clients', 'course'].includes(hash)) {
-    showPage(hash);
-  } else {
-    showModule(1);
-  }
 
   // ── Overview: README.md ────────────────────────────────────────────────────
   async function loadReadme() {
@@ -928,10 +957,23 @@
   }
 
   // ── Init ───────────────────────────────────────────────────────────────────
-  loadReadme();
-  loadBusinessPage();
-  loadClientsPage();
-  loadCoursePage();
+  async function init() {
+    await loadModulesMd();
+    const hash = location.hash.replace('#', '');
+    const moduleMatch = hash.match(/^module-(\d)$/);
+    if (moduleMatch) {
+      showModule(parseInt(moduleMatch[1], 10));
+    } else if (['overview', 'business', 'clients', 'course'].includes(hash)) {
+      showPage(hash);
+    } else {
+      showModule(1);
+    }
+    loadReadme();
+    loadBusinessPage();
+    loadClientsPage();
+    loadCoursePage();
+  }
+  init();
 </script>
 </body>
 </html>
