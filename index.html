@@ -28,6 +28,15 @@
       --check-done:  #4F7C5C;
     }
 
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+    .deliverable-link:focus-visible,
+    .btn:focus-visible,
+    .nav-toggle:focus-visible { outline-offset: 3px; }
+
     html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
     .shell { display: flex; height: 100vh; overflow: hidden; }
 
@@ -37,6 +46,7 @@
       display: flex; flex-direction: column;
       overflow-y: auto; overflow-x: hidden;
       border-right: 1px solid rgba(255,255,255,.05);
+      scrollbar-gutter: stable;
     }
     .sidebar-header {
       padding: 28px 24px 20px;
@@ -113,7 +123,7 @@
     .module-source { max-width: 72ch; margin-bottom: 0; }
     .module-source h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 600;
+      font-size: clamp(1.2rem, 3vw + 0.5rem, 1.5rem); font-weight: 600;
       margin-top: 0; margin-bottom: 12px;
       padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
@@ -131,7 +141,7 @@
     }
     .module-below h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.28rem; font-weight: 600;
+      font-size: clamp(1.05rem, 2vw + 0.5rem, 1.28rem); font-weight: 600;
       color: var(--text); margin: 0 0 14px;
       padding-bottom: 8px; border-bottom: 1px solid var(--border);
       line-height: 1.35;
@@ -142,6 +152,7 @@
     .deliverable-section-body p {
       font-size: .9rem; line-height: 1.75; color: #3A342B;
       margin: 0 0 12px;
+      overflow-wrap: break-word; hyphens: auto;
     }
     .deliverable-section-body p.placeholder {
       color: var(--text-muted); font-style: italic;
@@ -219,7 +230,7 @@
     }
     .topbar-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1rem; font-weight: 400; font-style: italic;
+      font-size: clamp(0.85rem, 1.5vw + 0.5rem, 1rem); font-weight: 400; font-style: italic;
       color: var(--text-muted);
     }
     .topbar-badges { display: flex; gap: 8px; align-items: center; }
@@ -231,19 +242,19 @@
     .badge-cohort { background: rgba(184,92,56,.14); color: var(--terracotta); }
     .badge-local { background: rgba(79,124,92,.14); color: var(--sage); }
 
-    .content-scroll { flex: 1; overflow-y: auto; padding: 40px 44px 72px; }
+    .content-scroll { flex: 1; overflow-y: auto; padding: 40px 44px 72px; scrollbar-gutter: stable; }
     .page-view { display: none; }
     .page-view.active { display: block; }
 
     .md-body h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 700;
+      font-size: clamp(1.5rem, 4.5vw + 0.5rem, 2rem); font-weight: 700;
       color: var(--text); margin-bottom: 8px; margin-top: 40px;
     }
     .md-body h1:first-child { margin-top: 0; }
     .md-body h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 1.28rem; font-weight: 600;
+      font-size: clamp(1.05rem, 2vw + 0.5rem, 1.28rem); font-weight: 600;
       color: var(--text); margin-top: 40px; margin-bottom: 12px;
       padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
@@ -255,6 +266,7 @@
     .md-body p {
       font-size: .9rem; line-height: 1.75; color: #3A342B;
       margin-bottom: 14px; max-width: 72ch;
+      overflow-wrap: break-word; hyphens: auto;
     }
     .md-body blockquote {
       border-left: 3px solid var(--gold);
@@ -287,7 +299,7 @@
     .page-header { margin-bottom: 28px; max-width: 72ch; }
     .page-header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 700; margin-bottom: 8px;
+      font-size: clamp(1.5rem, 4.5vw + 0.5rem, 2rem); font-weight: 700; margin-bottom: 8px;
     }
     .page-header p { font-size: .9rem; line-height: 1.7; color: var(--text-muted); }
 
@@ -479,10 +491,20 @@
 
       /* Module action plan badge can wrap */
       .module-meta .badge { white-space: normal; line-height: 1.4; }
+
+      .md-body h1 { margin-top: 24px; }
+      .md-body h1:first-child { margin-top: 0; }
+      .md-body h2 { margin-top: 24px; }
+      .page-header { margin-bottom: 20px; }
+      .module-source h2 { font-size: clamp(1.1rem, 4.5vw + 0.25rem, 1.5rem); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .sidebar { transition: none; }
-      .nav-backdrop { transition: none; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
