@@ -422,6 +422,63 @@
       .sidebar-section-title { padding-block: 10px 8px; }
 
       .module-note-row { flex-direction: column; align-items: flex-start; }
+
+      /* Topbar reflow at ≤768px */
+      .topbar {
+        flex-wrap: wrap;
+        padding: 12px 16px;
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        gap: 8px;
+      }
+      .topbar-title { flex: 1 1 auto; min-width: 0; }
+      .topbar-badges { flex-wrap: wrap; }
+
+      /* Content padding & safe areas */
+      .content-scroll {
+        padding: 20px 16px max(60px, env(safe-area-inset-bottom));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+
+      /* Info banner reflow */
+      .info-banner { flex-wrap: wrap; padding: 12px 14px; }
+
+      /* Module-note-row already stacks (Agent 1 preserved this);
+         add inner spacing tweaks for mobile */
+      .module-note-row { gap: 10px; }
+      .module-note-row .note-actions { width: 100%; }
+
+      /* Code blocks shrink for narrow screens */
+      .md-body pre { padding: 14px 14px; font-size: .75rem; }
+      .md-body pre code { font-size: .75rem; }
+
+      /* Long paths and inline code wrap */
+      .md-body code,
+      .note-path,
+      .ws-card .path { overflow-wrap: anywhere; }
+    }
+    @media (max-width: 480px) {
+      /* Two-row topbar: hamburger+title on row 1, badges on row 2 */
+      .topbar { padding: 10px 12px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+      .topbar-title {
+        flex: 1 1 100%; min-width: 0;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .topbar-badges { flex: 1 1 100%; gap: 6px; }
+      .badge { padding: 2px 7px; font-size: .62rem; }
+
+      /* Content + cards */
+      .content-scroll { padding: 16px 14px max(56px, env(safe-area-inset-bottom)); }
+      .card-grid { grid-template-columns: 1fr; gap: 12px; }
+      .ws-card { padding: 16px 16px; }
+      .ws-card h3 { font-size: 1rem; }
+      .info-banner { padding: 10px 12px; margin-bottom: 20px; }
+      .deliverable-link { padding: 4px 10px; font-size: .74rem; }
+      .deliverable-section { padding-bottom: 22px; margin-bottom: 22px; }
+
+      /* Module action plan badge can wrap */
+      .module-meta .badge { white-space: normal; line-height: 1.4; }
     }
     @media (prefers-reduced-motion: reduce) {
       .sidebar { transition: none; }
