@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rylee's IEP Practice — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #F6F3EE;
+      --bg-card:     #FFFEFB;
+      --sidebar-bg:  #221E15;
+      --sidebar-mid: #2E2719;
+      --gold:        #D4A84B;
+      --gold-dim:    #9A7930;
+      --terracotta:  #B85C38;
+      --sage:        #4F7C5C;
+      --text:        #1C1A15;
+      --text-muted:  #7A7060;
+      --border:      #E3DDD3;
+      --sidebar-text:#EDE7D9;
+      --sidebar-dim: #9C9080;
+      --badge-pre:   rgba(212,168,75,.18);
+      --badge-val:   rgba(79,124,92,.18);
+      --check-done:  #4F7C5C;
+    }
+
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ── Layout ──────────────────────────────────────── */
+    .shell { display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    .sidebar {
+      width: 272px; flex-shrink: 0;
+      background: var(--sidebar-bg);
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+      border-right: 1px solid rgba(255,255,255,.05);
+    }
+    .sidebar-header {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .sidebar-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--sidebar-text); line-height: 1.3;
+    }
+    .sidebar-logo span { color: var(--gold); }
+    .sidebar-sub {
+      font-size: .72rem; font-weight: 300;
+      color: var(--sidebar-dim); margin-top: 6px;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .cohort-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px;
+      background: rgba(212,168,75,.12);
+      border: 1px solid rgba(212,168,75,.25);
+      border-radius: 20px; padding: 3px 10px;
+      font-size: .7rem; color: var(--gold); letter-spacing: .03em;
+    }
+    .cohort-pill::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--gold);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+    .sidebar-section { padding: 16px 0 8px; }
+    .sidebar-section-title {
+      font-size: .65rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--sidebar-dim);
+      padding: 0 24px 8px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 24px; cursor: pointer;
+      color: var(--sidebar-dim);
+      font-size: .82rem; font-weight: 400;
+      transition: color .15s, background .15s;
+      text-decoration: none;
+      border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--sidebar-text); background: rgba(255,255,255,.04); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(212,168,75,.06); }
+
+    .module-list { list-style: none; }
+    .module-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 7px 24px;
+    }
+    .module-check {
+      flex-shrink: 0; width: 15px; height: 15px;
+      margin-top: 1px; cursor: pointer;
+      accent-color: var(--check-done);
+    }
+    .module-label {
+      font-size: .79rem; color: var(--sidebar-dim);
+      line-height: 1.4; cursor: pointer;
+      transition: color .15s;
+    }
+    .module-label:hover { color: var(--sidebar-text); }
+    .module-label.done { color: var(--sidebar-dim); text-decoration: line-through; opacity: .6; }
+    .module-num { color: var(--gold-dim); font-size: .7rem; font-family: 'DM Mono', monospace; margin-right: 2px; }
+
+    .skill-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 24px;
+      font-size: .79rem; color: var(--sidebar-dim);
+      text-decoration: none; transition: color .15s;
+    }
+    .skill-link::before {
+      content: '→'; color: var(--terracotta); font-size: .72rem;
+      flex-shrink: 0; opacity: .7;
+    }
+    .skill-link:hover { color: var(--sidebar-text); }
+
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 24px; }
+
+    .sidebar-footer {
+      margin-top: auto; padding: 16px 24px;
+      font-size: .68rem; color: var(--sidebar-dim);
+      border-top: 1px solid rgba(255,255,255,.07);
+      line-height: 1.5;
+    }
+
+    /* ── Main ────────────────────────────────────────── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 36px; background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .topbar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 400; font-style: italic;
+      color: var(--text-muted);
+    }
+    .topbar-badges { display: flex; gap: 8px; align-items: center; }
+    .badge {
+      font-size: .67rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 4px;
+    }
+    .badge-scaffold { background: var(--badge-pre); color: var(--gold-dim); }
+    .badge-cohort { background: rgba(184,92,56,.14); color: var(--terracotta); }
+
+    .content-scroll { flex: 1; overflow-y: auto; padding: 40px 44px 72px; }
+
+    /* ── Markdown render ─────────────────────────────── */
+    #readme-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--text); margin-bottom: 8px; margin-top: 40px;
+    }
+    #readme-content h1:first-child { margin-top: 0; }
+    #readme-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.28rem; font-weight: 600;
+      color: var(--text); margin-top: 40px; margin-bottom: 12px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+    #readme-content h3 {
+      font-size: .92rem; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-top: 28px; margin-bottom: 10px;
+    }
+    #readme-content p {
+      font-size: .9rem; line-height: 1.75; color: #3A342B;
+      margin-bottom: 14px; max-width: 72ch;
+    }
+    #readme-content blockquote {
+      border-left: 3px solid var(--gold);
+      padding: 10px 18px; margin: 20px 0;
+      background: rgba(212,168,75,.06);
+      border-radius: 0 6px 6px 0;
+    }
+    #readme-content blockquote p {
+      color: var(--text-muted); font-size: .85rem;
+      font-style: italic; margin: 0;
+    }
+    #readme-content ul, #readme-content ol {
+      padding-left: 20px; margin-bottom: 16px;
+    }
+    #readme-content li {
+      font-size: .88rem; line-height: 1.7; color: #3A342B;
+      margin-bottom: 4px;
+    }
+    #readme-content li > ul { margin-top: 4px; margin-bottom: 4px; }
+    #readme-content code {
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem; background: #EDE8DF;
+      padding: 1px 6px; border-radius: 3px;
+      color: var(--terracotta);
+    }
+    #readme-content pre {
+      background: var(--sidebar-bg); border-radius: 8px;
+      padding: 20px 22px; overflow-x: auto;
+      margin: 20px 0;
+    }
+    #readme-content pre code {
+      background: none; color: #D4C9B5;
+      font-size: .8rem; padding: 0;
+    }
+    #readme-content a {
+      color: var(--terracotta); text-decoration: none;
+      border-bottom: 1px solid rgba(184,92,56,.3);
+      transition: border-color .15s;
+    }
+    #readme-content a:hover { border-color: var(--terracotta); }
+    #readme-content hr {
+      border: none; border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+    #readme-content table {
+      width: 100%; border-collapse: collapse;
+      margin: 20px 0; font-size: .85rem;
+    }
+    #readme-content th {
+      text-align: left; font-weight: 600;
+      padding: 8px 14px; background: #EDE8DF;
+      color: var(--text-muted); font-size: .75rem;
+      letter-spacing: .05em; text-transform: uppercase;
+    }
+    #readme-content td {
+      padding: 9px 14px; border-bottom: 1px solid var(--border);
+      color: #3A342B;
+    }
+    #readme-content tr:last-child td { border-bottom: none; }
+
+    /* checklist items inside rendered md */
+    #readme-content input[type="checkbox"] {
+      accent-color: var(--check-done);
+      margin-right: 6px; cursor: pointer;
+    }
+    #readme-content li:has(input[type="checkbox"]) {
+      list-style: none; margin-left: -20px;
+    }
+
+    /* Module section card highlight */
+    .module-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px 24px; margin-bottom: 12px;
+    }
+
+    /* Loading state */
+    .loading {
+      display: flex; align-items: center; justify-content: center;
+      height: 200px; color: var(--text-muted); font-size: .9rem;
+      font-style: italic;
+    }
+
+    /* ── Scrollbar ───────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+    /* ── Mobile ──────────────────────────────────────── */
+    @media (max-width: 800px) {
+      .sidebar { width: 220px; }
+      .content-scroll { padding: 24px 20px 60px; }
+      .topbar { padding: 12px 20px; }
+    }
+    @media (max-width: 600px) {
+      .shell { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; max-height: 50vh; }
+      .main { overflow: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">Rylee's <span>IEP</span> Practice</div>
+      <div class="sidebar-sub">Workspace Dashboard</div>
+      <div class="cohort-pill">Summer 2026 · Starts Jun 1</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Navigate</div>
+      <a class="nav-item" href="#readme-top">Overview</a>
+      <a class="nav-item" href="#module-roadmap">Module Roadmap</a>
+      <a class="nav-item" href="#how-well-use">Workflow</a>
+      <a class="nav-item" href="#repo-map">Repo Map</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Module Progress</div>
+      <ul class="module-list" id="module-progress-list">
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="1" />
+          <span class="module-label"><span class="module-num">M1 </span>Business of Private Pay</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="2" />
+          <span class="module-label"><span class="module-num">M2 </span>Navigating Special Ed</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="3" />
+          <span class="module-label"><span class="module-num">M3 </span>Expert at IEPs</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="4" />
+          <span class="module-label"><span class="module-num">M4 </span>Starting the Practice</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="5" />
+          <span class="module-label"><span class="module-num">M5 </span>First 5 Clients</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="6" />
+          <span class="module-label"><span class="module-num">M6 </span>Working with Clients</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="7" />
+          <span class="module-label"><span class="module-num">M7 </span>Advanced SpEd Knowledge</span>
+        </li>
+        <li class="module-item">
+          <input type="checkbox" class="module-check" data-mod="8" />
+          <span class="module-label"><span class="module-num">M8 </span>Going Full Time</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Skills — Module 1</div>
+      <a class="skill-link" href=".claude/skills/business-name/SKILL.md" target="_blank">business-name</a>
+      <a class="skill-link" href=".claude/skills/entity-setup/SKILL.md" target="_blank">entity-setup</a>
+      <a class="skill-link" href=".claude/skills/liability-insurance/SKILL.md" target="_blank">liability-insurance</a>
+      <a class="skill-link" href=".claude/skills/services-fees/SKILL.md" target="_blank">services-fees</a>
+      <a class="skill-link" href=".claude/skills/backend-systems/SKILL.md" target="_blank">backend-systems</a>
+      <a class="skill-link" href=".claude/skills/intake-process/SKILL.md" target="_blank">intake-process</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Commands</div>
+      <a class="skill-link" href=".claude/commands/new-client.md" target="_blank">/new-client</a>
+      <a class="skill-link" href=".claude/commands/module-debrief.md" target="_blank">/module-debrief</a>
+      <a class="skill-link" href=".claude/commands/checklist.md" target="_blank">/checklist</a>
+      <a class="skill-link" href=".claude/commands/weekly-review.md" target="_blank">/weekly-review</a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">References</div>
+      <a class="skill-link" href=".claude/shared/rylee-profile.md" target="_blank">Rylee's Profile</a>
+      <a class="skill-link" href=".claude/shared/course-context.md" target="_blank">Course Context</a>
+      <a class="skill-link" href=".claude/shared/pii-policy.md" target="_blank">PII Policy</a>
+      <a class="skill-link" href=".claude/shared/disclaimer.md" target="_blank">Scope Disclaimer</a>
+      <a class="skill-link" href=".claude/CHANGELOG.md" target="_blank">Changelog</a>
+    </div>
+
+    <div class="sidebar-footer">
+      Pre-cohort scaffold · Skills validated post-module via <code style="background:rgba(255,255,255,.08);color:#c4a96a;font-size:.65rem">/module-debrief</code>
+    </div>
+  </nav>
+
+  <!-- ── Main content ── -->
+  <div class="main">
+    <div class="topbar">
+      <span class="topbar-title">PIVOT into IEP Advocacy® — Summer 2026</span>
+      <div class="topbar-badges">
+        <span class="badge badge-scaffold">Pre-cohort</span>
+        <span class="badge badge-cohort">Jun 1 Start</span>
+      </div>
+    </div>
+
+    <div class="content-scroll">
+      <div id="readme-top"></div>
+      <div id="readme-content">
+        <div class="loading">Loading workspace overview…</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── Restore module checkbox state from localStorage ──────────────────────
+  const STORAGE_KEY = 'rylee-iep-modules';
+  function loadModuleState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
+  }
+  function saveModuleState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  const state = loadModuleState();
+  document.querySelectorAll('.module-check').forEach(cb => {
+    const mod = cb.dataset.mod;
+    if (state[mod]) {
+      cb.checked = true;
+      cb.closest('.module-item').querySelector('.module-label').classList.add('done');
+    }
+    cb.addEventListener('change', () => {
+      state[mod] = cb.checked;
+      saveModuleState(state);
+      const label = cb.closest('.module-item').querySelector('.module-label');
+      label.classList.toggle('done', cb.checked);
+    });
+  });
+
+  // ── Fetch and render README.md ───────────────────────────────────────────
+  marked.setOptions({
+    breaks: false,
+    gfm: true,
+  });
+
+  async function loadReadme() {
+    const el = document.getElementById('readme-content');
+    try {
+      const res = await fetch('./README.md');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const md = await res.text();
+      el.innerHTML = marked.parse(md);
+
+      // Make checkboxes in rendered md interactive (persist state too)
+      el.querySelectorAll('input[type="checkbox"]').forEach((cb, i) => {
+        const key = `readme-cb-${i}`;
+        const saved = localStorage.getItem(key);
+        if (saved === '1') cb.checked = true;
+        cb.removeAttribute('disabled');
+        cb.addEventListener('change', () => {
+          localStorage.setItem(key, cb.checked ? '1' : '0');
+        });
+      });
+
+      // Smooth-scroll anchor links
+      el.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(a.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      // Add anchor ids for sidebar nav targets
+      const h2s = el.querySelectorAll('h2');
+      h2s.forEach(h => {
+        const id = h.textContent
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, '')
+          .replace(/\s+/g, '-')
+          .trim();
+        h.id = id;
+      });
+
+    } catch (err) {
+      el.innerHTML = `
+        <div style="padding:40px 0; color: var(--text-muted); font-style:italic;">
+          <p>Could not fetch README.md. When deployed to GitHub Pages this resolves automatically.</p>
+          <p style="margin-top:8px;font-size:.8rem;opacity:.6;">${err.message}</p>
+        </div>`;
+    }
+  }
+
+  loadReadme();
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Client and business data — never commit
+workspace/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Secrets
+*.key
+*.pem
+credentials.json
