@@ -139,6 +139,13 @@
     .deliverable-section-body {
       min-height: 24px;
     }
+    .deliverable-section-body p {
+      font-size: .9rem; line-height: 1.75; color: #3A342B;
+      margin: 0 0 12px;
+    }
+    .deliverable-section-body p.placeholder {
+      color: var(--text-muted); font-style: italic;
+    }
     .deliverable-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .deliverable-link {
       display: inline-flex; align-items: center; gap: 6px;
@@ -613,6 +620,7 @@
   ];
 
   let moduleMdSections = {};
+  let moduleContentSections = {};
 
   function parseModulesMd(text) {
     const sections = {};
@@ -636,6 +644,53 @@
     } catch (err) {
       console.warn('Could not load modules.md', err);
     }
+  }
+
+  function parseModuleContentSections(text) {
+    const sections = [];
+    const parts = text.split(/^## /m).filter(s => s.trim());
+    parts.forEach(part => {
+      const nl = part.indexOf('\n');
+      const heading = (nl === -1 ? part : part.slice(0, nl)).trim();
+      const body = (nl === -1 ? '' : part.slice(nl + 1)).trim();
+      sections.push({ heading, body });
+    });
+    return sections;
+  }
+
+  async function loadModuleContent(n) {
+    try {
+      const res = await fetch(`./content/module-${n}.md`);
+      if (!res.ok) return null;
+      return parseModuleContentSections(await res.text());
+    } catch {
+      return null;
+    }
+  }
+
+  function renderSectionBody(body) {
+    if (!body || body === '[Paragraph]') {
+      return '<p class="placeholder">[Paragraph]</p>';
+    }
+    return marked.parse(body);
+  }
+
+  function renderModuleBelow(mod) {
+    const sections = moduleContentSections[mod.n];
+    if (sections && sections.length) {
+      return sections.map(s => `
+        <section class="deliverable-section">
+          <h2>${s.heading}</h2>
+          <div class="deliverable-section-body md-body">${renderSectionBody(s.body)}</div>
+        </section>
+      `).join('');
+    }
+    return mod.deliverables.map(d => `
+      <section class="deliverable-section">
+        <h2>${d.heading || d.text}</h2>
+        <div class="deliverable-section-body md-body">${renderSectionBody(d.body || '')}</div>
+      </section>
+    `).join('');
   }
 
   const MODULES = [
@@ -730,10 +785,11 @@
 
   let currentModule = 1;
 
-  function renderModuleMain(n) {
+  async function renderModuleMain(n) {
     const mod = MODULES.find(m => m.n === n);
     if (!mod) return;
     currentModule = n;
+    moduleContentSections[n] = await loadModuleContent(n);
     const el = document.getElementById('module-main-content');
     const statusBadge = mod.status === 'scaffold'
       ? '<span class="badge badge-scaffold" style="margin-left:8px">Scaffold</span>'
@@ -749,24 +805,20 @@
       <div class="module-source md-body">${sourceHtml}</div>
       <hr class="module-section-divider" />
       <div class="module-below" id="module-below-${n}">
-        ${mod.deliverables.map(d => `
-          <section class="deliverable-section">
-            <h2>${d.text}</h2>
-            <div class="deliverable-section-body"></div>
-          </section>
-        `).join('')}
+        ${renderModuleBelow(mod)}
       </div>`;
     document.getElementById('topbar-title').textContent = `Module ${mod.n} — ${mod.short}`;
   }
 
-  function showModule(n) {
+  async function showModule(n) {
     document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
     document.getElementById('page-module').classList.add('active');
     document.querySelectorAll('.nav-item[data-page]').forEach(item => item.classList.remove('active'));
     document.querySelectorAll('.module-label').forEach(l => l.classList.remove('active'));
     const label = document.querySelector(`.module-label[data-mod="${n}"]`);
     if (label) label.classList.add('active');
-    renderModuleMain(n);
+    document.getElementById('module-main-content').innerHTML = '<div class="loading">Loading module…</div>';
+    await renderModuleMain(n);
     history.replaceState(null, '', '#module-' + n);
     document.querySelector('.content-scroll').scrollTop = 0;
   }
@@ -791,7 +843,7 @@
     `).join('');
 
     list.querySelectorAll('.module-label').forEach(btn => {
-      btn.addEventListener('click', () => showModule(parseInt(btn.dataset.mod, 10)));
+      btn.addEventListener('click', () => { showModule(parseInt(btn.dataset.mod, 10)); });
     });
 
     list.querySelectorAll('.module-check').forEach(cb => {
@@ -961,11 +1013,11 @@
     const hash = location.hash.replace('#', '');
     const moduleMatch = hash.match(/^module-(\d)$/);
     if (moduleMatch) {
-      showModule(parseInt(moduleMatch[1], 10));
+      await showModule(parseInt(moduleMatch[1], 10));
     } else if (['overview', 'business', 'clients', 'course'].includes(hash)) {
       showPage(hash);
     } else {
-      showModule(1);
+      await showModule(1);
     }
     loadReadme();
     loadBusinessPage();
