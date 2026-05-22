@@ -90,21 +90,94 @@
     .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(212,168,75,.06); }
 
     .module-list { list-style: none; }
-    .module-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 24px; }
-    .module-check { flex-shrink: 0; width: 15px; height: 15px; margin-top: 1px; cursor: pointer; accent-color: var(--check-done); }
-    .module-label { font-size: .79rem; color: var(--sidebar-dim); line-height: 1.4; cursor: pointer; transition: color .15s; }
+
+    .module-group { border-bottom: 1px solid rgba(255,255,255,.04); }
+    .module-group:last-child { border-bottom: none; }
+    .module-group-header {
+      display: flex; align-items: flex-start; gap: 6px;
+      padding: 7px 16px 7px 12px;
+    }
+    .module-group-toggle {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; flex-shrink: 0; margin-top: 0;
+      background: none; border: none; padding: 0; cursor: pointer;
+      color: var(--gold-dim); font-size: .55rem; line-height: 1;
+    }
+    .module-group-toggle .chevron::before { content: '▶'; }
+    .module-group.expanded .module-group-toggle .chevron::before { content: '▼'; }
+    .module-check {
+      flex-shrink: 0; width: 15px; height: 15px;
+      margin-top: 2px; cursor: pointer; accent-color: var(--check-done);
+    }
+    .module-label {
+      flex: 1; font-size: .79rem; color: var(--sidebar-dim);
+      line-height: 1.4; cursor: pointer; transition: color .15s;
+      padding-top: 1px;
+    }
     .module-label:hover { color: var(--sidebar-text); }
     .module-label.done { text-decoration: line-through; opacity: .6; }
     .module-num { color: var(--gold-dim); font-size: .7rem; font-family: 'DM Mono', monospace; margin-right: 2px; }
+    .module-group-body {
+      display: none; padding: 0 24px 12px 38px;
+    }
+    .module-group.expanded .module-group-body { display: block; }
+    .module-desc {
+      font-size: .72rem; line-height: 1.55; color: var(--sidebar-dim);
+      margin-bottom: 10px; opacity: .9;
+    }
+    .module-deliverables-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: .04em;
+      text-transform: uppercase; color: var(--sidebar-dim);
+      margin-bottom: 6px; opacity: .75;
+    }
+    .module-deliverables {
+      list-style: none; margin: 0; padding: 0;
+    }
+    .module-deliverables li {
+      position: relative; padding-left: 12px;
+      font-size: .72rem; line-height: 1.5; color: var(--sidebar-dim);
+      margin-bottom: 5px;
+    }
+    .module-deliverables li::before {
+      content: '·'; position: absolute; left: 0;
+      color: var(--gold-dim);
+    }
 
     .skill-link {
       display: flex; align-items: center; gap: 8px;
-      padding: 6px 24px;
+      padding: 6px 24px 6px 40px;
       font-size: .79rem; color: var(--sidebar-dim);
       text-decoration: none; transition: color .15s;
     }
     .skill-link::before { content: '→'; color: var(--terracotta); font-size: .72rem; flex-shrink: 0; opacity: .7; }
     .skill-link:hover { color: var(--sidebar-text); }
+    .skill-link.placeholder {
+      cursor: default; opacity: .55; pointer-events: none;
+    }
+    .skill-link.placeholder::before { opacity: .45; }
+
+    .skill-group { border-bottom: 1px solid rgba(255,255,255,.04); }
+    .skill-group:last-child { border-bottom: none; }
+    .skill-group-toggle {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; padding: 8px 24px;
+      background: none; border: none;
+      font-family: inherit; font-size: .79rem; font-weight: 500;
+      color: var(--sidebar-dim); text-align: left;
+      cursor: pointer; transition: color .15s, background .15s;
+    }
+    .skill-group-toggle:hover { color: var(--sidebar-text); background: rgba(255,255,255,.04); }
+    .skill-group-toggle .chevron {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 12px; height: 12px; flex-shrink: 0;
+      color: var(--gold-dim); font-size: .55rem; line-height: 1;
+    }
+    .skill-group-toggle .chevron::before { content: '▶'; }
+    .skill-group.expanded .skill-group-toggle .chevron::before { content: '▼'; }
+    .skill-group-body {
+      display: none; padding-bottom: 6px;
+    }
+    .skill-group.expanded .skill-group-body { display: block; }
 
     .sidebar-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 24px; }
     .sidebar-footer {
@@ -315,28 +388,104 @@
 
     <div class="sidebar-section">
       <div class="sidebar-section-title">Module Progress</div>
-      <ul class="module-list" id="module-progress-list">
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="1" /><span class="module-label"><span class="module-num">M1 </span>Business of Private Pay</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="2" /><span class="module-label"><span class="module-num">M2 </span>Navigating Special Ed</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="3" /><span class="module-label"><span class="module-num">M3 </span>Expert at IEPs</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="4" /><span class="module-label"><span class="module-num">M4 </span>Starting the Practice</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="5" /><span class="module-label"><span class="module-num">M5 </span>First 5 Clients</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="6" /><span class="module-label"><span class="module-num">M6 </span>Working with Clients</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="7" /><span class="module-label"><span class="module-num">M7 </span>Advanced SpEd Knowledge</span></li>
-        <li class="module-item"><input type="checkbox" class="module-check" data-mod="8" /><span class="module-label"><span class="module-num">M8 </span>Going Full Time</span></li>
-      </ul>
+      <div class="module-list" id="module-progress-list"></div>
     </div>
 
     <div class="sidebar-divider"></div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">Skills — Module 1</div>
-      <a class="skill-link" href=".claude/skills/business-name/SKILL.md" target="_blank">business-name</a>
-      <a class="skill-link" href=".claude/skills/entity-setup/SKILL.md" target="_blank">entity-setup</a>
-      <a class="skill-link" href=".claude/skills/liability-insurance/SKILL.md" target="_blank">liability-insurance</a>
-      <a class="skill-link" href=".claude/skills/services-fees/SKILL.md" target="_blank">services-fees</a>
-      <a class="skill-link" href=".claude/skills/backend-systems/SKILL.md" target="_blank">backend-systems</a>
-      <a class="skill-link" href=".claude/skills/intake-process/SKILL.md" target="_blank">intake-process</a>
+    <div class="sidebar-section skills-section">
+      <div class="sidebar-section-title">Skills</div>
+
+      <div class="skill-group expanded" data-mod="1">
+        <button class="skill-group-toggle" type="button" aria-expanded="true">
+          <span class="chevron"></span> Module 1
+        </button>
+        <div class="skill-group-body">
+          <a class="skill-link" href=".claude/skills/business-name/SKILL.md" target="_blank">business-name</a>
+          <a class="skill-link" href=".claude/skills/entity-setup/SKILL.md" target="_blank">entity-setup</a>
+          <a class="skill-link" href=".claude/skills/liability-insurance/SKILL.md" target="_blank">liability-insurance</a>
+          <a class="skill-link" href=".claude/skills/services-fees/SKILL.md" target="_blank">services-fees</a>
+          <a class="skill-link" href=".claude/skills/backend-systems/SKILL.md" target="_blank">backend-systems</a>
+          <a class="skill-link" href=".claude/skills/intake-process/SKILL.md" target="_blank">intake-process</a>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="2">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 2
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">sped-methodology</span>
+          <span class="skill-link placeholder">advocacy-foundation</span>
+          <span class="skill-link placeholder">iep-checklist-start</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="3">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 3
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">iep-process-steps</span>
+          <span class="skill-link placeholder">iep-eligibility</span>
+          <span class="skill-link placeholder">observation-expert</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="4">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 4
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">ideal-client</span>
+          <span class="skill-link placeholder">intake-streamline</span>
+          <span class="skill-link placeholder">support-self-care</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="5">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 5
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">referral-sources</span>
+          <span class="skill-link placeholder">online-presence</span>
+          <span class="skill-link placeholder">client-attraction</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="6">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 6
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">client-support-cycle</span>
+          <span class="skill-link placeholder">client-plans</span>
+          <span class="skill-link placeholder">conflict-management</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="7">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 7
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">iee</span>
+          <span class="skill-link placeholder">esy-disputes</span>
+          <span class="skill-link placeholder">evaluations-to-supports</span>
+        </div>
+      </div>
+
+      <div class="skill-group" data-mod="8">
+        <button class="skill-group-toggle" type="button" aria-expanded="false">
+          <span class="chevron"></span> Module 8
+        </button>
+        <div class="skill-group-body">
+          <span class="skill-link placeholder">full-time-timing</span>
+          <span class="skill-link placeholder">long-term-plan</span>
+          <span class="skill-link placeholder">job-transition</span>
+        </div>
+      </div>
     </div>
 
     <div class="sidebar-divider"></div>
@@ -422,9 +571,6 @@
           <p>After each module, Rylee writes notes to <code>workspace/course/module-&lt;N&gt;-notes.md</code>. Run <code>/module-debrief &lt;N&gt;</code> to merge those into the matching skills.</p>
         </div>
         <div id="course-modules"></div>
-        <div class="md-body" id="course-outline" style="margin-top:36px;">
-          <div class="loading">Loading course outline…</div>
-        </div>
       </div>
     </div>
   </div>
@@ -451,14 +597,82 @@
   ];
 
   const MODULES = [
-    { n: 1, title: 'The Business of Private Pay', status: 'scaffold' },
-    { n: 2, title: 'Navigating the Special Education System', status: 'pending' },
-    { n: 3, title: 'Becoming an Expert at IEPs', status: 'pending' },
-    { n: 4, title: 'Starting your IEP Advocacy Practice', status: 'pending' },
-    { n: 5, title: 'Getting your First 5 Clients', status: 'pending' },
-    { n: 6, title: 'Working with Clients', status: 'pending' },
-    { n: 7, title: 'Advanced Special Education Knowledge', status: 'pending' },
-    { n: 8, title: 'Taking your Business Full Time', status: 'pending' },
+    {
+      n: 1, short: 'Business of Private Pay', title: 'The Business of Private Pay', status: 'scaffold',
+      desc: 'Right off the gate you will learn the basics of starting your own practice so you can take “research private practice insurance and licensing” off your to-do list.',
+      deliverables: [
+        'Pick a name and register your new business entity with your state',
+        'Update your liability insurance to include your new private practice',
+        'Clearly define your set of services and fee structure',
+        'Set up your back end systems for file organization and contracts',
+        'Create your custom client intake process so you can get started right away',
+      ],
+    },
+    {
+      n: 2, short: 'Navigating Special Ed', title: 'Navigating the Special Education System', status: 'pending',
+      desc: 'Even if you are a novice in Special Education, you will learn the ins and outs of the Special Education System so you can show up confidently in an IEP meeting and help your clients through the process.',
+      deliverables: [
+        'Learn the meaning of special education methodology, terms, and philosophies',
+        'Build a foundation for IEP Advocacy based on your knowledge of special education',
+        'Begin completing an IEP Advocacy checklist',
+      ],
+    },
+    {
+      n: 3, short: 'Expert at IEPs', title: 'Becoming an Expert at IEPs', status: 'pending',
+      desc: 'Not confident in the ins and outs of IEPs? No problem. I will teach you everything you need to know about IEPs so you can step confidently into your role as an advocate for your clients.',
+      deliverables: [
+        'Learn and understand the 6 steps in the IEP process',
+        'Describe and define the eligibility for an IEP',
+        'Become an observation expert',
+      ],
+    },
+    {
+      n: 4, short: 'Starting the Practice', title: 'Starting your IEP Advocacy Practice', status: 'pending',
+      desc: 'Now that you have the foundations of IEP Advocacy, you will put this all together and start your private pay practice!',
+      deliverables: [
+        'Identify who your ideal client is',
+        'Streamline your intake system',
+        'Identify your support team and self care as an IEP advocate',
+      ],
+    },
+    {
+      n: 5, short: 'First 5 Clients', title: 'Getting your First 5 Clients', status: 'pending',
+      desc: 'Once your practice is all set up, you are ready to find your first 5 clients!',
+      deliverables: [
+        'Identify your key referral sources, so you can create meaningful connections to meet new potential clients',
+        'Set up your presence online, so you can attract and nurture clients from there',
+        'Learn how to attract your ideal clients online and via referrals',
+      ],
+    },
+    {
+      n: 6, short: 'Working with Clients', title: 'Working with Clients', status: 'pending',
+      desc: 'Now that you know how to sign your next 5 clients, you will develop the systems and processes to support them long term.',
+      deliverables: [
+        'Learn the cycle of support for your clients',
+        'Formulate a plan to support new clients and long term clients',
+        'Develop the skills to handle conflict management and difficult conversations',
+      ],
+    },
+    {
+      n: 7, short: 'Advanced SpEd Knowledge', title: 'Advanced Special Education Knowledge', status: 'pending',
+      desc: 'Serving your clients can sometimes come with some unique experiences and advanced situations. I will prepare you with advanced knowledge you will need in these situations.',
+      deliverables: [
+        'Learn about Independent Education Evaluations',
+        'Understand ESY',
+        'Dispute Key Terms',
+        'Understand the difference between mediation and due process',
+        'Know how to link evaluations to the correct supports',
+      ],
+    },
+    {
+      n: 8, short: 'Going Full Time', title: 'Taking your Business Full Time', status: 'pending',
+      desc: 'When your practice is thriving, it\'s time to consider taking your business full time!',
+      deliverables: [
+        'Learn when is the right time to let go of direct client work and go full time',
+        'Make a plan for the future so you can sustain your success long term',
+        'Plan your transition so you can leave your current job on good terms',
+      ],
+    },
   ];
 
   // ── Module progress (localStorage) ───────────────────────────────────────
@@ -468,16 +682,61 @@
     catch { return {}; }
   }
   const modState = loadModuleState();
-  document.querySelectorAll('.module-check').forEach(cb => {
-    const mod = cb.dataset.mod;
-    if (modState[mod]) {
-      cb.checked = true;
-      cb.closest('.module-item').querySelector('.module-label').classList.add('done');
-    }
-    cb.addEventListener('change', () => {
-      modState[mod] = cb.checked;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(modState));
-      cb.closest('.module-item').querySelector('.module-label').classList.toggle('done', cb.checked);
+
+  function renderModuleProgress() {
+    const list = document.getElementById('module-progress-list');
+    list.innerHTML = MODULES.map(mod => `
+      <div class="module-group${mod.n === 1 ? ' expanded' : ''}" data-mod="${mod.n}">
+        <div class="module-group-header">
+          <button class="module-group-toggle" type="button" aria-expanded="${mod.n === 1}">
+            <span class="chevron"></span>
+          </button>
+          <input type="checkbox" class="module-check" data-mod="${mod.n}" />
+          <span class="module-label"><span class="module-num">M${mod.n} </span>${mod.short}</span>
+        </div>
+        <div class="module-group-body">
+          <p class="module-desc">${mod.desc}</p>
+          <p class="module-deliverables-label">Inside this module, you will:</p>
+          <ul class="module-deliverables">
+            ${mod.deliverables.map(d => `<li>${d}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('.module-group-toggle, .module-label').forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('.module-check')) return;
+        const group = el.closest('.module-group');
+        const btn = group.querySelector('.module-group-toggle');
+        const expanded = group.classList.toggle('expanded');
+        btn.setAttribute('aria-expanded', expanded);
+      });
+    });
+
+    list.querySelectorAll('.module-check').forEach(cb => {
+      const mod = cb.dataset.mod;
+      if (modState[mod]) {
+        cb.checked = true;
+        cb.closest('.module-group').querySelector('.module-label').classList.add('done');
+      }
+      cb.addEventListener('click', e => e.stopPropagation());
+      cb.addEventListener('change', () => {
+        modState[mod] = cb.checked;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(modState));
+        cb.closest('.module-group').querySelector('.module-label').classList.toggle('done', cb.checked);
+      });
+    });
+  }
+
+  renderModuleProgress();
+
+  // ── Skills accordion ───────────────────────────────────────────────────────
+  document.querySelectorAll('.skill-group-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.closest('.skill-group');
+      const expanded = group.classList.toggle('expanded');
+      btn.setAttribute('aria-expanded', expanded);
     });
   });
 
@@ -615,15 +874,6 @@
             : `<span class="btn" style="opacity:.5;cursor:default">No notes yet</span>`}
         </div>`;
       container.appendChild(row);
-    }
-
-    const outline = document.getElementById('course-outline');
-    try {
-      const res = await fetch('./modules.md');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      outline.innerHTML = marked.parse(await res.text());
-    } catch (err) {
-      outline.innerHTML = `<p style="color:var(--text-muted);font-style:italic;">Could not load modules.md — ${err.message}</p>`;
     }
   }
 
