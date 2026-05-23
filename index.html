@@ -390,7 +390,7 @@
       align-items: center; justify-content: center;
       background: none; border: none; cursor: pointer;
       color: var(--text-muted); border-radius: 6px;
-      margin-right: 4px; flex-shrink: 0;
+      margin-left: 4px; flex-shrink: 0;
       transition: background .15s, color .15s;
     }
     .nav-toggle:hover { background: rgba(0,0,0,.04); color: var(--text); }
@@ -471,10 +471,10 @@
       .ws-card .path { overflow-wrap: anywhere; }
     }
     @media (max-width: 480px) {
-      /* Two-row topbar: hamburger+title on row 1, badges on row 2 */
+      /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
       .topbar { padding: 10px 12px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
       .topbar-title {
-        flex: 1 1 100%; min-width: 0;
+        flex: 1 1 0; min-width: 0;
         overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
       .topbar-badges { flex: 1 1 100%; gap: 6px; }
@@ -655,10 +655,10 @@
 
   <div class="main">
     <div class="topbar">
+      <span class="topbar-title" id="topbar-title">PIVOT into IEP Advocacy® — Summer 2026</span>
       <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
-      <span class="topbar-title" id="topbar-title">PIVOT into IEP Advocacy® — Summer 2026</span>
       <div class="topbar-badges" id="topbar-badges">
         <span class="badge badge-scaffold">Pre-cohort</span>
         <span class="badge badge-cohort">Jun 1 Start</span>
