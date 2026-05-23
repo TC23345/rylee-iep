@@ -1570,9 +1570,12 @@
     const renderCard = ({ mod, notePath, noteStatus }) => {
       const st = statusFor(mod);
       const delivCount = mod.deliverables.length;
-      const skillCount = mod.deliverables.filter(d => Array.isArray(d.links) && d.links.length).length;
+      const linkedCount = mod.deliverables.filter(d => Array.isArray(d.links) && d.links.length).length;
+      // Only Module 1 (scaffold) and validated modules have real skill files on disk.
+      // For pending modules the deliverable.links slugs are placeholders, not authored skills.
+      const skillCount = mod.status === 'pending' ? 0 : linkedCount;
       const skillMeta = skillCount === 0
-        ? '0 skills authored yet'
+        ? 'skills pending'
         : `${skillCount} skill${skillCount === 1 ? '' : 's'} authored`;
       const desc = MODULE_BLURB[mod.n] || mod.short;
 
