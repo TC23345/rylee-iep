@@ -191,6 +191,9 @@
       cursor: default; opacity: .55; pointer-events: none;
     }
     .skill-link.placeholder::before { opacity: .45; }
+    .skill-link--pending { opacity: .7; }
+    .skill-link--pending::before { content: '○'; opacity: .55; }
+    .skill-link--pending:hover { opacity: 1; color: var(--sidebar-text); }
 
     .skill-group { border-bottom: 1px solid rgba(255,255,255,.04); }
     .skill-group:last-child { border-bottom: none; }
@@ -800,6 +803,108 @@
       color: var(--sidebar-dim);
     }
 
+    /* ── Skill placeholder page (#skill/<slug>) ──────────────────────────── */
+    .skl-wrap { max-width: 960px; }
+    .skl-hero {
+      display: flex; gap: 24px; align-items: stretch;
+      border: 1px solid var(--border); border-left: 4px solid var(--gold);
+      background: var(--bg-card); border-radius: 10px;
+      padding: 22px 26px; margin-bottom: 18px;
+    }
+    .skl-hero-main { flex: 1 1 auto; min-width: 0; }
+    .skl-hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold-dim);
+      margin-bottom: 6px;
+    }
+    .skl-hero-slug {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(1.25rem, 2.5vw + .4rem, 1.75rem);
+      font-weight: 500; color: var(--text);
+      margin: 0 0 8px; word-break: break-word;
+    }
+    .skl-hero-sub {
+      font-size: .9rem; line-height: 1.55;
+      color: var(--text-muted); margin: 0;
+      max-width: 60ch;
+    }
+    .skl-hero-stat {
+      flex: 0 0 auto; min-width: 110px;
+      display: flex; flex-direction: column;
+      align-items: flex-end; justify-content: center;
+      gap: 4px; text-align: right;
+    }
+    .skl-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--terracotta);
+    }
+    .skl-hero-stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 600; color: var(--text);
+      line-height: 1; font-style: italic;
+    }
+
+    .skl-context {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+    }
+    .skl-context h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--text);
+      margin: 0 0 10px;
+    }
+    .skl-context p {
+      font-size: .9rem; line-height: 1.65; color: #3A342B;
+      margin: 0 0 10px;
+    }
+    .skl-context p:last-child { margin-bottom: 0; }
+    .skl-context code {
+      font-family: 'DM Mono', monospace; font-size: .8rem;
+      background: #EDE8DF; padding: 1px 6px; border-radius: 3px;
+      color: var(--terracotta);
+    }
+    .skl-deliverable {
+      font-style: italic; color: var(--text-muted);
+      border-left: 3px solid var(--border); padding: 4px 12px;
+      margin: 8px 0 12px;
+    }
+
+    .skl-next {
+      background: rgba(212,168,75,.06);
+      border: 1px solid rgba(212,168,75,.2);
+      border-left: 4px solid var(--gold-dim);
+      border-radius: 10px; padding: 16px 20px;
+      margin-bottom: 18px;
+    }
+    .skl-next-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold-dim);
+      margin-bottom: 8px;
+    }
+    .skl-next-body { font-size: .88rem; line-height: 1.6; color: #3A342B; }
+    .skl-next-body code {
+      font-family: 'DM Mono', monospace; font-size: .8rem;
+      background: rgba(255,255,255,.7); padding: 1px 6px;
+      border-radius: 3px; color: var(--terracotta);
+    }
+
+    .skl-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skl-action { font-size: .82rem; padding: 8px 16px; }
+
+    .skl-error {
+      text-align: center; padding: 48px 24px;
+      background: var(--bg-card); border: 1px dashed var(--border);
+      border-radius: 10px; max-width: 480px; margin: 0 auto;
+    }
+    .skl-error h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; margin-bottom: 10px; color: var(--text);
+    }
+    .skl-error p { font-size: .88rem; color: var(--text-muted); line-height: 1.6; }
+
     @media (max-width: 1024px) and (min-width: 769px) {
       .sidebar { width: 220px; }
       .content-scroll { padding: 28px 24px 60px; }
@@ -811,6 +916,7 @@
       .cli-hero { padding: 18px 20px; gap: 16px; }
       .cli-add { padding: 14px 16px; gap: 14px; }
       .cli-pii { gap: 18px; padding: 10px 16px; }
+      .skl-hero { padding: 18px 20px; gap: 16px; }
     }
     @media (max-width: 768px) {
       .nav-toggle { display: inline-flex; }
@@ -912,6 +1018,14 @@
       .cli-add { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
       .cli-roster-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
       .cli-tree { padding: 14px 14px; font-size: .72rem; line-height: 1.7; }
+
+      .skl-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .skl-hero-stat {
+        align-items: flex-start; text-align: left;
+        border-top: 1px solid var(--border); padding-top: 12px;
+        min-width: 0; width: 100%;
+        flex-direction: row; gap: 10px; align-items: baseline;
+      }
     }
     @media (max-width: 480px) {
       /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
@@ -1006,9 +1120,9 @@
           <span class="chevron"></span> Module 2
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">sped-methodology</span>
-          <span class="skill-link placeholder">advocacy-foundation</span>
-          <span class="skill-link placeholder">iep-checklist-start</span>
+          <a class="skill-link skill-link--pending" href="#skill/sped-methodology" data-sidebar-skill="sped-methodology">sped-methodology</a>
+          <a class="skill-link skill-link--pending" href="#skill/advocacy-foundation" data-sidebar-skill="advocacy-foundation">advocacy-foundation</a>
+          <a class="skill-link skill-link--pending" href="#skill/iep-checklist-start" data-sidebar-skill="iep-checklist-start">iep-checklist-start</a>
         </div>
       </div>
 
@@ -1017,9 +1131,9 @@
           <span class="chevron"></span> Module 3
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">iep-process-steps</span>
-          <span class="skill-link placeholder">iep-eligibility</span>
-          <span class="skill-link placeholder">observation-expert</span>
+          <a class="skill-link skill-link--pending" href="#skill/iep-process-steps" data-sidebar-skill="iep-process-steps">iep-process-steps</a>
+          <a class="skill-link skill-link--pending" href="#skill/iep-eligibility" data-sidebar-skill="iep-eligibility">iep-eligibility</a>
+          <a class="skill-link skill-link--pending" href="#skill/observation-expert" data-sidebar-skill="observation-expert">observation-expert</a>
         </div>
       </div>
 
@@ -1028,9 +1142,9 @@
           <span class="chevron"></span> Module 4
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">ideal-client</span>
-          <span class="skill-link placeholder">intake-streamline</span>
-          <span class="skill-link placeholder">support-self-care</span>
+          <a class="skill-link skill-link--pending" href="#skill/ideal-client" data-sidebar-skill="ideal-client">ideal-client</a>
+          <a class="skill-link skill-link--pending" href="#skill/intake-streamline" data-sidebar-skill="intake-streamline">intake-streamline</a>
+          <a class="skill-link skill-link--pending" href="#skill/support-self-care" data-sidebar-skill="support-self-care">support-self-care</a>
         </div>
       </div>
 
@@ -1039,9 +1153,9 @@
           <span class="chevron"></span> Module 5
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">referral-sources</span>
-          <span class="skill-link placeholder">online-presence</span>
-          <span class="skill-link placeholder">client-attraction</span>
+          <a class="skill-link skill-link--pending" href="#skill/referral-sources" data-sidebar-skill="referral-sources">referral-sources</a>
+          <a class="skill-link skill-link--pending" href="#skill/online-presence" data-sidebar-skill="online-presence">online-presence</a>
+          <a class="skill-link skill-link--pending" href="#skill/client-attraction" data-sidebar-skill="client-attraction">client-attraction</a>
         </div>
       </div>
 
@@ -1050,9 +1164,9 @@
           <span class="chevron"></span> Module 6
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">client-support-cycle</span>
-          <span class="skill-link placeholder">client-plans</span>
-          <span class="skill-link placeholder">conflict-management</span>
+          <a class="skill-link skill-link--pending" href="#skill/client-support-cycle" data-sidebar-skill="client-support-cycle">client-support-cycle</a>
+          <a class="skill-link skill-link--pending" href="#skill/client-plans" data-sidebar-skill="client-plans">client-plans</a>
+          <a class="skill-link skill-link--pending" href="#skill/conflict-management" data-sidebar-skill="conflict-management">conflict-management</a>
         </div>
       </div>
 
@@ -1061,9 +1175,9 @@
           <span class="chevron"></span> Module 7
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">iee</span>
-          <span class="skill-link placeholder">esy-disputes</span>
-          <span class="skill-link placeholder">evaluations-to-supports</span>
+          <a class="skill-link skill-link--pending" href="#skill/iee" data-sidebar-skill="iee">iee</a>
+          <a class="skill-link skill-link--pending" href="#skill/esy-disputes" data-sidebar-skill="esy-disputes">esy-disputes</a>
+          <a class="skill-link skill-link--pending" href="#skill/evaluations-to-supports" data-sidebar-skill="evaluations-to-supports">evaluations-to-supports</a>
         </div>
       </div>
 
@@ -1072,9 +1186,9 @@
           <span class="chevron"></span> Module 8
         </button>
         <div class="skill-group-body">
-          <span class="skill-link placeholder">full-time-timing</span>
-          <span class="skill-link placeholder">long-term-plan</span>
-          <span class="skill-link placeholder">job-transition</span>
+          <a class="skill-link skill-link--pending" href="#skill/full-time-timing" data-sidebar-skill="full-time-timing">full-time-timing</a>
+          <a class="skill-link skill-link--pending" href="#skill/long-term-plan" data-sidebar-skill="long-term-plan">long-term-plan</a>
+          <a class="skill-link skill-link--pending" href="#skill/job-transition" data-sidebar-skill="job-transition">job-transition</a>
         </div>
       </div>
     </div>
@@ -1133,6 +1247,10 @@
         <section class="crs-wrap" id="course-wrap">
           <div class="loading">Loading course modules…</div>
         </section>
+      </div>
+
+      <div class="page-view" id="page-skill">
+        <section class="skl-wrap" id="skill-wrap"></section>
       </div>
     </div>
   </div>
@@ -1324,15 +1442,36 @@
     return `.claude/skills/${slug}/SKILL.md`;
   }
 
+  // Build a slug → { mod, deliverable } index from MODULES.
+  // Used by showSkill() to render the in-app placeholder for pending skills.
+  function buildSkillIndex() {
+    const idx = {};
+    for (const mod of MODULES) {
+      for (const d of mod.deliverables) {
+        if (!Array.isArray(d.links)) continue;
+        for (const l of d.links) {
+          if (l.slug && !idx[l.slug]) idx[l.slug] = { mod, deliverable: d };
+        }
+      }
+    }
+    return idx;
+  }
+  const SKILL_INDEX = buildSkillIndex();
+
   function renderDeliverableLinks(d, mod) {
     if (!d.links || !d.links.length) {
       return '<span class="deliverable-pending">Skill pending — run <code>/module-debrief ' + mod.n + '</code></span>';
     }
-    const pending = mod.status === 'pending' ? ' deliverable-link--pending' : '';
+    const pending = mod.status === 'pending';
     const links = d.links.map(l => {
-      const href = l.href || skillHref(l.slug);
       const label = l.slug || l.label;
-      return `<a class="deliverable-link${pending}" href="${href}" target="_blank" rel="noopener" title="${pending ? 'Skill authored via /module-debrief ' + mod.n : ''}">${label}</a>`;
+      const cls = 'deliverable-link' + (pending ? ' deliverable-link--pending' : '');
+      // For pending modules, route to the in-app placeholder instead of the missing .md file.
+      if (pending && l.slug) {
+        return `<a class="${cls}" href="#skill/${l.slug}" data-skill-link="${l.slug}" title="Skill authored via /module-debrief ${mod.n}">${label}</a>`;
+      }
+      const href = l.href || skillHref(l.slug);
+      return `<a class="${cls}" href="${href}" target="_blank" rel="noopener">${label}</a>`;
     }).join('');
     return `<div class="deliverable-links">${links}</div>`;
   }
@@ -1361,6 +1500,14 @@
         ${renderModuleBelow(mod)}
       </div>`;
     document.getElementById('topbar-title').textContent = `Module ${mod.n} — ${mod.short}`;
+
+    // Pending-skill links route to the in-app placeholder, not the missing .md file.
+    el.querySelectorAll('[data-skill-link]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSkill(a.dataset.skillLink);
+      });
+    });
   }
 
   async function showModule(n) {
@@ -1373,6 +1520,79 @@
     document.getElementById('module-main-content').innerHTML = '<div class="loading">Loading module…</div>';
     await renderModuleMain(n);
     history.replaceState(null, '', '#module-' + n);
+    document.querySelector('.content-scroll').scrollTop = 0;
+  }
+
+  // ── Skill placeholder (#skill/<slug>) ──────────────────────────────────────
+  function renderSkillPlaceholder(slug) {
+    const wrap = document.getElementById('skill-wrap');
+    const entry = SKILL_INDEX[slug];
+
+    if (!entry) {
+      wrap.innerHTML = `
+        <div class="skl-error">
+          <h2>Unknown skill</h2>
+          <p>No skill named <code>${slug}</code> is defined in any module yet.</p>
+          <div style="margin-top:16px"><a class="btn btn-primary" href="#overview" data-skl-back="overview">Back to Overview</a></div>
+        </div>`;
+      wrap.querySelectorAll('[data-skl-back]').forEach(a => {
+        a.addEventListener('click', (e) => { e.preventDefault(); showPage('overview'); });
+      });
+      return;
+    }
+
+    const { mod, deliverable } = entry;
+    wrap.innerHTML = `
+      <header class="skl-hero">
+        <div class="skl-hero-main">
+          <div class="skl-hero-eyebrow">Skill placeholder</div>
+          <h1 class="skl-hero-slug">${slug}</h1>
+          <p class="skl-hero-sub">Authored during <code>/module-debrief ${mod.n}</code> once Rylee watches Module ${mod.n}. Until then, this page stands in so the deliverable link doesn't dead-end.</p>
+        </div>
+        <div class="skl-hero-stat">
+          <div class="skl-hero-stat-label">Pending</div>
+          <div class="skl-hero-stat-value">M${mod.n}</div>
+        </div>
+      </header>
+
+      <section class="skl-context">
+        <h2>Module context</h2>
+        <p>This skill belongs to <strong>Module ${mod.n} — ${mod.title}</strong>.</p>
+        <p>Deliverable it addresses:</p>
+        <p class="skl-deliverable">"${deliverable.text}"</p>
+      </section>
+
+      <section class="skl-next">
+        <div class="skl-next-title">What happens next</div>
+        <div class="skl-next-body">
+          After watching Module ${mod.n}, Rylee writes notes to <code>workspace/course/module-${mod.n}-notes.md</code> and runs <code>/module-debrief ${mod.n}</code>. The debrief authors this skill (and the other Module ${mod.n} skills) by merging her notes with Dr. Annie's actual lessons. Once that's done, this page is replaced by the real <code>.claude/skills/${slug}/SKILL.md</code>.
+        </div>
+      </section>
+
+      <div class="skl-actions">
+        <a class="btn btn-primary skl-action" href="#module-${mod.n}" data-skl-module="${mod.n}">← Back to Module ${mod.n}</a>
+        <a class="btn skl-action" href=".claude/commands/module-debrief.md" target="_blank" rel="noopener">View /module-debrief</a>
+      </div>`;
+
+    wrap.querySelectorAll('[data-skl-module]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showModule(parseInt(a.dataset.sklModule, 10));
+      });
+    });
+  }
+
+  function showSkill(slug) {
+    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('page-skill').classList.add('active');
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.module-label').forEach(l => l.classList.remove('active'));
+    renderSkillPlaceholder(slug);
+    const entry = SKILL_INDEX[slug];
+    document.getElementById('topbar-title').textContent = entry
+      ? `Skill placeholder — ${slug}`
+      : `Unknown skill — ${slug}`;
+    history.replaceState(null, '', '#skill/' + slug);
     document.querySelector('.content-scroll').scrollTop = 0;
   }
 
@@ -1491,6 +1711,15 @@
   }
   sidebarEl.querySelectorAll('.nav-item[data-page], .module-label').forEach(el => {
     el.addEventListener('click', autoCloseOnNav);
+  });
+
+  // Sidebar pending-skill links route to the in-app placeholder (no page reload).
+  sidebarEl.querySelectorAll('[data-sidebar-skill]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSkill(a.dataset.sidebarSkill);
+      autoCloseOnNav();
+    });
   });
 
   // ── Page routing ─────────────────────────────────────────────────────────
@@ -1855,8 +2084,11 @@
     await loadModulesMd();
     const hash = location.hash.replace('#', '');
     const moduleMatch = hash.match(/^module-(\d)$/);
+    const skillMatch = hash.match(/^skill\/([\w-]+)$/);
     if (moduleMatch) {
       await showModule(parseInt(moduleMatch[1], 10));
+    } else if (skillMatch) {
+      showSkill(skillMatch[1]);
     } else if (['overview', 'business', 'clients', 'course'].includes(hash)) {
       showPage(hash);
     } else {
