@@ -126,8 +126,8 @@
     .module-label.done { text-decoration: line-through; opacity: .6; }
     .module-num { color: var(--gold-dim); font-size: .7rem; font-family: 'DM Mono', monospace; margin-right: 2px; }
 
-    .module-meta { max-width: 72ch; margin-bottom: 8px; }
-    .module-source { max-width: 72ch; margin-bottom: 0; }
+    .module-meta { max-width: 72ch; margin: 0 auto 8px; }
+    .module-source { max-width: 72ch; margin: 0 auto; }
     .module-source h2 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.2rem, 3vw + 0.5rem, 1.5rem); font-weight: 600;
@@ -136,9 +136,9 @@
     }
     .module-section-divider {
       border: none; border-top: 1px solid var(--border);
-      margin: 40px 0 32px; max-width: 72ch;
+      margin: 40px auto 32px; max-width: 72ch;
     }
-    .module-below { max-width: 72ch; }
+    .module-below { max-width: 72ch; margin: 0 auto; }
     .deliverable-section {
       padding-bottom: 28px; margin-bottom: 28px;
       border-bottom: 1px solid var(--border);
@@ -415,7 +415,7 @@
     .nav-backdrop.visible { opacity: 1; pointer-events: auto; }
 
     /* ── Business page ───────────────────────────────────────────────────── */
-    .biz-wrap { max-width: 960px; }
+    .biz-wrap { max-width: 960px; margin: 0 auto; }
     .biz-hero {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 24px; padding: 22px 26px; margin-bottom: 28px;
@@ -520,7 +520,7 @@
     }
 
     /* ── Course page ─────────────────────────────────────────────────────── */
-    .crs-wrap { max-width: 960px; }
+    .crs-wrap { max-width: 960px; margin: 0 auto; }
     .crs-hero {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 24px; padding: 22px 26px; margin-bottom: 14px;
@@ -650,7 +650,7 @@
     }
 
     /* ── Clients page ────────────────────────────────────────────────────── */
-    .cli-wrap { max-width: 960px; }
+    .cli-wrap { max-width: 960px; margin: 0 auto; }
     .cli-hero {
       display: flex; align-items: flex-start; justify-content: space-between;
       gap: 24px; padding: 22px 26px; margin-bottom: 14px;
@@ -811,7 +811,7 @@
     }
 
     /* ── Skill placeholder page (#skill/<slug>) ──────────────────────────── */
-    .skl-wrap { max-width: 960px; }
+    .skl-wrap { max-width: 960px; margin: 0 auto; }
     .skl-hero {
       display: flex; gap: 24px; align-items: stretch;
       border: 1px solid var(--border); border-left: 4px solid var(--gold);
@@ -1069,6 +1069,15 @@
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
       }
+    }
+
+    /* Center the README/Overview page on wide screens */
+    #page-overview { max-width: 72ch; margin: 0 auto; }
+
+    /* On wide screens, keep topbar + content edges aligned in a single centered band */
+    @media (min-width: 1281px) {
+      .topbar { padding-inline: max(36px, calc((100% - 960px) / 2)); }
+      .content-scroll { padding-inline: max(44px, calc((100% - 960px) / 2)); }
     }
 
     /* ── Clerk auth: loading, gate, topbar user button ─────────────────── */
@@ -1589,6 +1598,28 @@
         ${renderModuleBelow(mod)}
       </div>`;
     document.getElementById('topbar-title').textContent = `Module ${mod.n} — ${mod.short}`;
+
+    // Wire the GFM checkboxes in the module-source (the "Inside this module, you will:" list).
+    // Each box maps to a stable localStorage key so check state persists per module per deliverable.
+    const sourceEl = el.querySelector('.module-source');
+    if (sourceEl) {
+      sourceEl.querySelectorAll('input[type="checkbox"]').forEach((cb, i) => {
+        const key = `mod-${n}-deliv-${i}`;
+        cb.disabled = false;
+        if (localStorage.getItem(key) === '1') cb.checked = true;
+        // Strikethrough the matching <li> when checked so the visual state mirrors the sidebar's done state.
+        const li = cb.closest('li');
+        const setStruck = () => {
+          if (li) li.style.textDecoration = cb.checked ? 'line-through' : '';
+          if (li) li.style.opacity = cb.checked ? '.6' : '';
+        };
+        setStruck();
+        cb.addEventListener('change', () => {
+          localStorage.setItem(key, cb.checked ? '1' : '0');
+          setStruck();
+        });
+      });
+    }
 
     // Pending-skill links route to the in-app placeholder, not the missing .md file.
     el.querySelectorAll('[data-skill-link]').forEach(a => {

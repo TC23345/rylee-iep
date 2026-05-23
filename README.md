@@ -30,61 +30,18 @@ This repo doubles as a **module-by-module action-plan dashboard**: scan this REA
 
 Status legend: `(scaffold)` drafted from public outline, unvalidated · `(in review)` course watched, debrief in progress · `(validated)` course content merged, skill is canonical · `—` not yet authored.
 
-Tick each deliverable as Rylee completes it. Open a module from the sidebar to work through its skills.
+Open a module from the sidebar to see its deliverables and tick them off as Rylee completes them.
 
-1. **The Business of Private Pay** —
+1. **The Business of Private Pay**
+2. **Navigating the Special Education System**
+3. **Becoming an Expert at IEPs**
+4. **Starting your IEP Advocacy Practice**
+5. **Getting your First 5 Clients**
+6. **Working with Clients**
+7. **Advanced Special Education Knowledge**
+8. **Taking your Business Full Time**
 
-   - [ ] Pick a name and register your new business entity with your state
-   - [ ] Update your liability insurance to include your new private practice
-   - [ ] Clearly define your set of services and fee structure
-   - [ ] Set up your back end systems for file organization and contracts
-   - [ ] Create your custom client intake process so you can get started right away
-
-2. **Navigating the Special Education System** —
-
-   - [ ] Learn the meaning of special education methodology, terms, and philosophies
-   - [ ] Build a foundation for IEP Advocacy based on your knowledge of special education
-   - [ ] Begin completing an IEP Advocacy checklist
-
-3. **Becoming an Expert at IEPs** —
-
-   - [ ] Learn and understand the 6 steps in the IEP process
-   - [ ] Describe and define the eligibility for an IEP
-   - [ ] Become an observation expert
-
-4. **Starting your IEP Advocacy Practice** —
-
-   - [ ] Identify who your ideal client is
-   - [ ] Streamline your intake system
-   - [ ] Identify your support team and self care as an IEP advocate
-
-5. **Getting your First 5 Clients** —
-
-   - [ ] Identify your key referral sources, so you can create meaningful connections to meet new potential clients
-   - [ ] Set up your presence online, so you can attract and nurture clients from there
-   - [ ] Learn how to attract your ideal clients online and via referrals
-
-6. **Working with Clients** —
-
-   - [ ] Learn the cycle of support for your clients
-   - [ ] Formulate a plan to support new clients and long term clients
-   - [ ] Develop the skills to handle conflict management and difficult conversations
-
-7. **Advanced Special Education Knowledge** —
-
-   - [ ] Learn about Independent Education Evaluations
-   - [ ] Understand ESY
-   - [ ] Dispute Key Terms
-   - [ ] Understand the difference between mediation and due process
-   - [ ] Know how to link evaluations to the correct supports
-
-8. **Taking your Business Full Time** —
-
-   - [ ] Learn when is the right time to let go of direct client work and go full time
-   - [ ] Make a plan for the future so you can sustain your success long term
-   - [ ] Plan your transition so you can leave your current job on good terms
-
-Modules 2–8 deliverables don't yet have skills attached. Each gets a skill (or two) authored via [`/module-debrief <N>`](.claude/commands/module-debrief.md) when Rylee reaches that module, with her notes + Dr. Annie's actual content. See [`feedback_skill_authoring.md`](C:\Users\TC933\.claude\projects\c--Users-TC933-Projects-rylee-iep\memory\feedback_skill_authoring.md) for the rationale.
+Modules 2–8 deliverables don't yet have skills attached. Each gets a skill (or two) authored via [`/module-debrief <N>`](.claude/commands/module-debrief.md) when Rylee reaches that module, with her notes + Dr. Annie's actual content.
 
 ---
 
