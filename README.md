@@ -1,18 +1,22 @@
 # rylee-iep
 
-A working repo for Rylee Coteus's pivot from agency BCBA work into a private-pay IEP advocacy practice. Built around the **PIVOT into IEP Advocacy®** course (Dr. Annie / Constance McLaughlin) — Summer 2026 cohort, starts **2026-06-01**.
-
 > **Pre-cohort state (as of 2026-05-21).** Everything under [`.claude/skills/`](.claude/skills/) was drafted from the public course outline at [iepadvocacytraining.com](https://www.iepadvocacytraining.com/) plus general IL/BCBA business knowledge. It is **scaffolding, not validated**. When Rylee begins the actual course, each skill gets reviewed and updated against Dr. Annie's real lessons + Rylee's domain expertise via [`/module-debrief`](.claude/commands/module-debrief.md).
 
 ---
 
 ## What this project does
 
-1. **Organizes the course's action plan** — each of the 8 modules has concrete deliverables; this repo turns them into trackable skills and checklists
-2. **Captures Rylee's domain expertise** — her BCBA-side knowledge of IEPs, IL/IDFPR scope, and NSSEO context lives in [`.claude/shared/rylee-profile.md`](.claude/shared/rylee-profile.md) so skills don't re-ask
-3. **Layers in course content as it's learned** — after Rylee watches each module, [`/module-debrief`](.claude/commands/module-debrief.md) merges what Dr. Annie taught into the matching skills
-4. **Walks her through the deliverables** — each finished skill is a procedure that takes her from "module deliverable" to "done" without re-learning the substance every time
-5. **Tracks per-client work** once she has clients — [`/new-client`](.claude/commands/new-client.md) instantiates a folder, [`/checklist`](.claude/commands/checklist.md) walks the IEP advocacy checklist
+Rylee is pivoting from full-time MS BCBA/LBA work at NSSEO into private-pay IEP advocacy. To make that jump she enrolled in Dr. Annie McLaughlin's **PIVOT into IEP Advocacy®** — 12 weeks of mentorship, weekly group calls, and a binder of templates, cheat sheets, and worked examples from someone who has already made the transition. At $1,500 the access alone is a real deal.
+
+But it's a "you get out what you put in" program. We've talked about this kind of thing for years: the realistic rate of cohort students who finish the modules *and* actually stand up a practice is low. The gap is the execution side — the implicit sub-tasks sitting behind each module's checkboxes — and that's where this repo lives.
+
+Taylor (operator) is all-in on the build side. The mechanism:
+
+1. **Treat each module's deliverable checkboxes as the contract**, then research the sub-tasks each one *implies* but doesn't spell out (e.g. "register your entity" → name availability check → IL SoS filing → EIN → registered agent → operating agreement basics)
+2. **Encode those sub-tasks as skills** under `.claude/skills/` so each deliverable becomes a procedure Rylee can run, not a thing she has to re-reason from scratch every time
+3. **Capture her domain expertise** — BCBA-side knowledge of IEPs, IL/IDFPR scope, NSSEO context — in [`.claude/shared/rylee-profile.md`](.claude/shared/rylee-profile.md) so the skills don't re-ask what she already knows
+4. **Merge in Dr. Annie's actual lessons** after each module via [`/module-debrief`](.claude/commands/module-debrief.md), replacing the pre-watched scaffolding with the real content
+5. **Track per-client work** once clients show up — [`/new-client`](.claude/commands/new-client.md) spins up a folder, [`/checklist`](.claude/commands/checklist.md) walks the IEP advocacy checklist
 
 ---
 
@@ -25,12 +29,6 @@ A working repo for Rylee Coteus's pivot from agency BCBA work into a private-pay
 ---
 
 ## How we'll use this repo throughout the course
-
-### Pre-cohort (now → 2026-06-01)
-
-- Read through current Module 1 skills, flag obvious gaps to address once the real lessons land
-- Confirm directory structure works in Claude Code (`/help` shows the four commands, skills auto-discover)
-- Don't deep-edit the Module 1 skills yet — the debrief workflow will handle that
 
 ### During each module (weekly cadence)
 
