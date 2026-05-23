@@ -119,29 +119,6 @@ Modules 2–8 deliverables don't yet have skills attached. Each gets a skill (or
 
 ---
 
-## Repo map
-
-```text
-rylee-iep/
-├── README.md                       ← you are here
-├── CLAUDE.md                       ← project-level instructions for Claude Code
-├── modules.md                      ← course module outline (source: iepadvocacytraining.com)
-├── .gitignore                      ← gitignores workspace/, secrets
-├── .claude/
-│   ├── CHANGELOG.md                ← every skill edit logged here
-│   ├── shared/                     ← cross-skill references (disclaimer, profile, PII policy)
-│   ├── commands/                   ← /new-client, /module-debrief, /checklist, /weekly-review
-│   └── skills/                     ← module-1 skills (more added as Rylee progresses)
-└── workspace/                      ← gitignored — Rylee's business decisions + client folders
-    ├── business/
-    ├── clients/<client_id>/
-    └── course/module-<N>-notes.md  ← per-module distillation
-```
-
-For PII rules, scope gates, and the skill update workflow in detail, see [`CLAUDE.md`](CLAUDE.md).
-
----
-
 ## Course context
 
 - **Course**: PIVOT into IEP Advocacy® — [iepadvocacytraining.com](https://www.iepadvocacytraining.com/)
