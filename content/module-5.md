@@ -1,24 +1,20 @@
 ## Key Referral Sources for New Clients
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about key referral sources for new clients]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Getting your First 5 Clients](#)
+> * Link to Discussion: [First 5 Clients Discussion](#)
 
 ## Building Your Online Presence
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about building your online presence]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Getting your First 5 Clients](#)
+> * Link to Discussion: [First 5 Clients Discussion](#)
 
 ## Attracting Ideal Clients Online and Through Referrals
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about attracting ideal clients online and through referrals]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
-
+> * Link to Video: [Getting your First 5 Clients](#)
+> * Link to Discussion: [First 5 Clients Discussion](#)

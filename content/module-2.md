@@ -1,24 +1,20 @@
 ## Special Education Methodology, Terms, and Philosophies
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about special education methodology, terms, and philosophies]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Navigating the Special Education System](#)
+> * Link to Discussion: [Navigating Special Ed Discussion](#)
 
 ## Building Your IEP Advocacy Foundation
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about building your IEP advocacy foundation]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Navigating the Special Education System](#)
+> * Link to Discussion: [Navigating Special Ed Discussion](#)
 
 ## Starting Your IEP Advocacy Checklist
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about starting your IEP advocacy checklist]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
-
+> * Link to Video: [Navigating the Special Education System](#)
+> * Link to Discussion: [Navigating Special Ed Discussion](#)

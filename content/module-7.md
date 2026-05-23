@@ -1,40 +1,34 @@
 ## Independent Education Evaluations (IEE)
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about independent education evaluations (IEE)]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Advanced Special Education Knowledge](#)
+> * Link to Discussion: [Advanced SpEd Knowledge Discussion](#)
 
 ## Extended School Year (ESY)
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about extended school year (ESY)]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Advanced Special Education Knowledge](#)
+> * Link to Discussion: [Advanced SpEd Knowledge Discussion](#)
 
 ## Dispute Key Terms in Special Education
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about dispute key terms in special education]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Advanced Special Education Knowledge](#)
+> * Link to Discussion: [Advanced SpEd Knowledge Discussion](#)
 
 ## Mediation vs. Due Process
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about mediation vs. due process]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Advanced Special Education Knowledge](#)
+> * Link to Discussion: [Advanced SpEd Knowledge Discussion](#)
 
 ## Linking Evaluations to Appropriate Supports
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about linking evaluations to appropriate supports]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
-
+> * Link to Video: [Advanced Special Education Knowledge](#)
+> * Link to Discussion: [Advanced SpEd Knowledge Discussion](#)

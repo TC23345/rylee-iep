@@ -1,24 +1,20 @@
 ## The Six Steps of the IEP Process
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about the six steps of the IEP process]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Becoming an Expert at IEPs](#)
+> * Link to Discussion: [Expert at IEPs Discussion](#)
 
 ## IEP Eligibility: Definitions and Criteria
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about IEP eligibility, definitions, and criteria]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [Becoming an Expert at IEPs](#)
+> * Link to Discussion: [Expert at IEPs Discussion](#)
 
 ## Becoming an Observation Expert
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about becoming an observation expert]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
-
+> * Link to Video: [Becoming an Expert at IEPs](#)
+> * Link to Discussion: [Expert at IEPs Discussion](#)
