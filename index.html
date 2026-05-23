@@ -509,12 +509,144 @@
       pointer-events: none;
     }
 
+    /* ── Course page ─────────────────────────────────────────────────────── */
+    .crs-wrap { max-width: 960px; }
+    .crs-hero {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; padding: 22px 26px; margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+    }
+    .crs-hero-text { flex: 1; min-width: 0; }
+    .crs-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); font-weight: 700;
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .crs-hero-sub {
+      font-size: .9rem; line-height: 1.55; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .crs-hero-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .crs-hero-note code {
+      background: rgba(212,168,75,.1); color: var(--gold-dim);
+      padding: 1px 5px; border-radius: 3px; font-size: .68rem;
+    }
+    .crs-hero-stat {
+      flex-shrink: 0; text-align: right;
+      padding-left: 18px; border-left: 1px solid var(--border);
+      min-width: 110px;
+    }
+    .crs-hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-dim); line-height: 1;
+    }
+    .crs-hero-stat-num em {
+      font-style: normal; color: var(--text-muted);
+      font-size: 1.1rem; font-weight: 400;
+    }
+    .crs-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .crs-progress {
+      max-width: 960px; margin-bottom: 28px;
+    }
+    .crs-progress-track {
+      height: 4px; width: 100%;
+      background: var(--border); border-radius: 2px;
+      overflow: hidden;
+    }
+    .crs-progress-fill {
+      height: 100%; background: var(--gold);
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+    .crs-progress-meta {
+      display: flex; justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .crs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .crs-card {
+      display: flex; flex-direction: column;
+      padding: 18px 20px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .crs-card:hover { border-color: rgba(212,168,75,.4); box-shadow: 0 2px 14px rgba(28,26,21,.05); }
+    .crs-card-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; margin-bottom: 10px;
+    }
+    .crs-card-headline {
+      display: flex; align-items: baseline; gap: 8px;
+      flex: 1; min-width: 0;
+    }
+    .crs-card-num {
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; font-weight: 500;
+      color: var(--gold-dim);
+      letter-spacing: .04em;
+    }
+    .crs-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text); line-height: 1.3;
+    }
+    .crs-status {
+      flex-shrink: 0;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+    }
+    .crs-status-found { background: rgba(79,124,92,.15); color: var(--sage); }
+    .crs-status-empty { background: #EDE8DF; color: var(--text-muted); }
+    .crs-status-skill { background: rgba(184,92,56,.12); color: var(--terracotta); }
+
+    .crs-card-desc {
+      font-size: .85rem; line-height: 1.55; color: #3A342B;
+      margin-bottom: 10px;
+    }
+    .crs-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .04em;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .crs-actions {
+      display: flex; gap: 8px;
+      margin-top: auto;
+    }
+    .crs-action { white-space: nowrap; }
+    .crs-action--muted {
+      opacity: .45; cursor: not-allowed;
+      pointer-events: none;
+    }
+
     @media (max-width: 1024px) and (min-width: 769px) {
       .sidebar { width: 220px; }
       .content-scroll { padding: 28px 24px 60px; }
       .topbar { padding: 12px 24px; }
       .biz-hero { padding: 18px 20px; gap: 16px; }
       .biz-item { padding: 14px 16px; gap: 14px; }
+      .crs-hero { padding: 18px 20px; gap: 16px; }
+      .crs-card { padding: 16px 18px; }
     }
     @media (max-width: 768px) {
       .nav-toggle { display: inline-flex; }
@@ -589,6 +721,18 @@
       .biz-item { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 16px; }
       .biz-item-side { justify-content: space-between; width: 100%; }
       .biz-item-actions { flex: 1; justify-content: flex-end; }
+
+      /* Course page mobile reflow */
+      .crs-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .crs-hero-stat {
+        text-align: left; padding-left: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        padding-top: 12px; min-width: 0; width: 100%;
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .crs-hero-stat-label { margin-top: 0; }
+      .crs-grid { grid-template-columns: 1fr; gap: 12px; }
+      .crs-card { padding: 16px 18px; }
     }
     @media (max-width: 480px) {
       /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
@@ -835,14 +979,9 @@
       </div>
 
       <div class="page-view" id="page-course">
-        <div class="page-header">
-          <h1>Course</h1>
-          <p>Module takeaways from Dr. Annie's lessons — input to <code>/module-debrief</code> for skill updates.</p>
-        </div>
-        <div class="info-banner">
-          <p>After each module, Rylee writes notes to <code>workspace/course/module-&lt;N&gt;-notes.md</code>. Run <code>/module-debrief &lt;N&gt;</code> to merge those into the matching skills.</p>
-        </div>
-        <div id="course-modules"></div>
+        <section class="crs-wrap" id="course-wrap">
+          <div class="loading">Loading course modules…</div>
+        </section>
       </div>
     </div>
   </div>
@@ -1369,31 +1508,146 @@
   }
 
   // ── Course page ────────────────────────────────────────────────────────────
-  async function loadCoursePage() {
-    const container = document.getElementById('course-modules');
-    container.innerHTML = '';
+  const COURSE_START = new Date('2026-06-01T00:00:00');
+  const COURSE_WEEKS = 12;
 
-    for (const mod of MODULES) {
-      const notePath = `./workspace/course/module-${mod.n}-notes.md`;
-      const status = await probeFile(notePath);
-      const statusLabel = mod.status === 'scaffold' ? 'Scaffold' : mod.status === 'pending' ? 'Pending' : 'Validated';
-      const statusClass = mod.status === 'scaffold' ? 'status-skill' : mod.status === 'pending' ? 'status-empty' : 'status-found';
+  const MODULE_BLURB = {
+    1: 'Pick a name, register the entity, set fees, get insured, and stand up back-end systems.',
+    2: 'Learn the language of special education and build the advocate-side foundation.',
+    3: 'Master the six-step IEP process, eligibility criteria, and observation skills.',
+    4: 'Define the ideal client, streamline intake, and set up your support network.',
+    5: 'Build referral sources and an online presence to land the first five clients.',
+    6: 'Run the client support cycle, plan engagements, and handle hard conversations.',
+    7: 'IEEs, ESY, dispute resolution, and tying evaluations to real supports.',
+    8: 'Sequence the leap to full-time — exit plan, long-term roadmap, clean handoff.',
+  };
 
-      const row = document.createElement('div');
-      row.className = 'module-note-row';
-      row.innerHTML = `
-        <div>
-          <h4>Module ${mod.n} — ${mod.title}</h4>
-          <div class="note-path">workspace/course/module-${mod.n}-notes.md</div>
-        </div>
-        <div class="note-actions">
-          <span class="status ${statusClass}">${statusLabel}</span>
-          ${status === 'found'
-            ? `<a class="btn btn-primary" href="${notePath}" target="_blank">Open notes</a>`
-            : `<span class="btn" style="opacity:.5;cursor:default">No notes yet</span>`}
-        </div>`;
-      container.appendChild(row);
+  function computeCohortState(now = new Date()) {
+    const MS = 24 * 60 * 60 * 1000;
+    const daysUntil = Math.ceil((COURSE_START - now) / MS);
+    if (daysUntil > 0) {
+      return { phase: 'pre', daysUntil, week: 0, progressPct: 0,
+               statNum: String(daysUntil), statLabel: 'Days to kickoff' };
     }
+    if (daysUntil === 0) {
+      return { phase: 'start', daysUntil: 0, week: 1, progressPct: 0,
+               statNum: 'TODAY', statLabel: 'Cohort starts' };
+    }
+    const daysSinceStart = Math.floor((now - COURSE_START) / MS);
+    const rawWeek = Math.floor(daysSinceStart / 7) + 1;
+    if (rawWeek > COURSE_WEEKS) {
+      return { phase: 'post', daysUntil, week: COURSE_WEEKS, progressPct: 100,
+               statNum: 'POST-COHORT', statLabel: 'Completed' };
+    }
+    return { phase: 'active', daysUntil, week: rawWeek,
+             progressPct: Math.min(100, (rawWeek / COURSE_WEEKS) * 100),
+             statNum: `WEEK ${rawWeek}`, statLabel: `Of ${COURSE_WEEKS}` };
+  }
+
+  function isLargeStat(s) {
+    return s === 'TODAY' || s === 'POST-COHORT' || /^WEEK /.test(s);
+  }
+
+  async function loadCoursePage() {
+    const wrap = document.getElementById('course-wrap');
+    const state = computeCohortState();
+
+    // Probe all note files in parallel.
+    const probed = await Promise.all(
+      MODULES.map(async mod => {
+        const notePath = `./workspace/course/module-${mod.n}-notes.md`;
+        const noteStatus = await probeFile(notePath);
+        return { mod, notePath, noteStatus };
+      })
+    );
+
+    const statusFor = (mod) => {
+      if (mod.status === 'scaffold') return { label: 'Scaffold', cls: 'crs-status-skill' };
+      if (mod.status === 'pending')  return { label: 'Pending',  cls: 'crs-status-empty' };
+      return { label: 'Validated', cls: 'crs-status-found' };
+    };
+
+    const renderCard = ({ mod, notePath, noteStatus }) => {
+      const st = statusFor(mod);
+      const delivCount = mod.deliverables.length;
+      const skillCount = mod.deliverables.filter(d => Array.isArray(d.links) && d.links.length).length;
+      const skillMeta = skillCount === 0
+        ? '0 skills authored yet'
+        : `${skillCount} skill${skillCount === 1 ? '' : 's'} authored`;
+      const desc = MODULE_BLURB[mod.n] || mod.short;
+
+      const notesFound = noteStatus === 'found';
+      const notesClass = notesFound ? 'btn crs-action' : 'btn crs-action crs-action--muted';
+      const notesAttrs = notesFound
+        ? `href="${notePath}" target="_blank" rel="noopener"`
+        : `href="${notePath}" aria-disabled="true" tabindex="-1"`;
+      const notesLabel = notesFound ? 'Open notes' : 'No notes yet';
+
+      return `
+        <article class="crs-card">
+          <div class="crs-card-header">
+            <div class="crs-card-headline">
+              <span class="crs-card-num">M${mod.n}</span>
+              <span class="crs-card-title">${mod.title}</span>
+            </div>
+            <span class="crs-status ${st.cls}">${st.label}</span>
+          </div>
+          <div class="crs-card-desc">${desc}</div>
+          <div class="crs-meta">${delivCount} deliverable${delivCount === 1 ? '' : 's'} · ${skillMeta}</div>
+          <div class="crs-actions">
+            <a class="${notesClass}" ${notesAttrs}>${notesLabel}</a>
+            <a class="btn btn-primary crs-action" href="#module-${mod.n}" data-module-link="${mod.n}">Open module</a>
+          </div>
+        </article>`;
+    };
+
+    const statNumClass = isLargeStat(state.statNum) ? 'crs-hero-stat-num' : 'crs-hero-stat-num';
+    const statNumHtml = isLargeStat(state.statNum)
+      ? `<div class="${statNumClass}" style="font-size:1.15rem;letter-spacing:.04em;">${state.statNum}</div>`
+      : `<div class="${statNumClass}">${state.statNum}</div>`;
+
+    const progressLabel = state.phase === 'pre'
+      ? `Cohort begins Jun 1 · ${state.daysUntil} day${state.daysUntil === 1 ? '' : 's'} out`
+      : state.phase === 'start'
+      ? 'Week 1 of 12'
+      : state.phase === 'post'
+      ? '12 of 12 weeks complete'
+      : `Week ${state.week} of ${COURSE_WEEKS}`;
+
+    wrap.innerHTML = `
+      <header class="crs-hero">
+        <div class="crs-hero-text">
+          <h1>Course</h1>
+          <p class="crs-hero-sub">Eight modules, weekly cadence, validated as you go.</p>
+          <div class="crs-hero-note">Notes live in <code>workspace/course/</code> — local-only, gitignored.</div>
+        </div>
+        <div class="crs-hero-stat">
+          ${statNumHtml}
+          <div class="crs-hero-stat-label">${state.statLabel}</div>
+        </div>
+      </header>
+      <div class="crs-progress">
+        <div class="crs-progress-track">
+          <div class="crs-progress-fill" style="width:${state.progressPct}%"></div>
+        </div>
+        <div class="crs-progress-meta">
+          <span>${progressLabel}</span>
+          <span>${Math.round(state.progressPct)}%</span>
+        </div>
+      </div>
+      <div class="crs-grid">
+        ${probed.map(renderCard).join('')}
+      </div>
+    `;
+
+    // Wire "Open module" links to call showModule() without a hash-driven reload.
+    wrap.querySelectorAll('[data-module-link]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const n = parseInt(a.dataset.moduleLink, 10);
+        showModule(n);
+      });
+    });
   }
 
   // ── Init ───────────────────────────────────────────────────────────────────
