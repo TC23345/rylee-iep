@@ -24,25 +24,6 @@ A working repo for Rylee Coteus's pivot from agency BCBA work into a private-pay
 
 ---
 
-## Module roadmap
-
-Status legend: `(scaffold)` drafted from public outline, unvalidated · `(in review)` course watched, debrief in progress · `(validated)` course content merged, skill is canonical · `—` not yet authored.
-
-Open a module from the sidebar to see its deliverables and tick them off as Rylee completes them.
-
-1. **The Business of Private Pay**
-2. **Navigating the Special Education System**
-3. **Becoming an Expert at IEPs**
-4. **Starting your IEP Advocacy Practice**
-5. **Getting your First 5 Clients**
-6. **Working with Clients**
-7. **Advanced Special Education Knowledge**
-8. **Taking your Business Full Time**
-
-Modules 2–8 deliverables don't yet have skills attached. Each gets a skill (or two) authored via [`/module-debrief <N>`](.claude/commands/module-debrief.md) when Rylee reaches that module, with her notes + Dr. Annie's actual content.
-
----
-
 ## How we'll use this repo throughout the course
 
 ### Pre-cohort (now → 2026-06-01)
