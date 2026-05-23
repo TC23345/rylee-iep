@@ -810,6 +810,209 @@
       color: var(--sidebar-dim);
     }
 
+    /* ── Module 1 skill page (#skill/<slug>) ─────────────────────────────── */
+    .m1s-wrap { max-width: 960px; margin: 0 auto; }
+
+    .m1s-hero {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px 28px 24px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .m1s-hero::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--sage) 0% 33.33%, var(--gold) 33.33% 66.66%, var(--terracotta) 66.66% 100%);
+    }
+    .m1s-hero-row {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .m1s-hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--gold-dim);
+    }
+    .m1s-hero-chip {
+      display: inline-flex; align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--sage);
+      background: rgba(79,124,92,.12);
+      padding: 3px 9px; border-radius: 4px;
+    }
+    .m1s-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3.2vw + .5rem, 2.05rem);
+      font-weight: 700; color: var(--text);
+      line-height: 1.15; margin-bottom: 10px;
+      word-break: break-word;
+    }
+    .m1s-hero-slug {
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem; color: var(--terracotta);
+      background: rgba(184,92,56,.08);
+      padding: 2px 8px; border-radius: 4px;
+      border: 1px solid rgba(184,92,56,.18);
+    }
+    .m1s-hero-desc {
+      font-size: .92rem; line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 64ch; margin: 0;
+    }
+
+    .m1s-deliverable {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 18px; margin-bottom: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 8px;
+    }
+    .m1s-deliverable-label {
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold-dim);
+      padding-top: 3px;
+    }
+    .m1s-deliverable-text {
+      flex: 1; min-width: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-style: italic;
+      line-height: 1.5; color: var(--text);
+    }
+
+    .m1s-tabs {
+      display: flex; gap: 4px;
+      padding: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+    .m1s-tab {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 2px;
+      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: inherit; text-align: left;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .m1s-tab:hover { background: rgba(0,0,0,.025); }
+    .m1s-tab-num {
+      font-family: 'DM Mono', monospace;
+      font-size: .66rem; letter-spacing: .12em;
+      color: var(--text-muted);
+    }
+    .m1s-tab-label {
+      font-family: 'Playfair Display', serif;
+      font-size: .92rem; font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+    .m1s-tab.is-active {
+      background: var(--bg);
+      border-color: var(--border);
+    }
+    .m1s-tab[data-lens="research"].is-active { border-left: 3px solid var(--sage); }
+    .m1s-tab[data-lens="research"].is-active .m1s-tab-num { color: var(--sage); }
+    .m1s-tab[data-lens="research"].is-active .m1s-tab-label { color: var(--sage); }
+    .m1s-tab[data-lens="module"].is-active { border-left: 3px solid var(--gold-dim); }
+    .m1s-tab[data-lens="module"].is-active .m1s-tab-num { color: var(--gold-dim); }
+    .m1s-tab[data-lens="module"].is-active .m1s-tab-label { color: var(--gold-dim); }
+    .m1s-tab[data-lens="expert"].is-active { border-left: 3px solid var(--terracotta); }
+    .m1s-tab[data-lens="expert"].is-active .m1s-tab-num { color: var(--terracotta); }
+    .m1s-tab[data-lens="expert"].is-active .m1s-tab-label { color: var(--terracotta); }
+
+    .m1s-panel {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 26px;
+      margin-bottom: 22px;
+    }
+    .m1s-panel.is-active { display: block; }
+    .m1s-panel[data-lens="research"] { border-top: 3px solid var(--sage); }
+    .m1s-panel[data-lens="module"] { border-top: 3px solid var(--gold-dim); }
+    .m1s-panel[data-lens="expert"] { border-top: 3px solid var(--terracotta); }
+
+    .m1s-panel-head {
+      display: flex; align-items: baseline; gap: 12px;
+      padding-bottom: 12px; margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .m1s-panel-num {
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem; letter-spacing: .1em;
+      font-weight: 500;
+    }
+    .m1s-panel[data-lens="research"] .m1s-panel-num { color: var(--sage); }
+    .m1s-panel[data-lens="module"] .m1s-panel-num { color: var(--gold-dim); }
+    .m1s-panel[data-lens="expert"] .m1s-panel-num { color: var(--terracotta); }
+    .m1s-panel-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--text); line-height: 1.2;
+    }
+    .m1s-panel-hint {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .04em;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .m1s-panel-body {
+      font-size: .9rem; line-height: 1.75; color: #3A342B;
+    }
+    .m1s-panel-placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: .88rem; line-height: 1.7;
+      padding: 14px 16px;
+      border-radius: 0 8px 8px 0;
+    }
+    .m1s-panel[data-lens="research"] .m1s-panel-placeholder {
+      background: rgba(79,124,92,.06);
+      border-left: 3px solid rgba(79,124,92,.4);
+    }
+    .m1s-panel[data-lens="module"] .m1s-panel-placeholder {
+      background: rgba(212,168,75,.07);
+      border-left: 3px solid rgba(212,168,75,.45);
+    }
+    .m1s-panel[data-lens="expert"] .m1s-panel-placeholder {
+      background: rgba(184,92,56,.06);
+      border-left: 3px solid rgba(184,92,56,.4);
+    }
+
+    .m1s-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; flex-wrap: wrap;
+      padding: 14px 18px;
+      background: rgba(212,168,75,.05);
+      border: 1px solid rgba(212,168,75,.18);
+      border-radius: 8px;
+    }
+    .m1s-foot-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .m1s-foot-note code {
+      font-size: .7rem;
+      background: rgba(255,255,255,.65);
+      padding: 1px 6px; border-radius: 3px;
+      color: var(--terracotta);
+    }
+    .m1s-foot-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
     /* ── Skill placeholder page (#skill/<slug>) ──────────────────────────── */
     .skl-wrap { max-width: 960px; margin: 0 auto; }
     .skl-hero {
@@ -1033,6 +1236,18 @@
         min-width: 0; width: 100%;
         flex-direction: row; gap: 10px; align-items: baseline;
       }
+
+      /* Module 1 skill page mobile reflow */
+      .m1s-hero { padding: 20px 18px 18px; }
+      .m1s-deliverable { flex-direction: column; gap: 6px; padding: 12px 14px; }
+      .m1s-tabs { flex-direction: column; gap: 4px; padding: 6px; }
+      .m1s-tab { padding: 10px 12px; flex-direction: row; align-items: baseline; gap: 8px; }
+      .m1s-tab-num { flex-shrink: 0; }
+      .m1s-panel { padding: 18px 18px; }
+      .m1s-panel-head { flex-wrap: wrap; gap: 6px 10px; }
+      .m1s-panel-hint { margin-left: 0; width: 100%; }
+      .m1s-foot { flex-direction: column; align-items: flex-start; }
+      .m1s-foot-actions { width: 100%; }
     }
     @media (max-width: 480px) {
       /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
@@ -1203,12 +1418,12 @@
           <span class="chevron"></span> Module 1
         </button>
         <div class="skill-group-body">
-          <a class="skill-link" href=".claude/skills/business-name/SKILL.md" target="_blank">business-name</a>
-          <a class="skill-link" href=".claude/skills/entity-setup/SKILL.md" target="_blank">entity-setup</a>
-          <a class="skill-link" href=".claude/skills/liability-insurance/SKILL.md" target="_blank">liability-insurance</a>
-          <a class="skill-link" href=".claude/skills/services-fees/SKILL.md" target="_blank">services-fees</a>
-          <a class="skill-link" href=".claude/skills/backend-systems/SKILL.md" target="_blank">backend-systems</a>
-          <a class="skill-link" href=".claude/skills/intake-process/SKILL.md" target="_blank">intake-process</a>
+          <a class="skill-link" href="#skill/business-name" data-sidebar-skill="business-name">business-name</a>
+          <a class="skill-link" href="#skill/entity-setup" data-sidebar-skill="entity-setup">entity-setup</a>
+          <a class="skill-link" href="#skill/liability-insurance" data-sidebar-skill="liability-insurance">liability-insurance</a>
+          <a class="skill-link" href="#skill/services-fees" data-sidebar-skill="services-fees">services-fees</a>
+          <a class="skill-link" href="#skill/backend-systems" data-sidebar-skill="backend-systems">backend-systems</a>
+          <a class="skill-link" href="#skill/intake-process" data-sidebar-skill="intake-process">intake-process</a>
         </div>
       </div>
 
@@ -1349,6 +1564,10 @@
 
       <div class="page-view" id="page-skill">
         <section class="skl-wrap" id="skill-wrap"></section>
+      </div>
+
+      <div class="page-view" id="page-m1skill">
+        <section class="m1s-wrap" id="m1skill-wrap"></section>
       </div>
     </div>
   </div>
@@ -1536,6 +1755,42 @@
     },
   ];
 
+  // Module 1 in-app skill pages. Slug → { title, description, deliverableMatch }.
+  // The deliverableMatch text is copied verbatim from MODULES[0].deliverables[].text
+  // so the in-app page shows the exact deliverable wording from the course.
+  const MODULE1_SKILLS = {
+    'business-name': {
+      title: 'Business name',
+      description: 'Brainstorms private practice business names and walks Rylee through Illinois Secretary of State name-availability checks. Specific to BCBA-led IEP advocacy in Illinois.',
+      deliverableMatch: 'Pick a name and register your new business entity with your state',
+    },
+    'entity-setup': {
+      title: 'Entity setup',
+      description: 'Walks Rylee through registering an IL business entity — LLC vs PLLC vs sole proprietor, IL SoS filing steps, federal EIN registration, registered agent options. Defers tax classification to a CPA.',
+      deliverableMatch: 'Pick a name and register your new business entity with your state',
+    },
+    'liability-insurance': {
+      title: 'Liability insurance',
+      description: 'Evaluates and purchases professional liability insurance for a private IEP advocacy practice in IL — HPSO, CPH Associates, and whether NSSEO coverage extends to private practice.',
+      deliverableMatch: 'Update your liability insurance to include your new private practice',
+    },
+    'services-fees': {
+      title: 'Services & fees',
+      description: 'Defines the services catalog and fee schedule for a private-pay IEP advocacy practice — hourly vs flat-fee, package design, scope of work.',
+      deliverableMatch: 'Clearly define your set of services and fee structure',
+    },
+    'backend-systems': {
+      title: 'Backend systems',
+      description: 'Designs the back-end operational systems — cloud storage, document retention, e-signature tooling, calendar/scheduling, email setup.',
+      deliverableMatch: 'Set up your back end systems for file organization and contracts',
+    },
+    'intake-process': {
+      title: 'Intake process',
+      description: 'Designs the client intake process — intake form, welcome packet, services-agreement checklist (attorney-reviewed), and the operational steps from first inquiry to signed engagement.',
+      deliverableMatch: 'Create your custom client intake process so you can get started right away',
+    },
+  };
+
   function skillHref(slug) {
     return `.claude/skills/${slug}/SKILL.md`;
   }
@@ -1643,6 +1898,116 @@
     document.querySelector('.content-scroll').scrollTop = 0;
   }
 
+  // ── Module 1 skill page (#skill/<slug> for authored Module 1 skills) ──────
+  const M1S_LENSES = [
+    { key: 'research', num: '01', label: 'Initial Research', hint: 'Pre-module orientation' },
+    { key: 'module',   num: '02', label: 'Module Knowledge', hint: 'Synthesized from lesson' },
+    { key: 'expert',   num: '03', label: "Rylee's Expert",   hint: 'Weighs heaviest downstream' },
+  ];
+
+  function m1sPlaceholderFor(lensKey) {
+    // CONTEXT_PLACEHOLDERS holds the canonical three bracketed strings, one per blank line.
+    const parts = CONTEXT_PLACEHOLDERS.split(/\n\n+/);
+    if (lensKey === 'research') return parts[0];
+    if (lensKey === 'module')   return parts[1];
+    return parts[2];
+  }
+
+  function renderM1SkillPage(slug) {
+    const wrap = document.getElementById('m1skill-wrap');
+    const meta = MODULE1_SKILLS[slug];
+    if (!meta) {
+      wrap.innerHTML = `
+        <div class="skl-error">
+          <h2>Unknown Module 1 skill</h2>
+          <p>No skill named <code>${escapeHtml(slug)}</code> is registered for Module 1.</p>
+        </div>`;
+      return;
+    }
+
+    const tabsHtml = M1S_LENSES.map((lens, i) => `
+      <button type="button" class="m1s-tab${i === 0 ? ' is-active' : ''}" data-lens="${lens.key}" data-m1s-tab="${lens.key}" aria-selected="${i === 0 ? 'true' : 'false'}">
+        <span class="m1s-tab-num">${lens.num}</span>
+        <span class="m1s-tab-label">${lens.label}</span>
+      </button>`).join('');
+
+    const panelsHtml = M1S_LENSES.map((lens, i) => `
+      <section class="m1s-panel${i === 0 ? ' is-active' : ''}" data-lens="${lens.key}" data-m1s-panel="${lens.key}">
+        <div class="m1s-panel-head">
+          <span class="m1s-panel-num">${lens.num}</span>
+          <h2 class="m1s-panel-title">${lens.label} Context</h2>
+          <span class="m1s-panel-hint">${lens.hint}</span>
+        </div>
+        <div class="m1s-panel-body">
+          <p class="m1s-panel-placeholder">${escapeHtml(m1sPlaceholderFor(lens.key))}</p>
+        </div>
+      </section>`).join('');
+
+    wrap.innerHTML = `
+      <header class="m1s-hero">
+        <div class="m1s-hero-row">
+          <span class="m1s-hero-eyebrow">Module 1 · Skill</span>
+          <span class="m1s-hero-chip">Authored</span>
+          <span class="m1s-hero-slug">${escapeHtml(slug)}</span>
+        </div>
+        <h1>${escapeHtml(meta.title)}</h1>
+        <p class="m1s-hero-desc">${escapeHtml(meta.description)}</p>
+      </header>
+
+      <div class="m1s-deliverable" aria-label="Course deliverable">
+        <span class="m1s-deliverable-label">Deliverable</span>
+        <span class="m1s-deliverable-text">"${escapeHtml(meta.deliverableMatch)}"</span>
+      </div>
+
+      <div class="m1s-tabs" role="tablist" aria-label="Context lens">
+        ${tabsHtml}
+      </div>
+
+      <div class="m1s-panels">
+        ${panelsHtml}
+      </div>
+
+      <div class="m1s-foot">
+        <div class="m1s-foot-note">Local skill file — open via Claude Code: <code>.claude/skills/${escapeHtml(slug)}/SKILL.md</code></div>
+        <div class="m1s-foot-actions">
+          <a class="btn skl-action" href="#module-1" data-m1s-back="1">← Back to Module 1</a>
+        </div>
+      </div>`;
+
+    // Tab switching.
+    wrap.querySelectorAll('[data-m1s-tab]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const key = tab.dataset.m1sTab;
+        wrap.querySelectorAll('[data-m1s-tab]').forEach(t => {
+          const active = t.dataset.m1sTab === key;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        wrap.querySelectorAll('[data-m1s-panel]').forEach(p => {
+          p.classList.toggle('is-active', p.dataset.m1sPanel === key);
+        });
+      });
+    });
+
+    wrap.querySelectorAll('[data-m1s-back]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showModule(parseInt(a.dataset.m1sBack, 10));
+      });
+    });
+  }
+
+  function showM1Skill(slug) {
+    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    document.getElementById('page-m1skill').classList.add('active');
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.module-label').forEach(l => l.classList.remove('active'));
+    renderM1SkillPage(slug);
+    document.getElementById('topbar-title').textContent = `Skill — ${slug}`;
+    history.replaceState(null, '', '#skill/' + slug);
+    document.querySelector('.content-scroll').scrollTop = 0;
+  }
+
   // ── Skill placeholder (#skill/<slug>) ──────────────────────────────────────
   function renderSkillPlaceholder(slug) {
     const wrap = document.getElementById('skill-wrap');
@@ -1703,6 +2068,12 @@
   }
 
   function showSkill(slug) {
+    // Module 1 skills are authored and get their own in-app page.
+    // Module 2-8 slugs continue to render the pending-skill placeholder.
+    if (MODULE1_SKILLS[slug]) {
+      showM1Skill(slug);
+      return;
+    }
     document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
     document.getElementById('page-skill').classList.add('active');
     document.querySelectorAll('.nav-item[data-page]').forEach(item => item.classList.remove('active'));
@@ -1938,7 +2309,7 @@
             <span class="biz-status ${statusClass}">${statusLabel}</span>
             <div class="biz-item-actions">
               <a class="${openClass}" ${openAttrs}>Open file</a>
-              <a class="btn btn-primary biz-action" href=".claude/skills/${it.skill}/SKILL.md" target="_blank" rel="noopener">Run skill</a>
+              <a class="btn btn-primary biz-action" href="#skill/${it.skill}" data-skill-link="${it.skill}">Run skill</a>
             </div>
           </div>
         </article>`;
@@ -1970,6 +2341,14 @@
       </header>
       ${groupsHtml}
     `;
+
+    // "Run skill" buttons route to the in-app skill page.
+    wrap.querySelectorAll('[data-skill-link]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSkill(a.dataset.skillLink);
+      });
+    });
   }
 
   // ── Clients page ───────────────────────────────────────────────────────────
