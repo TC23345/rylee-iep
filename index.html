@@ -639,6 +639,167 @@
       pointer-events: none;
     }
 
+    /* ── Clients page ────────────────────────────────────────────────────── */
+    .cli-wrap { max-width: 960px; }
+    .cli-hero {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; padding: 22px 26px; margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+    }
+    .cli-hero-text { flex: 1; min-width: 0; }
+    .cli-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); font-weight: 700;
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .cli-hero-sub {
+      font-size: .9rem; line-height: 1.55; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .cli-hero-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .cli-hero-note code {
+      background: rgba(212,168,75,.1); color: var(--gold-dim);
+      padding: 1px 5px; border-radius: 3px; font-size: .68rem;
+    }
+    .cli-hero-stat {
+      flex-shrink: 0; text-align: right;
+      padding-left: 18px; border-left: 1px solid var(--border);
+      min-width: 110px;
+    }
+    .cli-hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-dim); line-height: 1;
+    }
+    .cli-hero-stat-num em {
+      font-style: normal; color: var(--text-muted);
+      font-size: 1.1rem; font-weight: 400;
+    }
+    .cli-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .cli-pii {
+      display: flex; align-items: center; gap: 28px;
+      flex-wrap: wrap;
+      padding: 12px 18px; margin-bottom: 22px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg-card);
+    }
+    .cli-pii-item {
+      display: flex; align-items: baseline; gap: 8px;
+      min-width: 0;
+    }
+    .cli-pii-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+    .cli-pii-code {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; color: var(--terracotta);
+      background: rgba(184,92,56,.08);
+      padding: 2px 8px; border-radius: 4px;
+      border: 1px solid rgba(184,92,56,.15);
+    }
+    .cli-pii-hint {
+      font-size: .75rem; color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .cli-add {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; margin-bottom: 28px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--terracotta);
+      border-radius: 8px;
+    }
+    .cli-add-glyph {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: rgba(184,92,56,.1);
+      color: var(--terracotta);
+    }
+    .cli-add-glyph svg { width: 18px; height: 18px; }
+    .cli-add-body { flex: 1; min-width: 0; }
+    .cli-add-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text); margin-bottom: 3px; line-height: 1.3;
+    }
+    .cli-add-desc {
+      font-size: .82rem; line-height: 1.5; color: var(--text-muted);
+    }
+    .cli-add-desc code {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; background: #EDE8DF;
+      padding: 1px 6px; border-radius: 3px; color: var(--terracotta);
+    }
+
+    .cli-section { margin-bottom: 28px; }
+    .cli-section:last-child { margin-bottom: 0; }
+    .cli-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold-dim);
+      padding-bottom: 8px; margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cli-roster {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+    }
+    .cli-roster-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .cli-roster-row:last-child { border-bottom: none; }
+    .cli-roster-row:hover { background: rgba(212,168,75,.04); }
+    .cli-roster-id {
+      font-family: 'DM Mono', monospace;
+      font-size: .85rem; color: var(--text);
+      overflow-wrap: anywhere;
+    }
+    .cli-roster-empty {
+      padding: 16px 18px;
+      font-size: .85rem; color: var(--text-muted); font-style: italic;
+      text-align: center;
+    }
+
+    .cli-tree {
+      background: var(--sidebar-bg); border-radius: 8px;
+      padding: 20px 22px; overflow-x: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; line-height: 1.8;
+      color: #D4C9B5;
+      margin: 0;
+    }
+    .cli-tree .cli-tree-folder {
+      color: var(--gold); font-weight: 500;
+    }
+    .cli-tree .cli-tree-file {
+      color: #E9DEC8;
+    }
+    .cli-tree .cli-tree-branch {
+      color: var(--gold-dim); opacity: .8;
+    }
+    .cli-tree .cli-tree-desc {
+      color: var(--sidebar-dim);
+    }
+
     @media (max-width: 1024px) and (min-width: 769px) {
       .sidebar { width: 220px; }
       .content-scroll { padding: 28px 24px 60px; }
@@ -647,6 +808,9 @@
       .biz-item { padding: 14px 16px; gap: 14px; }
       .crs-hero { padding: 18px 20px; gap: 16px; }
       .crs-card { padding: 16px 18px; }
+      .cli-hero { padding: 18px 20px; gap: 16px; }
+      .cli-add { padding: 14px 16px; gap: 14px; }
+      .cli-pii { gap: 18px; padding: 10px 16px; }
     }
     @media (max-width: 768px) {
       .nav-toggle { display: inline-flex; }
@@ -733,6 +897,21 @@
       .crs-hero-stat-label { margin-top: 0; }
       .crs-grid { grid-template-columns: 1fr; gap: 12px; }
       .crs-card { padding: 16px 18px; }
+
+      /* Clients page mobile reflow */
+      .cli-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .cli-hero-stat {
+        text-align: left; padding-left: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        padding-top: 12px; min-width: 0; width: 100%;
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .cli-hero-stat-label { margin-top: 0; }
+      .cli-pii { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 14px; }
+      .cli-pii-item { flex-wrap: wrap; }
+      .cli-add { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+      .cli-roster-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+      .cli-tree { padding: 14px 14px; font-size: .72rem; line-height: 1.7; }
     }
     @media (max-width: 480px) {
       /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
@@ -945,37 +1124,9 @@
       </div>
 
       <div class="page-view" id="page-clients">
-        <div class="page-header">
-          <h1>Clients</h1>
-          <p>Per-client folders created by <code>/new-client</code>. Each folder holds intake, IEP checklist, and session log — never committed to git.</p>
-        </div>
-        <div class="info-banner">
-          <p>Client IDs follow <code>&lt;first-name&gt;-&lt;last-initial&gt;-&lt;district-abbr&gt;</code> (e.g. <code>marcus-t-d214</code>). Display names use first name + last initial only.</p>
-        </div>
-        <div id="clients-list"></div>
-        <div class="card-grid" id="client-template-cards">
-          <div class="ws-card">
-            <h3>Per-client folder</h3>
-            <div class="path">workspace/clients/&lt;client_id&gt;/</div>
-            <p>Instantiated from intake-process templates when you run <code>/new-client &lt;first-name&gt;</code> in Claude Code.</p>
-            <span class="status status-skill">/new-client</span>
-          </div>
-          <div class="ws-card">
-            <h3>intake-form.md</h3>
-            <div class="path">…/intake-form.md</div>
-            <p>Parent/student intake responses and engagement details.</p>
-          </div>
-          <div class="ws-card">
-            <h3>iep-checklist.md</h3>
-            <div class="path">…/iep-checklist.md</div>
-            <p>Running IEP advocacy checklist for this student.</p>
-          </div>
-          <div class="ws-card">
-            <h3>session-log.md</h3>
-            <div class="path">…/session-log.md</div>
-            <p>Meeting notes, calls, and advocacy session history.</p>
-          </div>
-        </div>
+        <section class="cli-wrap" id="clients-wrap">
+          <div class="loading">Loading clients…</div>
+        </section>
       </div>
 
       <div class="page-view" id="page-course">
@@ -1473,38 +1624,84 @@
   }
 
   // ── Clients page ───────────────────────────────────────────────────────────
+  const CLI_ADD_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>';
+
   async function loadClientsPage() {
-    const list = document.getElementById('clients-list');
+    const wrap = document.getElementById('clients-wrap');
     const manifestPath = './workspace/clients/manifest.json';
 
+    let clients = [];
     try {
       const res = await fetch(manifestPath);
       if (res.ok) {
-        const clients = await res.json();
-        if (clients.length) {
-          list.innerHTML = '<div class="card-grid" id="client-cards"></div>';
-          const grid = document.getElementById('client-cards');
-          clients.forEach(id => {
-            const card = document.createElement('div');
-            card.className = 'ws-card';
-            card.innerHTML = `
-              <h3>${id}</h3>
-              <div class="path">workspace/clients/${id}/</div>
-              <p>Intake, IEP checklist, session log.</p>
-              <a class="btn btn-primary" href="./workspace/clients/${id}/" target="_blank">Open folder</a>`;
-            grid.appendChild(card);
-          });
-          return;
-        }
+        const parsed = await res.json();
+        if (Array.isArray(parsed)) clients = parsed;
       }
     } catch { /* no manifest */ }
 
-    list.innerHTML = `
-      <div class="client-empty">
-        <h3>No clients yet</h3>
-        <p>Run <code>/new-client &lt;first-name&gt;</code> in Claude Code to create a folder under <code>workspace/clients/</code>.</p>
-        <p style="margin-top:12px;font-size:.8rem;">Optionally add a <code>workspace/clients/manifest.json</code> array of client IDs for this dashboard to list them when running locally.</p>
-      </div>`;
+    const count = clients.length;
+    const statLabel = count === 0 ? 'Active' : (count === 1 ? 'Active' : 'Active');
+
+    const heroHtml = `
+      <header class="cli-hero">
+        <div class="cli-hero-text">
+          <h1>Clients</h1>
+          <p class="cli-hero-sub">Per-client folders. Intake, checklist, session log. Local-only — never committed.</p>
+          <div class="cli-hero-note">Folders live in <code>workspace/clients/&lt;client_id&gt;/</code> — gitignored.</div>
+        </div>
+        <div class="cli-hero-stat">
+          <div class="cli-hero-stat-num">${count}</div>
+          <div class="cli-hero-stat-label">${statLabel}</div>
+        </div>
+      </header>`;
+
+    const piiHtml = `
+      <section class="cli-pii" aria-label="PII rules">
+        <div class="cli-pii-item">
+          <span class="cli-pii-label">Client ID</span>
+          <code class="cli-pii-code">marcus-t-d214</code>
+          <span class="cli-pii-hint">first-last-district</span>
+        </div>
+        <div class="cli-pii-item">
+          <span class="cli-pii-label">Display name</span>
+          <code class="cli-pii-code">Marcus T.</code>
+          <span class="cli-pii-hint">first + last initial only</span>
+        </div>
+      </section>`;
+
+    const addHtml = `
+      <section class="cli-add" aria-label="How to add a client">
+        <div class="cli-add-glyph">${CLI_ADD_GLYPH}</div>
+        <div class="cli-add-body">
+          <div class="cli-add-title">Add a client</div>
+          <div class="cli-add-desc">Run <code>/new-client &lt;first-name&gt;</code> in Claude Code to stamp a fresh folder from the intake-process templates.</div>
+        </div>
+      </section>`;
+
+    const rosterRows = count
+      ? clients.map(id => `
+          <div class="cli-roster-row">
+            <span class="cli-roster-id">${id}</span>
+            <a class="btn btn-primary" href="./workspace/clients/${id}/" target="_blank" rel="noopener">Open folder</a>
+          </div>`).join('')
+      : '<div class="cli-roster-empty">No clients yet</div>';
+
+    const rosterHtml = `
+      <section class="cli-section">
+        <h2 class="cli-section-title">Active clients</h2>
+        <div class="cli-roster">${rosterRows}</div>
+      </section>`;
+
+    const anatomyHtml = `
+      <section class="cli-section">
+        <h2 class="cli-section-title">Inside each folder</h2>
+        <pre class="cli-tree"><span class="cli-tree-folder">workspace/clients/&lt;client_id&gt;/</span>
+<span class="cli-tree-branch">├──</span> <span class="cli-tree-file">intake-form.md</span>     <span class="cli-tree-desc">— Parent/student intake responses and engagement details</span>
+<span class="cli-tree-branch">├──</span> <span class="cli-tree-file">iep-checklist.md</span>   <span class="cli-tree-desc">— Running IEP advocacy checklist for this student</span>
+<span class="cli-tree-branch">└──</span> <span class="cli-tree-file">session-log.md</span>     <span class="cli-tree-desc">— Meeting notes, calls, advocacy session history</span></pre>
+      </section>`;
+
+    wrap.innerHTML = heroHtml + piiHtml + addHtml + rosterHtml + anatomyHtml;
   }
 
   // ── Course page ────────────────────────────────────────────────────────────
