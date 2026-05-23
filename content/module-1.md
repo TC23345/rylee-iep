@@ -1,39 +1,34 @@
 ## Naming & Registering Your Business Entity in Illinois
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about naming and registering a business entity]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [The Business of Private Pay](#)
+> * Link to Discussion: [Private Pay Discussion](#)
 
 ## Insuring Your Private Practice: Liability Insurance
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about liability insurance for a private practice]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [The Business of Private Pay](#)
+> * Link to Discussion: [Private Pay Discussion](#)
 
 ## Defining Your Services and Fee Structure
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about defining services and fee structure]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [The Business of Private Pay](#)
+> * Link to Discussion: [Private Pay Discussion](#)
 
 ## Backend Systems: File Organization and Contracts
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about backend systems, file organization, and contracts]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [The Business of Private Pay](#)
+> * Link to Discussion: [Private Pay Discussion](#)
 
 ## Your Custom Client Intake Process
 
-[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+[Questions and curiosities about your custom client intake process]
 
-[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
-
-[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
+> * Link to Video: [The Business of Private Pay](#)
+> * Link to Discussion: [Private Pay Discussion](#)

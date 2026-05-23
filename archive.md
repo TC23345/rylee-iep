@@ -36,3 +36,15 @@ Modules 2–8 deliverables don't yet have skills attached. Each gets a skill (or
 - Read through current Module 1 skills, flag obvious gaps to address once the real lessons land
 - Confirm directory structure works in Claude Code (`/help` shows the four commands, skills auto-discover)
 - Don't deep-edit the Module 1 skills yet — the debrief workflow will handle that
+
+---
+
+## Previous deliverable-section placeholder text
+
+These three bracketed paragraphs used to appear under every deliverable heading on each module page (e.g. "Naming & Registering Your Business Entity in Illinois" on Module 1). They've been replaced with a simpler "questions and curiosities" prompt + a video/discussion link block. Parked here in case the structure is useful as a future template.
+
+[Initial Research Context - this is conducted before the module to give us an introduction to the concepts included within the heading/bullet point]
+
+[Module Knowledge Context - this is synthesized by parsing the video transcript of the lesson into one paragraph using 5 to 7 clear, concise, and complete sentences applying the module knowledge to the concept included within the heading/bullet point]
+
+[Rylee's Expert Context - this is input provided directly from Rylee that weighs the heaviest on any and all downstream tasks/deliverables included within the heading/bullet point]
