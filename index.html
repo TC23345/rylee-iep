@@ -1515,6 +1515,10 @@
       <a class="skill-link" href=".claude/commands/weekly-review.md" target="_blank">/weekly-review</a>
     </div>
 
+    <div class="sidebar-section">
+      <button class="nav-item" data-page="archive">Archive</button>
+    </div>
+
     <div class="sidebar-footer">
       <code style="background:rgba(255,255,255,.08);color:#c4a96a;font-size:.65rem">workspace/</code> is local-only (gitignored). Open this dashboard locally to browse those files.
     </div>
@@ -1569,6 +1573,10 @@
       <div class="page-view" id="page-m1skill">
         <section class="m1s-wrap" id="m1skill-wrap"></section>
       </div>
+
+      <div class="page-view md-body" id="page-archive">
+        <div id="archive-content"><div class="loading">Loading archive…</div></div>
+      </div>
     </div>
   </div>
 
@@ -1582,6 +1590,7 @@
     business: 'Business decisions',
     clients: 'Client folders',
     course: 'Course notes & modules',
+    archive: 'Archive',
   };
 
   const BUSINESS_FILES = [
@@ -2256,6 +2265,18 @@
     }
   }
 
+  // ── Archive: archive.md ───────────────────────────────────────────────────
+  async function loadArchive() {
+    const el = document.getElementById('archive-content');
+    try {
+      const res = await fetch('./archive.md');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      el.innerHTML = marked.parse(await res.text());
+    } catch (err) {
+      el.innerHTML = `<p style="color:var(--text-muted);font-style:italic;">Could not load archive.md — ${err.message}</p>`;
+    }
+  }
+
   // ── Business page ─────────────────────────────────────────────────────────
   async function probeFile(path) {
     try {
@@ -2588,7 +2609,7 @@
       await showModule(parseInt(moduleMatch[1], 10));
     } else if (skillMatch) {
       showSkill(skillMatch[1]);
-    } else if (['overview', 'business', 'clients', 'course'].includes(hash)) {
+    } else if (['overview', 'business', 'clients', 'course', 'archive'].includes(hash)) {
       showPage(hash);
     } else {
       await showModule(1);
@@ -2597,6 +2618,7 @@
     loadBusinessPage();
     loadClientsPage();
     loadCoursePage();
+    loadArchive();
   }
   // ── Clerk auth gate ────────────────────────────────────────────────────────
   // The dashboard is invite-only. Until Clerk says we have a user, we keep

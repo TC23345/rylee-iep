@@ -1,7 +1,5 @@
 # rylee-iep
 
-A working repo for Rylee Coteus's pivot from agency BCBA work into a private-pay IEP advocacy practice. Built around the **PIVOT into IEP Advocacy®** course (Dr. Annie / Constance McLaughlin) — Summer 2026 cohort, starts **2026-06-01**.
-
 > **Pre-cohort state (as of 2026-05-21).** Everything under [`.claude/skills/`](.claude/skills/) was drafted from the public course outline at [iepadvocacytraining.com](https://www.iepadvocacytraining.com/) plus general IL/BCBA business knowledge. It is **scaffolding, not validated**. When Rylee begins the actual course, each skill gets reviewed and updated against Dr. Annie's real lessons + Rylee's domain expertise via [`/module-debrief`](.claude/commands/module-debrief.md).
 
 ---
@@ -25,12 +23,6 @@ A working repo for Rylee Coteus's pivot from agency BCBA work into a private-pay
 ---
 
 ## How we'll use this repo throughout the course
-
-### Pre-cohort (now → 2026-06-01)
-
-- Read through current Module 1 skills, flag obvious gaps to address once the real lessons land
-- Confirm directory structure works in Claude Code (`/help` shows the four commands, skills auto-discover)
-- Don't deep-edit the Module 1 skills yet — the debrief workflow will handle that
 
 ### During each module (weekly cadence)
 
