@@ -390,7 +390,7 @@
       align-items: center; justify-content: center;
       background: none; border: none; cursor: pointer;
       color: var(--text-muted); border-radius: 6px;
-      margin-right: 4px; flex-shrink: 0;
+      margin-left: 4px; flex-shrink: 0;
       transition: background .15s, color .15s;
     }
     .nav-toggle:hover { background: rgba(0,0,0,.04); color: var(--text); }
@@ -404,10 +404,413 @@
     }
     .nav-backdrop.visible { opacity: 1; pointer-events: auto; }
 
+    /* ── Business page ───────────────────────────────────────────────────── */
+    .biz-wrap { max-width: 960px; }
+    .biz-hero {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; padding: 22px 26px; margin-bottom: 28px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+    }
+    .biz-hero-text { flex: 1; min-width: 0; }
+    .biz-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); font-weight: 700;
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .biz-hero-sub {
+      font-size: .9rem; line-height: 1.55; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .biz-hero-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .biz-hero-note code {
+      background: rgba(212,168,75,.1); color: var(--gold-dim);
+      padding: 1px 5px; border-radius: 3px; font-size: .68rem;
+    }
+    .biz-hero-stat {
+      flex-shrink: 0; text-align: right;
+      padding-left: 18px; border-left: 1px solid var(--border);
+      min-width: 110px;
+    }
+    .biz-hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-dim); line-height: 1;
+    }
+    .biz-hero-stat-num em {
+      font-style: normal; color: var(--text-muted);
+      font-size: 1.1rem; font-weight: 400;
+    }
+    .biz-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .biz-group { margin-bottom: 28px; }
+    .biz-group:last-child { margin-bottom: 0; }
+    .biz-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold-dim);
+      padding-bottom: 8px; margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .biz-group-list {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .biz-item {
+      display: flex; align-items: center; gap: 18px;
+      padding: 16px 20px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .biz-item:hover { border-color: rgba(212,168,75,.4); box-shadow: 0 2px 14px rgba(28,26,21,.05); }
+    .biz-item-glyph {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: rgba(212,168,75,.1);
+      color: var(--gold-dim);
+    }
+    .biz-item-glyph svg { width: 18px; height: 18px; }
+    .biz-item-meta { flex: 1; min-width: 0; }
+    .biz-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text); margin-bottom: 3px; line-height: 1.3;
+    }
+    .biz-item-desc {
+      font-size: .82rem; line-height: 1.5; color: var(--text-muted);
+    }
+    .biz-item-side {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .biz-status {
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+    }
+    .biz-status-found { background: rgba(79,124,92,.15); color: var(--sage); }
+    .biz-status-empty { background: #EDE8DF; color: var(--text-muted); }
+    .biz-item-actions { display: flex; gap: 6px; }
+    .biz-action { white-space: nowrap; }
+    .biz-action--muted {
+      opacity: .45; cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Course page ─────────────────────────────────────────────────────── */
+    .crs-wrap { max-width: 960px; }
+    .crs-hero {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; padding: 22px 26px; margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+    }
+    .crs-hero-text { flex: 1; min-width: 0; }
+    .crs-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); font-weight: 700;
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .crs-hero-sub {
+      font-size: .9rem; line-height: 1.55; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .crs-hero-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .crs-hero-note code {
+      background: rgba(212,168,75,.1); color: var(--gold-dim);
+      padding: 1px 5px; border-radius: 3px; font-size: .68rem;
+    }
+    .crs-hero-stat {
+      flex-shrink: 0; text-align: right;
+      padding-left: 18px; border-left: 1px solid var(--border);
+      min-width: 110px;
+    }
+    .crs-hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-dim); line-height: 1;
+    }
+    .crs-hero-stat-num em {
+      font-style: normal; color: var(--text-muted);
+      font-size: 1.1rem; font-weight: 400;
+    }
+    .crs-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .crs-progress {
+      max-width: 960px; margin-bottom: 28px;
+    }
+    .crs-progress-track {
+      height: 4px; width: 100%;
+      background: var(--border); border-radius: 2px;
+      overflow: hidden;
+    }
+    .crs-progress-fill {
+      height: 100%; background: var(--gold);
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+    .crs-progress-meta {
+      display: flex; justify-content: space-between;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .crs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .crs-card {
+      display: flex; flex-direction: column;
+      padding: 18px 20px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .crs-card:hover { border-color: rgba(212,168,75,.4); box-shadow: 0 2px 14px rgba(28,26,21,.05); }
+    .crs-card-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; margin-bottom: 10px;
+    }
+    .crs-card-headline {
+      display: flex; align-items: baseline; gap: 8px;
+      flex: 1; min-width: 0;
+    }
+    .crs-card-num {
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; font-weight: 500;
+      color: var(--gold-dim);
+      letter-spacing: .04em;
+    }
+    .crs-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text); line-height: 1.3;
+    }
+    .crs-status {
+      flex-shrink: 0;
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 4px; white-space: nowrap;
+    }
+    .crs-status-found { background: rgba(79,124,92,.15); color: var(--sage); }
+    .crs-status-empty { background: #EDE8DF; color: var(--text-muted); }
+    .crs-status-skill { background: rgba(184,92,56,.12); color: var(--terracotta); }
+
+    .crs-card-desc {
+      font-size: .85rem; line-height: 1.55; color: #3A342B;
+      margin-bottom: 10px;
+    }
+    .crs-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .04em;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .crs-actions {
+      display: flex; gap: 8px;
+      margin-top: auto;
+    }
+    .crs-action { white-space: nowrap; }
+    .crs-action--muted {
+      opacity: .45; cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Clients page ────────────────────────────────────────────────────── */
+    .cli-wrap { max-width: 960px; }
+    .cli-hero {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 24px; padding: 22px 26px; margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+    }
+    .cli-hero-text { flex: 1; min-width: 0; }
+    .cli-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw + 0.5rem, 1.8rem); font-weight: 700;
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .cli-hero-sub {
+      font-size: .9rem; line-height: 1.55; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .cli-hero-note {
+      font-family: 'DM Mono', monospace;
+      font-size: .7rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .cli-hero-note code {
+      background: rgba(212,168,75,.1); color: var(--gold-dim);
+      padding: 1px 5px; border-radius: 3px; font-size: .68rem;
+    }
+    .cli-hero-stat {
+      flex-shrink: 0; text-align: right;
+      padding-left: 18px; border-left: 1px solid var(--border);
+      min-width: 110px;
+    }
+    .cli-hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--gold-dim); line-height: 1;
+    }
+    .cli-hero-stat-num em {
+      font-style: normal; color: var(--text-muted);
+      font-size: 1.1rem; font-weight: 400;
+    }
+    .cli-hero-stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 6px;
+    }
+
+    .cli-pii {
+      display: flex; align-items: center; gap: 28px;
+      flex-wrap: wrap;
+      padding: 12px 18px; margin-bottom: 22px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: var(--bg-card);
+    }
+    .cli-pii-item {
+      display: flex; align-items: baseline; gap: 8px;
+      min-width: 0;
+    }
+    .cli-pii-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--gold-dim);
+    }
+    .cli-pii-code {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; color: var(--terracotta);
+      background: rgba(184,92,56,.08);
+      padding: 2px 8px; border-radius: 4px;
+      border: 1px solid rgba(184,92,56,.15);
+    }
+    .cli-pii-hint {
+      font-size: .75rem; color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .cli-add {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; margin-bottom: 28px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--terracotta);
+      border-radius: 8px;
+    }
+    .cli-add-glyph {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      background: rgba(184,92,56,.1);
+      color: var(--terracotta);
+    }
+    .cli-add-glyph svg { width: 18px; height: 18px; }
+    .cli-add-body { flex: 1; min-width: 0; }
+    .cli-add-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text); margin-bottom: 3px; line-height: 1.3;
+    }
+    .cli-add-desc {
+      font-size: .82rem; line-height: 1.5; color: var(--text-muted);
+    }
+    .cli-add-desc code {
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; background: #EDE8DF;
+      padding: 1px 6px; border-radius: 3px; color: var(--terracotta);
+    }
+
+    .cli-section { margin-bottom: 28px; }
+    .cli-section:last-child { margin-bottom: 0; }
+    .cli-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold-dim);
+      padding-bottom: 8px; margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cli-roster {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+    }
+    .cli-roster-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .cli-roster-row:last-child { border-bottom: none; }
+    .cli-roster-row:hover { background: rgba(212,168,75,.04); }
+    .cli-roster-id {
+      font-family: 'DM Mono', monospace;
+      font-size: .85rem; color: var(--text);
+      overflow-wrap: anywhere;
+    }
+    .cli-roster-empty {
+      padding: 16px 18px;
+      font-size: .85rem; color: var(--text-muted); font-style: italic;
+      text-align: center;
+    }
+
+    .cli-tree {
+      background: var(--sidebar-bg); border-radius: 8px;
+      padding: 20px 22px; overflow-x: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; line-height: 1.8;
+      color: #D4C9B5;
+      margin: 0;
+    }
+    .cli-tree .cli-tree-folder {
+      color: var(--gold); font-weight: 500;
+    }
+    .cli-tree .cli-tree-file {
+      color: #E9DEC8;
+    }
+    .cli-tree .cli-tree-branch {
+      color: var(--gold-dim); opacity: .8;
+    }
+    .cli-tree .cli-tree-desc {
+      color: var(--sidebar-dim);
+    }
+
     @media (max-width: 1024px) and (min-width: 769px) {
       .sidebar { width: 220px; }
       .content-scroll { padding: 28px 24px 60px; }
       .topbar { padding: 12px 24px; }
+      .biz-hero { padding: 18px 20px; gap: 16px; }
+      .biz-item { padding: 14px 16px; gap: 14px; }
+      .crs-hero { padding: 18px 20px; gap: 16px; }
+      .crs-card { padding: 16px 18px; }
+      .cli-hero { padding: 18px 20px; gap: 16px; }
+      .cli-add { padding: 14px 16px; gap: 14px; }
+      .cli-pii { gap: 18px; padding: 10px 16px; }
     }
     @media (max-width: 768px) {
       .nav-toggle { display: inline-flex; }
@@ -469,12 +872,52 @@
       .md-body code,
       .note-path,
       .ws-card .path { overflow-wrap: anywhere; }
+
+      /* Business page mobile reflow */
+      .biz-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .biz-hero-stat {
+        text-align: left; padding-left: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        padding-top: 12px; min-width: 0; width: 100%;
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .biz-hero-stat-label { margin-top: 0; }
+      .biz-item { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 16px; }
+      .biz-item-side { justify-content: space-between; width: 100%; }
+      .biz-item-actions { flex: 1; justify-content: flex-end; }
+
+      /* Course page mobile reflow */
+      .crs-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .crs-hero-stat {
+        text-align: left; padding-left: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        padding-top: 12px; min-width: 0; width: 100%;
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .crs-hero-stat-label { margin-top: 0; }
+      .crs-grid { grid-template-columns: 1fr; gap: 12px; }
+      .crs-card { padding: 16px 18px; }
+
+      /* Clients page mobile reflow */
+      .cli-hero { flex-direction: column; gap: 14px; padding: 16px 18px; }
+      .cli-hero-stat {
+        text-align: left; padding-left: 0;
+        border-left: none; border-top: 1px solid var(--border);
+        padding-top: 12px; min-width: 0; width: 100%;
+        display: flex; align-items: baseline; gap: 10px;
+      }
+      .cli-hero-stat-label { margin-top: 0; }
+      .cli-pii { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px 14px; }
+      .cli-pii-item { flex-wrap: wrap; }
+      .cli-add { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+      .cli-roster-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+      .cli-tree { padding: 14px 14px; font-size: .72rem; line-height: 1.7; }
     }
     @media (max-width: 480px) {
-      /* Two-row topbar: hamburger+title on row 1, badges on row 2 */
+      /* Two-row topbar: title+hamburger on row 1, badges on row 2 */
       .topbar { padding: 10px 12px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
       .topbar-title {
-        flex: 1 1 100%; min-width: 0;
+        flex: 1 1 0; min-width: 0;
         overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
       .topbar-badges { flex: 1 1 100%; gap: 6px; }
@@ -655,10 +1098,10 @@
 
   <div class="main">
     <div class="topbar">
+      <span class="topbar-title" id="topbar-title">PIVOT into IEP Advocacy® — Summer 2026</span>
       <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
-      <span class="topbar-title" id="topbar-title">PIVOT into IEP Advocacy® — Summer 2026</span>
       <div class="topbar-badges" id="topbar-badges">
         <span class="badge badge-scaffold">Pre-cohort</span>
         <span class="badge badge-cohort">Jun 1 Start</span>
@@ -675,59 +1118,21 @@
       </div>
 
       <div class="page-view" id="page-business">
-        <div class="page-header">
-          <h1>Business</h1>
-          <p>Rylee's practice decisions — entity, name, fees, insurance, backend setup. Populated as she works through Module 1 skills.</p>
-        </div>
-        <div class="info-banner" id="business-banner">
-          <p><strong>Local workspace.</strong> These files live in <code>workspace/business/</code> and are gitignored for privacy. On GitHub Pages you'll see the expected structure; run locally (<code>npx serve .</code>) to open files that exist on disk.</p>
-        </div>
-        <div class="card-grid" id="business-cards"></div>
+        <section class="biz-wrap" id="business-wrap">
+          <div class="loading">Loading business decisions…</div>
+        </section>
       </div>
 
       <div class="page-view" id="page-clients">
-        <div class="page-header">
-          <h1>Clients</h1>
-          <p>Per-client folders created by <code>/new-client</code>. Each folder holds intake, IEP checklist, and session log — never committed to git.</p>
-        </div>
-        <div class="info-banner">
-          <p>Client IDs follow <code>&lt;first-name&gt;-&lt;last-initial&gt;-&lt;district-abbr&gt;</code> (e.g. <code>marcus-t-d214</code>). Display names use first name + last initial only.</p>
-        </div>
-        <div id="clients-list"></div>
-        <div class="card-grid" id="client-template-cards">
-          <div class="ws-card">
-            <h3>Per-client folder</h3>
-            <div class="path">workspace/clients/&lt;client_id&gt;/</div>
-            <p>Instantiated from intake-process templates when you run <code>/new-client &lt;first-name&gt;</code> in Claude Code.</p>
-            <span class="status status-skill">/new-client</span>
-          </div>
-          <div class="ws-card">
-            <h3>intake-form.md</h3>
-            <div class="path">…/intake-form.md</div>
-            <p>Parent/student intake responses and engagement details.</p>
-          </div>
-          <div class="ws-card">
-            <h3>iep-checklist.md</h3>
-            <div class="path">…/iep-checklist.md</div>
-            <p>Running IEP advocacy checklist for this student.</p>
-          </div>
-          <div class="ws-card">
-            <h3>session-log.md</h3>
-            <div class="path">…/session-log.md</div>
-            <p>Meeting notes, calls, and advocacy session history.</p>
-          </div>
-        </div>
+        <section class="cli-wrap" id="clients-wrap">
+          <div class="loading">Loading clients…</div>
+        </section>
       </div>
 
       <div class="page-view" id="page-course">
-        <div class="page-header">
-          <h1>Course</h1>
-          <p>Module takeaways from Dr. Annie's lessons — input to <code>/module-debrief</code> for skill updates.</p>
-        </div>
-        <div class="info-banner">
-          <p>After each module, Rylee writes notes to <code>workspace/course/module-&lt;N&gt;-notes.md</code>. Run <code>/module-debrief &lt;N&gt;</code> to merge those into the matching skills.</p>
-        </div>
-        <div id="course-modules"></div>
+        <section class="crs-wrap" id="course-wrap">
+          <div class="loading">Loading course modules…</div>
+        </section>
       </div>
     </div>
   </div>
@@ -1141,86 +1546,308 @@
     } catch { return 'empty'; }
   }
 
-  async function loadBusinessPage() {
-    const grid = document.getElementById('business-cards');
-    grid.innerHTML = '';
+  const BIZ_GROUPS = [
+    { title: 'Identity & Entity', slugs: ['business-name', 'entity-setup'] },
+    { title: 'Risk',              slugs: ['liability-insurance'] },
+    { title: 'Money',             slugs: ['services-fees'] },
+    { title: 'Operations',        slugs: ['backend-systems', 'intake-process'] },
+  ];
 
-    for (const item of BUSINESS_FILES) {
-      const path = `./workspace/business/${item.file}`;
-      const status = await probeFile(path);
-      const card = document.createElement('div');
-      card.className = 'ws-card';
-      card.innerHTML = `
-        <h3>${item.title}</h3>
-        <div class="path">${path.replace('./', '')}</div>
-        <p>${item.desc}</p>
-        <span class="status ${status === 'found' ? 'status-found' : 'status-empty'}">${status === 'found' ? 'On disk' : 'Not yet created'}</span>
-        ${status === 'found' ? `<div style="margin-top:12px"><a class="btn btn-primary" href="${path}" target="_blank">Open file</a></div>` : `<div style="margin-top:12px"><a class="btn" href=".claude/skills/${item.skill}/SKILL.md" target="_blank">→ ${item.skill} skill</a></div>`}`;
-      grid.appendChild(card);
-    }
+  const BIZ_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>';
+
+  async function loadBusinessPage() {
+    const wrap = document.getElementById('business-wrap');
+
+    // Probe all files in parallel.
+    const probed = await Promise.all(
+      BUSINESS_FILES.map(async item => {
+        const path = `./workspace/business/${item.file}`;
+        const status = await probeFile(path);
+        return { ...item, path, status };
+      })
+    );
+    const bySlug = Object.fromEntries(probed.map(it => [it.skill, it]));
+    const foundCount = probed.filter(it => it.status === 'found').length;
+    const total = probed.length;
+
+    const renderItem = (it) => {
+      const isFound = it.status === 'found';
+      const statusClass = isFound ? 'biz-status-found' : 'biz-status-empty';
+      const statusLabel = isFound ? 'On disk' : 'Not captured';
+      const openAttrs = isFound
+        ? `href="${it.path}" target="_blank" rel="noopener"`
+        : `href="${it.path}" aria-disabled="true" tabindex="-1"`;
+      const openClass = isFound ? 'btn biz-action' : 'btn biz-action biz-action--muted';
+      return `
+        <article class="biz-item">
+          <div class="biz-item-glyph">${BIZ_GLYPH}</div>
+          <div class="biz-item-meta">
+            <div class="biz-item-title">${it.title}</div>
+            <div class="biz-item-desc">${it.desc}</div>
+          </div>
+          <div class="biz-item-side">
+            <span class="biz-status ${statusClass}">${statusLabel}</span>
+            <div class="biz-item-actions">
+              <a class="${openClass}" ${openAttrs}>Open file</a>
+              <a class="btn btn-primary biz-action" href=".claude/skills/${it.skill}/SKILL.md" target="_blank" rel="noopener">Run skill</a>
+            </div>
+          </div>
+        </article>`;
+    };
+
+    const groupsHtml = BIZ_GROUPS.map(group => {
+      const items = group.slugs.map(slug => bySlug[slug]).filter(Boolean);
+      if (!items.length) return '';
+      return `
+        <section class="biz-group">
+          <h2 class="biz-group-title">${group.title}</h2>
+          <div class="biz-group-list">
+            ${items.map(renderItem).join('')}
+          </div>
+        </section>`;
+    }).join('');
+
+    wrap.innerHTML = `
+      <header class="biz-hero">
+        <div class="biz-hero-text">
+          <h1>Business decisions</h1>
+          <p class="biz-hero-sub">Rylee's six Module&nbsp;1 decisions — registered, priced, insured, and ready to onboard a first client.</p>
+          <div class="biz-hero-note">Files live in <code>workspace/business/</code> — local-only, gitignored.</div>
+        </div>
+        <div class="biz-hero-stat">
+          <div class="biz-hero-stat-num">${foundCount}<em> / ${total}</em></div>
+          <div class="biz-hero-stat-label">Captured</div>
+        </div>
+      </header>
+      ${groupsHtml}
+    `;
   }
 
   // ── Clients page ───────────────────────────────────────────────────────────
+  const CLI_ADD_GLYPH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>';
+
   async function loadClientsPage() {
-    const list = document.getElementById('clients-list');
+    const wrap = document.getElementById('clients-wrap');
     const manifestPath = './workspace/clients/manifest.json';
 
+    let clients = [];
     try {
       const res = await fetch(manifestPath);
       if (res.ok) {
-        const clients = await res.json();
-        if (clients.length) {
-          list.innerHTML = '<div class="card-grid" id="client-cards"></div>';
-          const grid = document.getElementById('client-cards');
-          clients.forEach(id => {
-            const card = document.createElement('div');
-            card.className = 'ws-card';
-            card.innerHTML = `
-              <h3>${id}</h3>
-              <div class="path">workspace/clients/${id}/</div>
-              <p>Intake, IEP checklist, session log.</p>
-              <a class="btn btn-primary" href="./workspace/clients/${id}/" target="_blank">Open folder</a>`;
-            grid.appendChild(card);
-          });
-          return;
-        }
+        const parsed = await res.json();
+        if (Array.isArray(parsed)) clients = parsed;
       }
     } catch { /* no manifest */ }
 
-    list.innerHTML = `
-      <div class="client-empty">
-        <h3>No clients yet</h3>
-        <p>Run <code>/new-client &lt;first-name&gt;</code> in Claude Code to create a folder under <code>workspace/clients/</code>.</p>
-        <p style="margin-top:12px;font-size:.8rem;">Optionally add a <code>workspace/clients/manifest.json</code> array of client IDs for this dashboard to list them when running locally.</p>
-      </div>`;
+    const count = clients.length;
+    const statLabel = count === 0 ? 'Active' : (count === 1 ? 'Active' : 'Active');
+
+    const heroHtml = `
+      <header class="cli-hero">
+        <div class="cli-hero-text">
+          <h1>Clients</h1>
+          <p class="cli-hero-sub">Per-client folders. Intake, checklist, session log. Local-only — never committed.</p>
+          <div class="cli-hero-note">Folders live in <code>workspace/clients/&lt;client_id&gt;/</code> — gitignored.</div>
+        </div>
+        <div class="cli-hero-stat">
+          <div class="cli-hero-stat-num">${count}</div>
+          <div class="cli-hero-stat-label">${statLabel}</div>
+        </div>
+      </header>`;
+
+    const piiHtml = `
+      <section class="cli-pii" aria-label="PII rules">
+        <div class="cli-pii-item">
+          <span class="cli-pii-label">Client ID</span>
+          <code class="cli-pii-code">marcus-t-d214</code>
+          <span class="cli-pii-hint">first-last-district</span>
+        </div>
+        <div class="cli-pii-item">
+          <span class="cli-pii-label">Display name</span>
+          <code class="cli-pii-code">Marcus T.</code>
+          <span class="cli-pii-hint">first + last initial only</span>
+        </div>
+      </section>`;
+
+    const addHtml = `
+      <section class="cli-add" aria-label="How to add a client">
+        <div class="cli-add-glyph">${CLI_ADD_GLYPH}</div>
+        <div class="cli-add-body">
+          <div class="cli-add-title">Add a client</div>
+          <div class="cli-add-desc">Run <code>/new-client &lt;first-name&gt;</code> in Claude Code to stamp a fresh folder from the intake-process templates.</div>
+        </div>
+      </section>`;
+
+    const rosterRows = count
+      ? clients.map(id => `
+          <div class="cli-roster-row">
+            <span class="cli-roster-id">${id}</span>
+            <a class="btn btn-primary" href="./workspace/clients/${id}/" target="_blank" rel="noopener">Open folder</a>
+          </div>`).join('')
+      : '<div class="cli-roster-empty">No clients yet</div>';
+
+    const rosterHtml = `
+      <section class="cli-section">
+        <h2 class="cli-section-title">Active clients</h2>
+        <div class="cli-roster">${rosterRows}</div>
+      </section>`;
+
+    const anatomyHtml = `
+      <section class="cli-section">
+        <h2 class="cli-section-title">Inside each folder</h2>
+        <pre class="cli-tree"><span class="cli-tree-folder">workspace/clients/&lt;client_id&gt;/</span>
+<span class="cli-tree-branch">├──</span> <span class="cli-tree-file">intake-form.md</span>     <span class="cli-tree-desc">— Parent/student intake responses and engagement details</span>
+<span class="cli-tree-branch">├──</span> <span class="cli-tree-file">iep-checklist.md</span>   <span class="cli-tree-desc">— Running IEP advocacy checklist for this student</span>
+<span class="cli-tree-branch">└──</span> <span class="cli-tree-file">session-log.md</span>     <span class="cli-tree-desc">— Meeting notes, calls, advocacy session history</span></pre>
+      </section>`;
+
+    wrap.innerHTML = heroHtml + piiHtml + addHtml + rosterHtml + anatomyHtml;
   }
 
   // ── Course page ────────────────────────────────────────────────────────────
-  async function loadCoursePage() {
-    const container = document.getElementById('course-modules');
-    container.innerHTML = '';
+  const COURSE_START = new Date('2026-06-01T00:00:00');
+  const COURSE_WEEKS = 12;
 
-    for (const mod of MODULES) {
-      const notePath = `./workspace/course/module-${mod.n}-notes.md`;
-      const status = await probeFile(notePath);
-      const statusLabel = mod.status === 'scaffold' ? 'Scaffold' : mod.status === 'pending' ? 'Pending' : 'Validated';
-      const statusClass = mod.status === 'scaffold' ? 'status-skill' : mod.status === 'pending' ? 'status-empty' : 'status-found';
+  const MODULE_BLURB = {
+    1: 'Pick a name, register the entity, set fees, get insured, and stand up back-end systems.',
+    2: 'Learn the language of special education and build the advocate-side foundation.',
+    3: 'Master the six-step IEP process, eligibility criteria, and observation skills.',
+    4: 'Define the ideal client, streamline intake, and set up your support network.',
+    5: 'Build referral sources and an online presence to land the first five clients.',
+    6: 'Run the client support cycle, plan engagements, and handle hard conversations.',
+    7: 'IEEs, ESY, dispute resolution, and tying evaluations to real supports.',
+    8: 'Sequence the leap to full-time — exit plan, long-term roadmap, clean handoff.',
+  };
 
-      const row = document.createElement('div');
-      row.className = 'module-note-row';
-      row.innerHTML = `
-        <div>
-          <h4>Module ${mod.n} — ${mod.title}</h4>
-          <div class="note-path">workspace/course/module-${mod.n}-notes.md</div>
-        </div>
-        <div class="note-actions">
-          <span class="status ${statusClass}">${statusLabel}</span>
-          ${status === 'found'
-            ? `<a class="btn btn-primary" href="${notePath}" target="_blank">Open notes</a>`
-            : `<span class="btn" style="opacity:.5;cursor:default">No notes yet</span>`}
-        </div>`;
-      container.appendChild(row);
+  function computeCohortState(now = new Date()) {
+    const MS = 24 * 60 * 60 * 1000;
+    const daysUntil = Math.ceil((COURSE_START - now) / MS);
+    if (daysUntil > 0) {
+      return { phase: 'pre', daysUntil, week: 0, progressPct: 0,
+               statNum: String(daysUntil), statLabel: 'Days to kickoff' };
     }
+    if (daysUntil === 0) {
+      return { phase: 'start', daysUntil: 0, week: 1, progressPct: 0,
+               statNum: 'TODAY', statLabel: 'Cohort starts' };
+    }
+    const daysSinceStart = Math.floor((now - COURSE_START) / MS);
+    const rawWeek = Math.floor(daysSinceStart / 7) + 1;
+    if (rawWeek > COURSE_WEEKS) {
+      return { phase: 'post', daysUntil, week: COURSE_WEEKS, progressPct: 100,
+               statNum: 'POST-COHORT', statLabel: 'Completed' };
+    }
+    return { phase: 'active', daysUntil, week: rawWeek,
+             progressPct: Math.min(100, (rawWeek / COURSE_WEEKS) * 100),
+             statNum: `WEEK ${rawWeek}`, statLabel: `Of ${COURSE_WEEKS}` };
+  }
+
+  function isLargeStat(s) {
+    return s === 'TODAY' || s === 'POST-COHORT' || /^WEEK /.test(s);
+  }
+
+  async function loadCoursePage() {
+    const wrap = document.getElementById('course-wrap');
+    const state = computeCohortState();
+
+    // Probe all note files in parallel.
+    const probed = await Promise.all(
+      MODULES.map(async mod => {
+        const notePath = `./workspace/course/module-${mod.n}-notes.md`;
+        const noteStatus = await probeFile(notePath);
+        return { mod, notePath, noteStatus };
+      })
+    );
+
+    const statusFor = (mod) => {
+      if (mod.status === 'scaffold') return { label: 'Scaffold', cls: 'crs-status-skill' };
+      if (mod.status === 'pending')  return { label: 'Pending',  cls: 'crs-status-empty' };
+      return { label: 'Validated', cls: 'crs-status-found' };
+    };
+
+    const renderCard = ({ mod, notePath, noteStatus }) => {
+      const st = statusFor(mod);
+      const delivCount = mod.deliverables.length;
+      const linkedCount = mod.deliverables.filter(d => Array.isArray(d.links) && d.links.length).length;
+      // Only Module 1 (scaffold) and validated modules have real skill files on disk.
+      // For pending modules the deliverable.links slugs are placeholders, not authored skills.
+      const skillCount = mod.status === 'pending' ? 0 : linkedCount;
+      const skillMeta = skillCount === 0
+        ? 'skills pending'
+        : `${skillCount} skill${skillCount === 1 ? '' : 's'} authored`;
+      const desc = MODULE_BLURB[mod.n] || mod.short;
+
+      const notesFound = noteStatus === 'found';
+      const notesClass = notesFound ? 'btn crs-action' : 'btn crs-action crs-action--muted';
+      const notesAttrs = notesFound
+        ? `href="${notePath}" target="_blank" rel="noopener"`
+        : `href="${notePath}" aria-disabled="true" tabindex="-1"`;
+      const notesLabel = notesFound ? 'Open notes' : 'No notes yet';
+
+      return `
+        <article class="crs-card">
+          <div class="crs-card-header">
+            <div class="crs-card-headline">
+              <span class="crs-card-num">M${mod.n}</span>
+              <span class="crs-card-title">${mod.title}</span>
+            </div>
+            <span class="crs-status ${st.cls}">${st.label}</span>
+          </div>
+          <div class="crs-card-desc">${desc}</div>
+          <div class="crs-meta">${delivCount} deliverable${delivCount === 1 ? '' : 's'} · ${skillMeta}</div>
+          <div class="crs-actions">
+            <a class="${notesClass}" ${notesAttrs}>${notesLabel}</a>
+            <a class="btn btn-primary crs-action" href="#module-${mod.n}" data-module-link="${mod.n}">Open module</a>
+          </div>
+        </article>`;
+    };
+
+    const statNumClass = isLargeStat(state.statNum) ? 'crs-hero-stat-num' : 'crs-hero-stat-num';
+    const statNumHtml = isLargeStat(state.statNum)
+      ? `<div class="${statNumClass}" style="font-size:1.15rem;letter-spacing:.04em;">${state.statNum}</div>`
+      : `<div class="${statNumClass}">${state.statNum}</div>`;
+
+    const progressLabel = state.phase === 'pre'
+      ? `Cohort begins Jun 1 · ${state.daysUntil} day${state.daysUntil === 1 ? '' : 's'} out`
+      : state.phase === 'start'
+      ? 'Week 1 of 12'
+      : state.phase === 'post'
+      ? '12 of 12 weeks complete'
+      : `Week ${state.week} of ${COURSE_WEEKS}`;
+
+    wrap.innerHTML = `
+      <header class="crs-hero">
+        <div class="crs-hero-text">
+          <h1>Course</h1>
+          <p class="crs-hero-sub">Eight modules, weekly cadence, validated as you go.</p>
+          <div class="crs-hero-note">Notes live in <code>workspace/course/</code> — local-only, gitignored.</div>
+        </div>
+        <div class="crs-hero-stat">
+          ${statNumHtml}
+          <div class="crs-hero-stat-label">${state.statLabel}</div>
+        </div>
+      </header>
+      <div class="crs-progress">
+        <div class="crs-progress-track">
+          <div class="crs-progress-fill" style="width:${state.progressPct}%"></div>
+        </div>
+        <div class="crs-progress-meta">
+          <span>${progressLabel}</span>
+          <span>${Math.round(state.progressPct)}%</span>
+        </div>
+      </div>
+      <div class="crs-grid">
+        ${probed.map(renderCard).join('')}
+      </div>
+    `;
+
+    // Wire "Open module" links to call showModule() without a hash-driven reload.
+    wrap.querySelectorAll('[data-module-link]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const n = parseInt(a.dataset.moduleLink, 10);
+        showModule(n);
+      });
+    });
   }
 
   // ── Init ───────────────────────────────────────────────────────────────────

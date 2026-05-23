@@ -148,17 +148,6 @@ For PII rules, scope gates, and the skill update workflow in detail, see [`CLAUD
 - **Instructor**: Dr. Annie / Constance McLaughlin (BACB registry)
 - **Cohort**: Summer 2026, starts 2026-06-01, 12 weeks, 12-month materials access
 - **Format**: 8 pre-recorded modules + 6 group calls + physical workbook + 6 BACB CEUs
-- **Audience**: BCBAs primarily (Rylee), also OT/SLP/PT
-- **Scope**: business setup + advocacy competency. **No certification awarded.** Private-pay only.
+- **Scope**: business setup + advocacy competency. Private-pay only.
 
 Full cohort meta: [`.claude/shared/course-context.md`](.claude/shared/course-context.md)
-
----
-
-## What this repo is NOT
-
-- Not legal advice — see [`shared/disclaimer.md`](.claude/shared/disclaimer.md)
-- Not tax advice — CPA territory
-- Not a substitute for Dr. Annie's course — this organizes Rylee's work *through* the course, it doesn't replace the course
-- Not a client-facing tool — every file here is internal. Client-facing artifacts (intake form PDFs, welcome packets, agreements) get exported from the assets and shared via her cloud drive, not this repo.
-- Not an authoritative source on IL filing logistics, IDFPR positions, or insurance carrier products — those change; the repo encodes Rylee's verified decisions, not assertions about external systems
