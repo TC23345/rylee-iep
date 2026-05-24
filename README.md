@@ -24,3 +24,42 @@ This is the working surface where the [PIVOT](https://iepadvocacytraining.com) c
 
 5. **Deliver** — *Taylor, end of week*
    Skill runs, artifact ships to **Artifacts**. Business decisions land in **Business**. Once Rylee has clients, per-client work lands in **Clients**.
+
+---
+
+## Workspace
+
+The three Workspace pages — **Business**, **Clients**, and **Artifacts** — organize everything we produce during the course:
+
+- **Business** holds Rylee's internal decisions: entity, name, fees, insurance, backend systems. The records that document *"here's what we chose and why."*
+- **Clients** holds per-client folders once Rylee has clients — intake form, IEP checklist, session log. PII stays out of git and off the deployed site.
+- **Artifacts** is the directory of polished deliverables produced from each module. Filterable by module so it's easy to find what came from where.
+
+Examples of artifacts we'll build:
+
+1. **Services & fees** — a 3-tier offering card: the most standard offering on the left, fanning out to the most comprehensive on the right. The foundation everything else gets built on, so completeness here is priority.
+2. **Client intake** — a packet that includes the intake form itself, plus per-disability resource guides for parents, plus a what-to-expect guide tied to the chosen offerings.
+
+---
+
+## Course Modules
+
+Each module page is the workspace for that week of the course. The top of the page is the deliverable checklist — straight from Dr. Annie's syllabus, with checkboxes Rylee ticks as work moves. Underneath, a section per deliverable structured for note-taking:
+
+- **Top — Questions and curiosities**: drop questions or hunches before class so we walk in knowing what to ask.
+- **Middle — Notepad** *(coming soon)*: an expandable space to type notes during class without losing the question prompt above.
+- **Bottom — Video + discussion links**: the lesson video and the cohort discussion thread.
+
+Once a module's notepads are filled in, Taylor walks them back with Rylee to design the skills that will produce that module's artifacts.
+
+---
+
+## Skills
+
+Skills are the procedures that turn captured notes into produced artifacts. Each one synthesizes three inputs:
+
+- The lesson material from Dr. Annie's module
+- Rylee's domain expertise from her notepads
+- A final design pass between Rylee + Taylor before production
+
+Skills live as `SKILL.md` files under `.claude/skills/` — one per topic (`business-name`, `entity-setup`, `services-fees`, and so on). They're primarily Taylor's tool, so the sidebar **Skills** section is collapsed by default. Expand it any time to browse what's in there.
