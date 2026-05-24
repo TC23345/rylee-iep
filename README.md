@@ -2,9 +2,7 @@
 
 ---
 
-This is the working surface where the [PIVOT](https://iepadvocacytraining.com) course material, Rylee's domain expertise and Taylor's operational support come together each week to produce real deliverables that Rylee will use to launch and establish her IEP Advocacy Consulting Practice.
-
----
+> This is the working surface where the [PIVOT](https://iepadvocacytraining.com) course material, Rylee's domain expertise and Taylor's operational support come together each week to produce real deliverables that Rylee will use to launch and establish her IEP Advocacy Consulting Practice.
 
 ## Workflow Framework
 
@@ -25,11 +23,9 @@ This is the working surface where the [PIVOT](https://iepadvocacytraining.com) c
 5. **Deliver** — *Taylor, end of week*
    Skill runs, artifact ships to **Artifacts**. Business decisions land in **Business**. Once Rylee has clients, per-client work lands in **Clients**.
 
----
+### Workspace
 
-## Workspace
-
-The three Workspace pages — **Business**, **Clients**, and **Artifacts** — organize everything we produce during the course:
+The three Workspace pages — **Business**, **Clients**, and **Artifacts** — separate the artifacts produced by Taylor + Rylee during the class into clear pillars: internal business operations vs. client-facing assets that integrate with them. From the Artifacts directory, each module card's **Course Notes** button jumps back to the module page (where the notes live) and each skill card jumps to the skill that produced it — so the path between a deliverable and the work that informed it is always one click.
 
 - **Business** holds Rylee's internal decisions: entity, name, fees, insurance, backend systems. The records that document *"here's what we chose and why."*
 - **Clients** holds per-client folders once Rylee has clients — intake form, IEP checklist, session log. PII stays out of git and off the deployed site.
@@ -40,9 +36,7 @@ Examples of artifacts we'll build:
 1. **Services & fees** — a 3-tier offering card: the most standard offering on the left, fanning out to the most comprehensive on the right. The foundation everything else gets built on, so completeness here is priority.
 2. **Client intake** — a packet that includes the intake form itself, plus per-disability resource guides for parents, plus a what-to-expect guide tied to the chosen offerings.
 
----
-
-## Course Modules
+### Course Modules
 
 Each module page is the workspace for that week of the course. The top of the page is the deliverable checklist — straight from Dr. Annie's syllabus, with checkboxes Rylee ticks as work moves. Underneath, a section per deliverable structured for note-taking:
 
@@ -52,9 +46,7 @@ Each module page is the workspace for that week of the course. The top of the pa
 
 Once a module's notepads are filled in, Taylor walks them back with Rylee to design the skills that will produce that module's artifacts.
 
----
-
-## Skills
+### Skills
 
 Skills are the procedures that turn captured notes into produced artifacts. Each one synthesizes three inputs:
 
