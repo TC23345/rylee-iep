@@ -1,4 +1,7 @@
-**Keystone IEP Advocacy LLC**
+# Keystone IEP Advocacy LLC
+
+<details open>
+<summary>Keyword SEO Data</summary>
 
 | Keyword | Volume/mo | Competition | CPC | Role in the naming decision |
 |---|---:|---:|---:|---|
@@ -8,6 +11,8 @@
 | bcba advocate | 0 | — | — | Negative signal — no demand justifies putting "BCBA" in the legal name |
 | iep advocate chicago | 0 | — | — | Negative signal — no demand justifies putting "Chicago" in the legal name |
 | iep advocate illinois | 50 | 0.15 | $0.98 | Marginal — 32× smaller than the un-geo'd term; not worth locking the brand to a state |
+
+</details>
 
 **Takeaway:** ~4,600/mo of addressable demand sits behind the two terms the legal name can directly carry ("iep advocacy" + "iep advocate" + the near-me halo via GBP). Combined volume behind the three terms the name should *not* carry is ~50/mo. That's the asymmetry that decides the structure: descriptive phrase in the name, credential and geography handled by site copy and GBP.
 

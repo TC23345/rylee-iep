@@ -1129,6 +1129,28 @@
     .m1s-panel-content > :first-child { margin-top: 0; }
     .m1s-panel-content > :last-child { margin-bottom: 0; }
 
+    .md-body details { margin: 18px 0 22px; }
+    .md-body summary {
+      cursor: pointer; list-style: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 0; user-select: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.02rem; font-weight: 600; color: var(--text);
+      transition: color .15s;
+    }
+    .md-body summary::-webkit-details-marker { display: none; }
+    .md-body summary::before {
+      content: '▸';
+      font-family: 'DM Mono', monospace;
+      font-size: .78em; color: var(--text-muted);
+      transition: transform .15s, color .15s;
+      display: inline-block; line-height: 1;
+    }
+    .md-body details[open] > summary::before { transform: rotate(90deg); }
+    .md-body summary:hover { color: var(--terracotta); }
+    .md-body summary:hover::before { color: var(--terracotta); }
+    .md-body details > *:not(summary) { margin-top: 12px; }
+
     .m1s-foot {
       display: flex; align-items: center; justify-content: space-between;
       gap: 14px; flex-wrap: wrap;
@@ -2074,6 +2096,17 @@
     return parts[2];
   }
 
+  // Splits a `# Heading\n\n<rest>` markdown blob into { title, body }.
+  // If the file doesn't start with an H1, title is null and body is unchanged.
+  function extractLeadingH1(md) {
+    const lines = md.split('\n');
+    let i = 0;
+    while (i < lines.length && lines[i].trim() === '') i++;
+    const m = (lines[i] || '').match(/^#\s+(.+?)\s*$/);
+    if (!m) return { title: null, body: md };
+    return { title: m[1], body: lines.slice(i + 1).join('\n').replace(/^\n+/, '') };
+  }
+
   // Per-skill, per-lens markdown content lives at content/skills/<slug>/<lens>.md.
   // Missing file → fall back to the bracketed placeholder.
   const m1sContentCache = new Map();
@@ -2170,12 +2203,21 @@ description: ${escapeHtml(meta.description)}
     });
 
     // Hydrate each panel body with markdown content if a file exists.
+    // A leading `# Heading` in the file is promoted to both the tab label
+    // and the panel head title, then stripped from the rendered body.
     M1S_LENSES.forEach(async (lens) => {
       const md = await loadM1SkillLens(slug, lens.key);
       if (!md) return;
-      const body = wrap.querySelector(`[data-m1s-panel-body="${lens.key}"]`);
-      if (!body) return;
-      body.innerHTML = `<div class="md-body m1s-panel-content">${marked.parse(md)}</div>`;
+      const { title, body } = extractLeadingH1(md);
+      if (title) {
+        const tabLabel = wrap.querySelector(`[data-m1s-tab="${lens.key}"] .m1s-tab-label`);
+        if (tabLabel) tabLabel.textContent = title;
+        const panelTitle = wrap.querySelector(`[data-m1s-panel="${lens.key}"] .m1s-panel-title`);
+        if (panelTitle) panelTitle.textContent = title;
+      }
+      const bodyEl = wrap.querySelector(`[data-m1s-panel-body="${lens.key}"]`);
+      if (!bodyEl) return;
+      bodyEl.innerHTML = `<div class="md-body m1s-panel-content">${marked.parse(body)}</div>`;
     });
 
     wrap.querySelectorAll('[data-m1s-back]').forEach(a => {
