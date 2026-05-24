@@ -2684,30 +2684,14 @@
       return `<button type="button" class="${cls}" data-artifacts-filter="${f}">${label}</button>`;
     }).join('');
 
-    const subtitle = filterModuleN
-      ? `Filtered to Module ${filterModuleN}.`
-      : 'Polished deliverables produced from each module, plus the skills that drive them.';
-
     const emptyArtifactsCopy = filterModuleN
       ? `No artifacts produced for Module ${filterModuleN} yet. They'll land here as Rylee + Taylor produce them in the <strong>Design</strong> and <strong>Deliver</strong> phases.`
       : `No artifacts produced yet. They'll land here as Rylee + Taylor produce them in the <strong>Design</strong> and <strong>Deliver</strong> phases of each module.`;
 
     wrap.innerHTML = `
-      <header class="art-hero">
-        <div class="art-hero-text">
-          <h1>Artifacts</h1>
-          <p class="art-hero-sub">${subtitle}</p>
-        </div>
-      </header>
-
       <div class="art-filter" role="tablist" aria-label="Filter artifacts by module">
         ${filterTabs}
       </div>
-
-      <section class="art-section">
-        <h2 class="art-section-title">Artifacts</h2>
-        <div class="art-empty">${emptyArtifactsCopy}</div>
-      </section>
 
       <section class="art-section">
         <h2 class="art-section-title">Modules</h2>
@@ -2721,6 +2705,11 @@
         ${skillsToShow.length
           ? `<div class="art-skills-grid">${skillsToShow.map(renderSkillCard).join('')}</div>`
           : `<div class="art-empty">No skills for this module yet.</div>`}
+      </section>
+
+      <section class="art-section">
+        <h2 class="art-section-title">Artifacts</h2>
+        <div class="art-empty">${emptyArtifactsCopy}</div>
       </section>
     `;
 
