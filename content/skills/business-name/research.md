@@ -90,13 +90,11 @@ We will expand more on this later, but for now just focus on the idea of embeddi
 
 **The result of our initial seed phrase query returned the following insights:**
 
-> Looking at the search volume data, "special education advocate" is the strongest term at 2,900 monthly searches, followed by "educational advocate" and "autism advocate" which both show solid demand.
-
-The local intent angle with "iep advocate near me" at 1,000 searches is particularly valuable, and "autism advocate" stands out with a higher cost-per-click at $1.81, suggesting commercial intent. The local intent data confirms parents are searching geographically, so I should rely on Google Business Profile and location-specific content rather than embedding geography in the actual business name.
-
-I'm also noticing that "BCBA" has zero search demand as a credential descriptor, so it shouldn't anchor the brand identity—it belongs in supporting materials instead. The naming strategy is becoming clearer: a brandable name paired with "IEP Advocacy" or "Special Education Advocacy" as the descriptor.
-
-(SEO results are often surprising and that's why it required a trained eye - most of the time a 'lack of search volume' you would expect to be higher relative to the rest of the data based on your domain expertise can be just as significant of a signal than an abundance of volume)
+> - Looking at the search volume data, "special education advocate" is the strongest term at 2,900 monthly searches, followed by "educational advocate" and "autism advocate" which both show solid demand.
+> - The local intent angle with "iep advocate near me" at 1,000 searches is particularly valuable, and "autism advocate" stands out with a higher cost-per-click at $1.81, suggesting commercial intent. The local intent data confirms parents are searching geographically, so I should rely on Google Business Profile and location-specific content rather than embedding geography in the actual business name.
+> - I'm also noticing that "BCBA" has zero search demand as a credential descriptor, so it shouldn't anchor the brand identity—it belongs in supporting materials instead. The naming strategy is becoming clearer: a brandable name paired with "IEP Advocacy" or "Special Education Advocacy" as the descriptor.
+>
+> (SEO results are often surprising and that's why it required a trained eye - most of the time a 'lack of search volume' you would expect to be higher relative to the rest of the data based on your domain expertise can be just as significant of a signal than an abundance of volume)
 
 After we take a peak at the monthly search volume, the next thing we want to learn from Google is the related searches it suggests at the bottom of your seed phrase query + the People Also Ask section for questions that include an exact match of your high volume keywords
 
