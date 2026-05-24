@@ -1,5 +1,15 @@
 # Keystone IEP Advocacy LLC
 
+**Tagline to carry the BCBA credential (since it's not in the name):**
+
+> "Board-certified behavior analysis meets special education advocacy."
+
+**Or, plain-English version:**
+
+> "BCBA-led IEP advocacy for Illinois families."
+
+That puts the credential in every footer, meta description, and GBP "from the business" field where it actually does SEO and trust work — without burning a name slot on a search term that gets zero queries.
+
 <details open>
 <summary>Keyword SEO Data</summary>
 
@@ -90,9 +100,9 @@ We will expand more on this later, but for now just focus on the idea of embeddi
 
 **The result of our initial seed phrase query returned the following insights:**
 
-> - Looking at the search volume data, "special education advocate" is the strongest term at 2,900 monthly searches, followed by "educational advocate" and "autism advocate" which both show solid demand.
-> - The local intent angle with "iep advocate near me" at 1,000 searches is particularly valuable, and "autism advocate" stands out with a higher cost-per-click at $1.81, suggesting commercial intent. The local intent data confirms parents are searching geographically, so I should rely on Google Business Profile and location-specific content rather than embedding geography in the actual business name.
-> - I'm also noticing that "BCBA" has zero search demand as a credential descriptor, so it shouldn't anchor the brand identity—it belongs in supporting materials instead. The naming strategy is becoming clearer: a brandable name paired with "IEP Advocacy" or "Special Education Advocacy" as the descriptor.
+> 1. Looking at the search volume data, "special education advocate" is the strongest term at 2,900 monthly searches, followed by "educational advocate" and "autism advocate" which both show solid demand.
+> 2. The local intent angle with "iep advocate near me" at 1,000 searches is particularly valuable, and "autism advocate" stands out with a higher cost-per-click at $1.81, suggesting commercial intent. The local intent data confirms parents are searching geographically, so I should rely on Google Business Profile and location-specific content rather than embedding geography in the actual business name.
+> 3. I'm also noticing that "BCBA" has zero search demand as a credential descriptor, so it shouldn't anchor the brand identity—it belongs in supporting materials instead. The naming strategy is becoming clearer: a brandable name paired with "IEP Advocacy" or "Special Education Advocacy" as the descriptor.
 >
 > (SEO results are often surprising and that's why it required a trained eye - most of the time a 'lack of search volume' you would expect to be higher relative to the rest of the data based on your domain expertise can be just as significant of a signal than an abundance of volume)
 
@@ -103,19 +113,3 @@ After we take a peak at the monthly search volume, the next thing we want to lea
 Analyzing the patterns within the data Google suggests to users searching for "IEP advocate" will show us the sub-topics we can branch out to and expand the overall topical authority/coverage of our website
 
 (Attach examples of PAA and Related Searches as they appear for our seed keyword in the SERPS)
-
-- **IL rules:** Clean. No restricted words, no government/professional implications, has the required LLC designator, uses standard alphabet.
-- **SEO:** Exact-match "IEP Advocacy" in the legal name carries through to domain (keystoneiepadvocacy.com), Google Business Profile, citations, schema, and anchor text — that's compounding signal on the 1,600/mo "iep advocacy" and 1,600/mo "iep advocate" terms, plus halo on "iep advocate near me" (1,000/mo) through GBP.
-- **Brand:** "Keystone" — the load-bearing stone at the top of an arch — works for IEP advocacy on two levels: parents are the keystone of the IEP team, and an advocate is the keystone that holds the meeting together. Memorable, ownable, easy to say.
-- **Distinguishability:** "Keystone" + "IEP Advocacy" together is unusual in IL records (worth confirming in the SOS database, but no obvious conflict surfaced in research).
-- **Headroom:** No geographic lock-in. You can expand to neighboring states or go fully virtual without rebranding.
-
-**Tagline to carry the BCBA credential (since it's not in the name):**
-
-> "Board-certified behavior analysis meets special education advocacy."
-
-**Or, plain-English version:**
-
-> "BCBA-led IEP advocacy for Illinois families."
-
-That puts the credential in every footer, meta description, and GBP "from the business" field where it actually does SEO and trust work — without burning a name slot on a search term that gets zero queries.
