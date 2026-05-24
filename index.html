@@ -324,6 +324,26 @@
     .md-body hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
     .md-body input[type="checkbox"] { accent-color: var(--check-done); margin-right: 6px; cursor: pointer; }
     .md-body li:has(input[type="checkbox"]) { list-style: none; margin-left: -20px; }
+    .md-body table {
+      width: 100%; margin: 16px 0 20px;
+      border-collapse: collapse;
+      font-size: .86rem; color: #3A342B;
+      display: block; overflow-x: auto;
+    }
+    .md-body thead th {
+      text-align: left; font-weight: 600;
+      color: var(--text-muted); letter-spacing: .03em;
+      font-size: .7rem; text-transform: uppercase;
+      padding: 8px 14px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .md-body tbody td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.55; vertical-align: top;
+    }
+    .md-body tbody tr:last-child td { border-bottom: none; }
+    .md-body th[align="right"], .md-body td[align="right"] { text-align: right; font-variant-numeric: tabular-nums; }
 
     .page-header { margin-bottom: 28px; max-width: 72ch; }
     .page-header h1 {
