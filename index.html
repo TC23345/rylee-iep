@@ -668,6 +668,85 @@
       pointer-events: none;
     }
 
+    /* ── Artifacts page (formerly Course) ──────────────────────────────── */
+    .art-hero {
+      border: 1px solid var(--border); border-left: 4px solid var(--gold);
+      background: var(--bg-card); border-radius: 10px;
+      padding: 22px 26px; margin-bottom: 14px;
+    }
+    .art-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4.5vw + 0.5rem, 2rem); font-weight: 700;
+      color: var(--text); margin: 0 0 8px;
+    }
+    .art-hero-sub {
+      font-size: .9rem; line-height: 1.55;
+      color: var(--text-muted); margin: 0; max-width: 60ch;
+    }
+
+    .art-filter {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 22px;
+    }
+    .art-filter-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: .72rem; letter-spacing: .06em;
+      padding: 6px 12px; border: 1px solid var(--border);
+      background: var(--bg-card); color: var(--text-muted);
+      border-radius: 5px; cursor: pointer;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .art-filter-tab:hover { color: var(--text); border-color: var(--gold-dim); }
+    .art-filter-tab.active {
+      color: var(--text); background: rgba(212,168,75,.12);
+      border-color: var(--gold-dim);
+    }
+
+    .art-section { margin-bottom: 28px; }
+    .art-section:last-child { margin-bottom: 0; }
+    .art-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold-dim);
+      margin: 0 0 10px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+    .art-empty {
+      font-size: .85rem; line-height: 1.6;
+      color: var(--text-muted); font-style: italic;
+      padding: 14px 18px;
+      background: rgba(212,168,75,.05);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dim);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .art-skills-grid {
+      display: grid; gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    .art-skill-card {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 10px 14px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: border-color .15s;
+    }
+    .art-skill-card:hover { border-color: var(--gold-dim); }
+    .art-skill-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .art-skill-mod {
+      font-family: 'DM Mono', monospace;
+      font-size: .68rem; color: var(--gold-dim);
+      flex-shrink: 0;
+    }
+    .art-skill-slug {
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem; color: var(--text);
+      text-decoration: none;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .art-skill-slug:hover { color: var(--terracotta); }
+
     /* ── Clients page ────────────────────────────────────────────────────── */
     .cli-wrap { max-width: 960px; margin: 0 auto; }
     .cli-hero {
@@ -2519,18 +2598,14 @@
     return s === 'TODAY' || s === 'POST-COHORT' || /^WEEK /.test(s);
   }
 
-  async function loadArtifactsPage() {
-    const wrap = document.getElementById('artifacts-wrap');
-    const state = computeCohortState();
+  // currentArtifactsFilter: 'all' or 'm<N>' (e.g. 'm1'). Module-filter pre-narrows the view.
+  let currentArtifactsFilter = 'all';
 
-    // Probe all note files in parallel.
-    const probed = await Promise.all(
-      MODULES.map(async mod => {
-        const notePath = `./workspace/course/module-${mod.n}-notes.md`;
-        const noteStatus = await probeFile(notePath);
-        return { mod, notePath, noteStatus };
-      })
-    );
+  function loadArtifactsPage(filter) {
+    currentArtifactsFilter = filter || currentArtifactsFilter || 'all';
+    const wrap = document.getElementById('artifacts-wrap');
+    const activeFilter = currentArtifactsFilter;
+    const filterModuleN = activeFilter.startsWith('m') ? parseInt(activeFilter.slice(1), 10) : null;
 
     const statusFor = (mod) => {
       if (mod.status === 'scaffold') return { label: 'Scaffold', cls: 'crs-status-skill' };
@@ -2538,24 +2613,39 @@
       return { label: 'Validated', cls: 'crs-status-found' };
     };
 
-    const renderCard = ({ mod, notePath, noteStatus }) => {
+    const modulesToShow = filterModuleN ? MODULES.filter(m => m.n === filterModuleN) : MODULES;
+
+    // Build flat skill list from MODULES, applying filter.
+    const allSkills = [];
+    for (const mod of MODULES) {
+      for (const d of mod.deliverables) {
+        if (!Array.isArray(d.links)) continue;
+        for (const l of d.links) {
+          if (!l.slug) continue;
+          allSkills.push({
+            slug: l.slug,
+            moduleN: mod.n,
+            authored: mod.status !== 'pending',
+          });
+        }
+      }
+    }
+    // De-duplicate by slug (a slug may appear in multiple deliverables — rare, but safe).
+    const seenSkills = new Set();
+    const skills = allSkills.filter(s => {
+      if (seenSkills.has(s.slug)) return false;
+      seenSkills.add(s.slug);
+      return true;
+    });
+    const skillsToShow = filterModuleN ? skills.filter(s => s.moduleN === filterModuleN) : skills;
+
+    const renderModuleCard = (mod) => {
       const st = statusFor(mod);
       const delivCount = mod.deliverables.length;
       const linkedCount = mod.deliverables.filter(d => Array.isArray(d.links) && d.links.length).length;
-      // Only Module 1 (scaffold) and validated modules have real skill files on disk.
-      // For pending modules the deliverable.links slugs are placeholders, not authored skills.
       const skillCount = mod.status === 'pending' ? 0 : linkedCount;
-      const skillMeta = skillCount === 0
-        ? 'skills pending'
-        : `${skillCount} skill${skillCount === 1 ? '' : 's'} authored`;
+      const skillMeta = skillCount === 0 ? 'skills pending' : `${skillCount} skill${skillCount === 1 ? '' : 's'} authored`;
       const desc = MODULE_BLURB[mod.n] || mod.short;
-
-      const notesFound = noteStatus === 'found';
-      const notesClass = notesFound ? 'btn crs-action' : 'btn crs-action crs-action--muted';
-      const notesAttrs = notesFound
-        ? `href="${notePath}" target="_blank" rel="noopener"`
-        : `href="${notePath}" aria-disabled="true" tabindex="-1"`;
-      const notesLabel = notesFound ? 'Open notes' : 'No notes yet';
 
       return `
         <article class="crs-card">
@@ -2569,57 +2659,96 @@
           <div class="crs-card-desc">${desc}</div>
           <div class="crs-meta">${delivCount} deliverable${delivCount === 1 ? '' : 's'} · ${skillMeta}</div>
           <div class="crs-actions">
-            <a class="${notesClass}" ${notesAttrs}>${notesLabel}</a>
-            <a class="btn btn-primary crs-action" href="#module-${mod.n}" data-module-link="${mod.n}">Open module</a>
+            <a class="btn crs-action" href="#module-${mod.n}" data-module-link="${mod.n}">Course Notes</a>
+            <a class="btn btn-primary crs-action" href="#artifacts/m${mod.n}" data-artifacts-filter="m${mod.n}">View Artifacts</a>
           </div>
         </article>`;
     };
 
-    const statNumClass = isLargeStat(state.statNum) ? 'crs-hero-stat-num' : 'crs-hero-stat-num';
-    const statNumHtml = isLargeStat(state.statNum)
-      ? `<div class="${statNumClass}" style="font-size:1.15rem;letter-spacing:.04em;">${state.statNum}</div>`
-      : `<div class="${statNumClass}">${state.statNum}</div>`;
+    const renderSkillCard = (s) => {
+      const statusLabel = s.authored ? 'Authored' : 'Pending';
+      const statusCls = s.authored ? 'crs-status-found' : 'crs-status-empty';
+      return `
+        <article class="art-skill-card">
+          <div class="art-skill-head">
+            <span class="art-skill-mod">M${s.moduleN}</span>
+            <a class="art-skill-slug" href="#skill/${s.slug}" data-sidebar-skill="${s.slug}">${s.slug}</a>
+          </div>
+          <span class="crs-status ${statusCls}">${statusLabel}</span>
+        </article>`;
+    };
 
-    const progressLabel = state.phase === 'pre'
-      ? `Cohort begins Jun 1 · ${state.daysUntil} day${state.daysUntil === 1 ? '' : 's'} out`
-      : state.phase === 'start'
-      ? 'Week 1 of 12'
-      : state.phase === 'post'
-      ? '12 of 12 weeks complete'
-      : `Week ${state.week} of ${COURSE_WEEKS}`;
+    const filterTabs = ['all', 'm1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'].map(f => {
+      const label = f === 'all' ? 'All' : `M${f.slice(1)}`;
+      const cls = 'art-filter-tab' + (f === activeFilter ? ' active' : '');
+      return `<button type="button" class="${cls}" data-artifacts-filter="${f}">${label}</button>`;
+    }).join('');
+
+    const subtitle = filterModuleN
+      ? `Filtered to Module ${filterModuleN}.`
+      : 'Polished deliverables produced from each module, plus the skills that drive them.';
+
+    const emptyArtifactsCopy = filterModuleN
+      ? `No artifacts produced for Module ${filterModuleN} yet. They'll land here as Rylee + Taylor produce them in the <strong>Design</strong> and <strong>Deliver</strong> phases.`
+      : `No artifacts produced yet. They'll land here as Rylee + Taylor produce them in the <strong>Design</strong> and <strong>Deliver</strong> phases of each module.`;
 
     wrap.innerHTML = `
-      <header class="crs-hero">
-        <div class="crs-hero-text">
-          <h1>Course</h1>
-          <p class="crs-hero-sub">Eight modules, weekly cadence, validated as you go.</p>
-          <div class="crs-hero-note">Notes live in <code>workspace/course/</code> — local-only, gitignored.</div>
-        </div>
-        <div class="crs-hero-stat">
-          ${statNumHtml}
-          <div class="crs-hero-stat-label">${state.statLabel}</div>
+      <header class="art-hero">
+        <div class="art-hero-text">
+          <h1>Artifacts</h1>
+          <p class="art-hero-sub">${subtitle}</p>
         </div>
       </header>
-      <div class="crs-progress">
-        <div class="crs-progress-track">
-          <div class="crs-progress-fill" style="width:${state.progressPct}%"></div>
-        </div>
-        <div class="crs-progress-meta">
-          <span>${progressLabel}</span>
-          <span>${Math.round(state.progressPct)}%</span>
-        </div>
+
+      <div class="art-filter" role="tablist" aria-label="Filter artifacts by module">
+        ${filterTabs}
       </div>
-      <div class="crs-grid">
-        ${probed.map(renderCard).join('')}
-      </div>
+
+      <section class="art-section">
+        <h2 class="art-section-title">Artifacts</h2>
+        <div class="art-empty">${emptyArtifactsCopy}</div>
+      </section>
+
+      <section class="art-section">
+        <h2 class="art-section-title">Modules</h2>
+        <div class="crs-grid">
+          ${modulesToShow.map(renderModuleCard).join('')}
+        </div>
+      </section>
+
+      <section class="art-section">
+        <h2 class="art-section-title">Skills</h2>
+        ${skillsToShow.length
+          ? `<div class="art-skills-grid">${skillsToShow.map(renderSkillCard).join('')}</div>`
+          : `<div class="art-empty">No skills for this module yet.</div>`}
+      </section>
     `;
 
-    // Wire "Open module" links to call showModule() without a hash-driven reload.
+    // Wire "Course Notes" — navigates to the module page in-app.
     wrap.querySelectorAll('[data-module-link]').forEach(a => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        const n = parseInt(a.dataset.moduleLink, 10);
-        showModule(n);
+        showModule(parseInt(a.dataset.moduleLink, 10));
+      });
+    });
+
+    // Wire filter tabs + "View Artifacts" cards — both re-render in place.
+    wrap.querySelectorAll('[data-artifacts-filter]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const newFilter = el.dataset.artifactsFilter;
+        loadArtifactsPage(newFilter);
+        const hash = newFilter === 'all' ? '#artifacts' : `#artifacts/${newFilter}`;
+        history.replaceState(null, '', hash);
+        document.querySelector('.content-scroll').scrollTop = 0;
+      });
+    });
+
+    // Wire skill links — same handler as sidebar (routes to in-app skill placeholder/page).
+    wrap.querySelectorAll('[data-sidebar-skill]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSkill(a.dataset.sidebarSkill);
       });
     });
   }
@@ -2630,10 +2759,14 @@
     const hash = location.hash.replace('#', '');
     const moduleMatch = hash.match(/^module-(\d)$/);
     const skillMatch = hash.match(/^skill\/([\w-]+)$/);
+    const artifactsFilterMatch = hash.match(/^artifacts\/(m\d+)$/);
     if (moduleMatch) {
       await showModule(parseInt(moduleMatch[1], 10));
     } else if (skillMatch) {
       showSkill(skillMatch[1]);
+    } else if (artifactsFilterMatch) {
+      currentArtifactsFilter = artifactsFilterMatch[1];
+      showPage('artifacts');
     } else if (['overview', 'business', 'clients', 'artifacts', 'archive'].includes(hash)) {
       showPage(hash);
     } else {
