@@ -1404,6 +1404,27 @@
     /* Center the README/Overview page on wide screens */
     #page-overview { max-width: 72ch; margin: 0 auto; }
 
+    .md-body a.overview-cta { border-bottom: none; }
+    .overview-cta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin: 24px 0;
+      padding: 18px 22px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--terracotta); text-decoration: none;
+      font-family: 'DM Sans', sans-serif; font-weight: 500;
+      transition: border-color .15s, background .15s, transform .15s;
+    }
+    .overview-cta:hover {
+      border-color: var(--terracotta); background: #FFF8F4;
+    }
+    .overview-cta:hover .overview-cta-arrow { transform: translateX(4px); }
+    .overview-cta-label { font-size: .95rem; }
+    .overview-cta-arrow {
+      font-family: 'DM Mono', monospace; font-size: 1.1rem;
+      transition: transform .15s;
+    }
+
     /* On wide screens, keep topbar + content edges aligned in a single centered band */
     @media (min-width: 1281px) {
       .topbar { padding-inline: max(36px, calc((100% - 960px) / 2)); }
@@ -2382,6 +2403,13 @@ description: ${escapeHtml(meta.description)}
 
       el.querySelectorAll('h2').forEach(h => {
         h.id = h.textContent.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').trim();
+      });
+
+      el.querySelectorAll('a[data-page-link]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          showPage(a.dataset.pageLink);
+        });
       });
     } catch (err) {
       el.innerHTML = `<p style="color:var(--text-muted);font-style:italic;">Could not load README.md — ${err.message}</p>`;

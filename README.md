@@ -23,6 +23,8 @@
 5. **Deliver** — *Taylor, end of week*
    Skill runs, artifact ships to **Artifacts**. Business decisions land in **Business**. Once Rylee has clients, per-client work lands in **Clients**.
 
+---
+
 ### Workspace
 
 The three Workspace pages — **Business**, **Clients**, and **Artifacts** — separate the artifacts produced by Taylor + Rylee during the class into clear pillars: internal business operations vs. client-facing assets that integrate with them. From the Artifacts directory, each module card's **Course Notes** button jumps back to the module page (where the notes live) and each skill card jumps to the skill that produced it — so the path between a deliverable and the work that informed it is always one click.
@@ -46,12 +48,7 @@ Each module page is the workspace for that week of the course. The top of the pa
 
 Once a module's notepads are filled in, Taylor walks them back with Rylee to design the skills that will produce that module's artifacts.
 
-### Skills
-
-Skills are the procedures that turn captured notes into produced artifacts. Each one synthesizes three inputs:
-
-- The lesson material from Dr. Annie's module
-- Rylee's domain expertise from her notepads
-- A final design pass between Rylee + Taylor before production
-
-Skills live as `SKILL.md` files under `.claude/skills/` — one per topic (`business-name`, `entity-setup`, `services-fees`, and so on). They're primarily Taylor's tool, so the sidebar **Skills** section is collapsed by default. Expand it any time to browse what's in there.
+<a class="overview-cta" href="#business" data-page-link="business">
+  <span class="overview-cta-label">Head to the Business workspace</span>
+  <span class="overview-cta-arrow" aria-hidden="true">→</span>
+</a>
