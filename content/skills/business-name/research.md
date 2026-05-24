@@ -1,15 +1,5 @@
 # Keystone IEP Advocacy LLC
 
-**Tagline to carry the BCBA credential (since it's not in the name):**
-
-> "Board-certified behavior analysis meets special education advocacy."
-
-**Or, plain-English version:**
-
-> "BCBA-led IEP advocacy for Illinois families."
-
-That puts the credential in every footer, meta description, and GBP "from the business" field where it actually does SEO and trust work — without burning a name slot on a search term that gets zero queries.
-
 <details open>
 <summary>Keyword SEO Data</summary>
 
@@ -35,6 +25,16 @@ During our research we found an official .gov source for [805 ILCS 180/1-10](htt
 2. Distinguishability: The name cannot be the same as, or deceptively similar to, any other domestic or foreign LLC, corporation, or limited partnership already registered or reserved with the state.
 
 3. Restrictions: The name cannot contain words restricted to other regulated industries (e.g., "Bank", "Trust", "Insurance") without appropriate prior approval from specialized state agencies (such as the IDFPR).
+
+**Tagline to carry the BCBA credential (since it's not in the name):**
+
+> "Board-certified behavior analysis meets special education advocacy."
+
+**Or, plain-English version:**
+
+> "BCBA-led IEP advocacy for Illinois families."
+
+That puts the credential in every footer, meta description, and GBP "from the business" field where it actually does SEO and trust work — without burning a name slot on a search term that gets zero queries.
 
 > Additional Source: [Guidelines for Choosing a Lay Advocate in Special Education](https://illinoisattorneygeneral.gov/Page-Attachments/Guidelines_ChoosingAdvocateSpecialEducation.pdf)
 
