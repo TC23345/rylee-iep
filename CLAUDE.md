@@ -9,7 +9,7 @@ The directory is organized around the course's 8-module deliverable list. Each m
 - BCBA licensed in Illinois via IDFPR (Behavior Analyst Licensing Act)
 - MS, currently Coach + BCBA at NSSEO in Palatine, IL (~3+ years BA experience)
 - Comfortable in IEP meetings from the clinician side; **new to the advocate-side framing**
-- Full credential/context profile: `.claude/shared/rylee-profile.md`
+- Full credential/context profile: `profile.md` (repo root)
 
 ## File conventions
 

@@ -72,7 +72,7 @@ This is the same standard most clinical case-discussion forums use.
 
 ## What about Rylee's own PII?
 
-Her name, NSSEO affiliation, BCBA credential, and NPI are *already* in public registries (LinkedIn, NPI database, BACB). The course content discusses her openly. So `.claude/shared/rylee-profile.md` includes her name and role — that's intentional, not a leak.
+Her name, NSSEO affiliation, BCBA credential, and NPI are *already* in public registries (LinkedIn, NPI database, BACB). The course content discusses her openly. So `profile.md` (at the repo root) includes her name and role — that's intentional, not a leak.
 
 What stays off-record even for Rylee:
 - Her EIN (once she has one)
