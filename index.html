@@ -2101,15 +2101,23 @@
     return parts[2];
   }
 
-  // Splits a `# Heading\n\n<rest>` markdown blob into { title, body }.
-  // If the file doesn't start with an H1, title is null and body is unchanged.
+  // Splits a `# Heading` (+ optional `*italic subtitle*`) header off the top
+  // of a markdown blob into { title, hint, body }. Either may be null.
   function extractLeadingH1(md) {
     const lines = md.split('\n');
     let i = 0;
     while (i < lines.length && lines[i].trim() === '') i++;
-    const m = (lines[i] || '').match(/^#\s+(.+?)\s*$/);
-    if (!m) return { title: null, body: md };
-    return { title: m[1], body: lines.slice(i + 1).join('\n').replace(/^\n+/, '') };
+    const titleMatch = (lines[i] || '').match(/^#\s+(.+?)\s*$/);
+    if (!titleMatch) return { title: null, hint: null, body: md };
+    i++;
+    while (i < lines.length && lines[i].trim() === '') i++;
+    const hintMatch = (lines[i] || '').match(/^\*(.+?)\*\s*$/);
+    let hint = null;
+    if (hintMatch) {
+      hint = hintMatch[1];
+      i++;
+    }
+    return { title: titleMatch[1], hint, body: lines.slice(i).join('\n').replace(/^\n+/, '') };
   }
 
   // Per-skill, per-lens markdown content lives at content/skills/<slug>/<lens>.md.
@@ -2213,12 +2221,16 @@ description: ${escapeHtml(meta.description)}
     M1S_LENSES.forEach(async (lens) => {
       const md = await loadM1SkillLens(slug, lens.key);
       if (!md) return;
-      const { title, body } = extractLeadingH1(md);
+      const { title, hint, body } = extractLeadingH1(md);
       if (title) {
         const tabLabel = wrap.querySelector(`[data-m1s-tab="${lens.key}"] .m1s-tab-label`);
         if (tabLabel) tabLabel.textContent = title;
         const panelTitle = wrap.querySelector(`[data-m1s-panel="${lens.key}"] .m1s-panel-title`);
         if (panelTitle) panelTitle.textContent = title;
+      }
+      if (hint) {
+        const panelHint = wrap.querySelector(`[data-m1s-panel="${lens.key}"] .m1s-panel-hint`);
+        if (panelHint) panelHint.textContent = hint;
       }
       const bodyEl = wrap.querySelector(`[data-m1s-panel-body="${lens.key}"]`);
       if (!bodyEl) return;
