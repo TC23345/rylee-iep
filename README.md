@@ -48,6 +48,8 @@ Each module page is the workspace for that week of the course. The top of the pa
 
 Once a module's notepads are filled in, Taylor walks them back with Rylee to design the skills that will produce that module's artifacts.
 
+---
+
 <a class="overview-cta" href="#business" data-page-link="business">
   <span class="overview-cta-label">Head to the Business workspace</span>
   <span class="overview-cta-arrow" aria-hidden="true">→</span>
