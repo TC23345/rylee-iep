@@ -24,16 +24,3 @@ This is the working surface where the [PIVOT](https://iepadvocacytraining.com) c
 
 5. **Deliver** — *Taylor, end of week*
    Skill runs, artifact ships to **Artifacts**. Business decisions land in **Business**. Once Rylee has clients, per-client work lands in **Clients**.
-
----
-
-## Quick glossary
-
-| Term | Meaning |
-|---|---|
-| **BCBA** | Board Certified Behavior Analyst — Rylee's clinical credential |
-| **IDFPR** | Illinois Department of Financial and Professional Regulation — licenses BCBAs in IL |
-| **IEP** | Individualized Education Program — the legal document this practice is built around |
-| **IEE** | Independent Educational Evaluation — outside-the-school assessment |
-| **ESY** | Extended School Year — special-ed services beyond the school year |
-| **PIVOT** | PIVOT into IEP Advocacy® — Dr. Annie's cohort |

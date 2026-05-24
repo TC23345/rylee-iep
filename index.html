@@ -91,6 +91,25 @@
       text-transform: uppercase; color: var(--sidebar-dim);
       padding: 0 24px 8px;
     }
+    .sidebar-section-toggle {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; padding: 0 24px 8px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: .65rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--sidebar-dim);
+      text-align: left;
+      transition: color .15s;
+    }
+    .sidebar-section-toggle:hover { color: var(--sidebar-text); }
+    .sidebar-section-toggle .chevron {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 10px; flex-shrink: 0;
+      color: var(--gold-dim); font-size: .55rem; line-height: 1;
+    }
+    .sidebar-section-toggle .chevron::before { content: '▶'; }
+    .sidebar-section-toggle[aria-expanded="true"] .chevron::before { content: '▼'; }
+    .skills-list[hidden] { display: none; }
 
     .nav-item {
       display: flex; align-items: center; gap: 10px;
@@ -1398,20 +1417,23 @@
       <div class="sidebar-section-title">Workspace</div>
       <button class="nav-item" data-page="business">Business</button>
       <button class="nav-item" data-page="clients">Clients</button>
-      <button class="nav-item" data-page="course">Course</button>
+      <button class="nav-item" data-page="artifacts">Artifacts</button>
     </div>
 
     <div class="sidebar-divider"></div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-title">Module Progress</div>
+      <div class="sidebar-section-title">Course Modules</div>
       <div class="module-list" id="module-progress-list"></div>
     </div>
 
     <div class="sidebar-divider"></div>
 
     <div class="sidebar-section skills-section">
-      <div class="sidebar-section-title">Skills</div>
+      <button class="sidebar-section-toggle" type="button" aria-expanded="false" aria-controls="skills-list">
+        <span class="chevron"></span> Skills
+      </button>
+      <div class="skills-list" id="skills-list" hidden>
 
       <div class="skill-group expanded" data-mod="1">
         <button class="skill-group-toggle" type="button" aria-expanded="true">
@@ -1503,6 +1525,7 @@
           <a class="skill-link skill-link--pending" href="#skill/job-transition" data-sidebar-skill="job-transition">job-transition</a>
         </div>
       </div>
+      </div>
     </div>
 
     <div class="sidebar-section">
@@ -1550,9 +1573,9 @@
         </section>
       </div>
 
-      <div class="page-view" id="page-course">
-        <section class="crs-wrap" id="course-wrap">
-          <div class="loading">Loading course modules…</div>
+      <div class="page-view" id="page-artifacts">
+        <section class="crs-wrap" id="artifacts-wrap">
+          <div class="loading">Loading artifacts…</div>
         </section>
       </div>
 
@@ -1579,7 +1602,7 @@
     overview: 'PIVOT into IEP Advocacy® — Summer 2026',
     business: 'Business decisions',
     clients: 'Client folders',
-    course: 'Course notes & modules',
+    artifacts: 'Artifacts',
     archive: 'Archive',
   };
 
@@ -2135,6 +2158,18 @@
     });
   });
 
+  // Sidebar section-level collapse (currently used by Skills).
+  document.querySelectorAll('.sidebar-section-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('aria-controls');
+      const target = targetId && document.getElementById(targetId);
+      if (!target) return;
+      const willOpen = target.hasAttribute('hidden');
+      if (willOpen) target.removeAttribute('hidden'); else target.setAttribute('hidden', '');
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
+
   // ── Mobile drawer ──────────────────────────────────────────────────────────
   const sidebarEl = document.getElementById('sidebar');
   const navToggle = document.querySelector('.nav-toggle');
@@ -2484,8 +2519,8 @@
     return s === 'TODAY' || s === 'POST-COHORT' || /^WEEK /.test(s);
   }
 
-  async function loadCoursePage() {
-    const wrap = document.getElementById('course-wrap');
+  async function loadArtifactsPage() {
+    const wrap = document.getElementById('artifacts-wrap');
     const state = computeCohortState();
 
     // Probe all note files in parallel.
@@ -2599,7 +2634,7 @@
       await showModule(parseInt(moduleMatch[1], 10));
     } else if (skillMatch) {
       showSkill(skillMatch[1]);
-    } else if (['overview', 'business', 'clients', 'course', 'archive'].includes(hash)) {
+    } else if (['overview', 'business', 'clients', 'artifacts', 'archive'].includes(hash)) {
       showPage(hash);
     } else {
       await showModule(1);
@@ -2607,7 +2642,7 @@
     loadReadme();
     loadBusinessPage();
     loadClientsPage();
-    loadCoursePage();
+    loadArtifactsPage();
     loadArchive();
   }
   // ── Clerk auth gate ────────────────────────────────────────────────────────
