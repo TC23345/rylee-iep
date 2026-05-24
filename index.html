@@ -1106,6 +1106,8 @@
       background: rgba(184,92,56,.06);
       border-left: 3px solid rgba(184,92,56,.4);
     }
+    .m1s-panel-content > :first-child { margin-top: 0; }
+    .m1s-panel-content > :last-child { margin-bottom: 0; }
 
     .m1s-foot {
       display: flex; align-items: center; justify-content: space-between;
@@ -2052,6 +2054,23 @@
     return parts[2];
   }
 
+  // Per-skill, per-lens markdown content lives at content/skills/<slug>/<lens>.md.
+  // Missing file → fall back to the bracketed placeholder.
+  const m1sContentCache = new Map();
+  async function loadM1SkillLens(slug, lensKey) {
+    const key = `${slug}/${lensKey}`;
+    if (m1sContentCache.has(key)) return m1sContentCache.get(key);
+    try {
+      const res = await fetch(`./content/skills/${slug}/${lensKey}.md`);
+      const md = res.ok ? (await res.text()).trim() : '';
+      m1sContentCache.set(key, md);
+      return md;
+    } catch {
+      m1sContentCache.set(key, '');
+      return '';
+    }
+  }
+
   function renderM1SkillPage(slug) {
     const wrap = document.getElementById('m1skill-wrap');
     const meta = MODULE1_SKILLS[slug];
@@ -2077,7 +2096,7 @@
           <h2 class="m1s-panel-title">${lens.label} Context</h2>
           <span class="m1s-panel-hint">${lens.hint}</span>
         </div>
-        <div class="m1s-panel-body">
+        <div class="m1s-panel-body" data-m1s-panel-body="${lens.key}">
           <p class="m1s-panel-placeholder">${escapeHtml(m1sPlaceholderFor(lens.key))}</p>
         </div>
       </section>`).join('');
@@ -2128,6 +2147,15 @@ description: ${escapeHtml(meta.description)}
           p.classList.toggle('is-active', p.dataset.m1sPanel === key);
         });
       });
+    });
+
+    // Hydrate each panel body with markdown content if a file exists.
+    M1S_LENSES.forEach(async (lens) => {
+      const md = await loadM1SkillLens(slug, lens.key);
+      if (!md) return;
+      const body = wrap.querySelector(`[data-m1s-panel-body="${lens.key}"]`);
+      if (!body) return;
+      body.innerHTML = `<div class="md-body m1s-panel-content">${marked.parse(md)}</div>`;
     });
 
     wrap.querySelectorAll('[data-m1s-back]').forEach(a => {
