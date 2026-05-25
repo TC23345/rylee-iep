@@ -45,6 +45,8 @@ The repo doubles as a static-rendered dashboard (`index.html` + `marked.js`) dep
 
 This is purely a presentation layer — the source of truth for skill *behavior* is still `.claude/skills/<slug>/SKILL.md`. The `content/skills/<slug>/*.md` files are the rendered narrative surface for the dashboard.
 
+**How to write these pages** (structure, voice, the Taylor-explaining-to-Rylee register, readability rules): `.claude/shared/skill-page-style.md`.
+
 ## PII policy
 
 - **Never commit**: full student names, full school district names, parent contact info, EIN, SSN, dates of birth, NPI of minors
