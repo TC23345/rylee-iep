@@ -12,7 +12,7 @@ During our research, we found an official .gov source for [805 ILCS 180/1-10](ht
 
 > Additional Source: [Guidelines for Choosing a Lay Advocate in Special Education](https://illinoisattorneygeneral.gov/Page-Attachments/Guidelines_ChoosingAdvocateSpecialEducation.pdf)
 
-### Tagline Options
+## Tagline Options
 
 **Tagline to carry the BCBA credential (since it's not in the name):**
 
@@ -24,4 +24,4 @@ During our research, we found an official .gov source for [805 ILCS 180/1-10](ht
 
 That puts the credential in every footer, meta description, and GBP "from the business" field where it actually does SEO and trust work — without burning a name slot on a search term that gets zero queries.
 
-The legal/compliance aspect seems easy to verify/pre-clear with Dr. Annie, so once that lands we're locked in on **Keystone IEP Advocacy LLC**. From there, see the **Branding Rationale** tab for how we got to Keystone over Cornerstone or Compass, and the **SEO Strategy** tab for the keyword data that grounded the descriptor.
+The legal/compliance aspect seems easy to verify/pre-clear with Dr. Annie, so once that lands we're locked in on **Keystone IEP Advocacy LLC** — grounded by the keyword data in the **SEO Strategy** tab, with the **Branding Rationale** tab covering how the brandable "Keystone" got chosen to lead it.
