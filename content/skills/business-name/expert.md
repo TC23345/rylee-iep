@@ -1,10 +1,10 @@
 # SEO Strategy
 
-*Third priority — SEO Upside*
+*Where we started*
 
 Taylor began the SEO keyword research process starting with the seed phrase: "IEP advocacy". The 6 keywords/phrases included in the table below were selected to guide our decision-making as we picked a name to represent Rylee's practice.
 
-Now that we're feeling confident with legal, compliance and a bit of branding, Taylor is free and clear to go bananas doing what he does best — examining Google search data to identify patterns/themes/SEO best practices that leave behind a beaten path of monthly search volume, keyword difficulty/competition and CPC (Cost-per-click).
+From that seed phrase, Taylor got to go bananas doing what he does best — examining Google search data to identify patterns/themes/SEO best practices that leave behind a beaten path of monthly search volume, keyword difficulty/competition and CPC (Cost-per-click).
 
 <details open>
 <summary>Keyword SEO Data</summary>

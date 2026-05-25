@@ -1,6 +1,6 @@
 # Keystone IEP Advocacy LLC
 
-*Highest priority — Legal/Compliance*
+*What the course needs first*
 
 Our highest priority in considering potential business names was making sure the name we picked would comply with all Illinois state laws.
 

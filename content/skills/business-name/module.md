@@ -1,24 +1,29 @@
 # Branding Rationale
 
-*Second priority — Branding*
+*The brandable hook out front*
 
-We began thinking of metaphors that associate/relate to IEP advocacy.
+Branding was the smallest decision on this page — because the keyword data made it small. The SEO research had already locked the back half of the name (**IEP Advocacy**), so all that was left was the word in front of it. We landed on **Keystone**.
 
-"Compass" was the most obvious choice playing off the metaphor of "guiding", but we were forced to pivot after discovering [Family Matters PTIC](https://fmptic.org/) runs a program named "COMPASS: Special Education Navigation," so the distinguishability factor disqualified that as an option for us.
+Here's the birds-eye view of how that ran. I handed the research agent the seed-phrase data from the **SEO Strategy** tab with one rule: let the demand decide the *structure* of the name, then go looking for a brandable word to lead it. The data was blunt — parents search "IEP advocacy" and "IEP advocate," while the credential ("BCBA") and any city or state pull effectively zero. So before branding even started, the descriptor was settled and the agent had a tightly-bounded job.
 
-**The next closest metaphors we came up with were:** "Cornerstone", "Keystone" and "Beacon"
+## What the data left us to decide
 
-Keystone and Cornerstone are terms used interchangeably to describe a load-bearing stone at the top of an arch, and both terms associate metaphorically with IEP advocacy in the following ways:
+Running the seed-phrase insights forward collapsed the whole naming problem into three facts:
 
-1. Parents are the keystone/cornerstone of the IEP team
-2. IEP Advocates are the keystone/cornerstone that holds the meeting together
+1. **The descriptor is fixed.** "IEP Advocacy" carries the search demand, so it stays in the name word-for-word — no synonyms, no credential, no geography.
+2. **The lead word is free.** Because the descriptor does the SEO work, the first word doesn't have to be a keyword at all. It can be pure brand — a metaphor that makes a parent *feel* something.
+3. **It still has to be distinguishable.** Whatever leads can't collide with a name already on file in Illinois — the same distinguishability rule that anchors the **Keystone IEP Advocacy LLC** tab.
 
-As cheesy as it sounds, I think it's important the business-name we select accurately reflects and represents the emotions we want our potential clients to feel when they hear or read it.
+That last constraint settled the obvious candidate fast: **Compass** — the natural "we guide you" metaphor — was already in use by [Family Matters PTIC](https://fmptic.org/), whose program is literally "COMPASS: Special Education Navigation." Too close to clear. That left a shortlist of **Cornerstone**, **Keystone**, and **Beacon**.
 
-## Why We Landed on Keystone
+## Why Keystone
 
-The primary reason for choosing Keystone rests upon its alignment with our inspiration to originally pursue this opportunity in the first place.
+A keystone is the wedge-shaped stone at the very top of an arch — the last one set, the one that locks every other stone in place so the whole thing can bear weight. It maps cleanly onto the work: the parent, with the advocate beside them, is the piece that holds the IEP team together.
+
+But the reason it actually won is a detail from the engineering:
 
 > "The keystone experiences the least stress of any voussoirs due to its position at the apex."
 
-All branding shenanigans aside, we can point to this statement when we need to remind ourselves of why we began this journey in the first place: to put Rylee in the position of the least stress by positioning herself as an IEP advocate.
+A *voussoir* is just one of the wedge stones that make up the arch. All branding shenanigans aside, that line is the entire reason this practice exists: put Rylee at the apex — the spot under the **least stress** — by positioning her as the advocate instead of the one absorbing all the pressure. It's the sentence we can point back to whenever we need to remember why we started.
+
+Snap the pieces together and the name builds itself: **Keystone** (the brand) + **IEP Advocacy** (the descriptor the data demanded) + **LLC** (the legal requirement) = **Keystone IEP Advocacy LLC**.
