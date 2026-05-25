@@ -30,7 +30,7 @@ We will expand more on this later, but for now just focus on the idea of embeddi
 
 ## Seed Phrase Query: IEP Advocacy
 
-Here's the rationale in plain terms: search volume is just how many people type a given phrase into Google each month — a direct readout of where parent demand actually sits. The data concentrates that demand on the descriptor ("IEP advocacy" / "IEP advocate"), not on the credential ("BCBA") or a city or state, which return effectively zero. So the decision follows the data: put the high-demand descriptor in the legal name, lead with a brandable word in front of it, and let the credential and location live in site copy and Google Business Profile — where they build trust without burning a name slot that earns no traffic.
+> (SEO results are often surprising and that's why it required a trained eye — most of the time a 'lack of search volume' you would expect to be higher relative to the rest of the data based on your domain expertise can be just as significant of a signal than an abundance of volume)
 
 **The result of our initial seed phrase query returned the following insights:**
 
@@ -38,4 +38,4 @@ Here's the rationale in plain terms: search volume is just how many people type 
 2. The local intent angle with "iep advocate near me" at 1,000 searches is particularly valuable, and "autism advocate" stands out with a higher cost-per-click at $1.81, suggesting commercial intent. The local intent data confirms parents are searching geographically, so I should rely on Google Business Profile and location-specific content rather than embedding geography in the actual business name.
 3. I'm also noticing that "BCBA" has zero search demand as a credential descriptor, so it shouldn't anchor the brand identity—it belongs in supporting materials instead. The naming strategy is becoming clearer: a brandable name paired with "IEP Advocacy" or "Special Education Advocacy" as the descriptor.
 
-> (SEO results are often surprising and that's why it required a trained eye — most of the time a 'lack of search volume' you would expect to be higher relative to the rest of the data based on your domain expertise can be just as significant of a signal than an abundance of volume)
+Search volume is just how many people type a given phrase into Google each month — a direct readout of where parent demand actually sits. The data concentrates that demand on the descriptor ("IEP advocacy" / "IEP advocate"), not on the credential ("BCBA") or a city or state, which return effectively zero. So the high-demand descriptor goes in the legal name, a brandable word leads in front of it, and the credential and location live in site copy and Google Business Profile — where they build trust without burning a name slot that earns no traffic.
