@@ -24,6 +24,27 @@ The directory is organized around the course's 8-module deliverable list. Each m
 
 **Editing `assets/` vs `workspace/`**: `assets/` files are the *templates* — edit them when Rylee wants to change the form/structure for all future clients. `workspace/clients/<id>/` files are the *populated copies* — edit them when working with a specific client. Never edit a workspace file thinking it will affect future clients; never edit an asset file thinking it will retroactively update existing client folders.
 
+## Dashboard content conventions
+
+The repo doubles as a static-rendered dashboard (`index.html` + `marked.js`) deployed to https://rylee-iep-production.up.railway.app. Markdown content for each surface lives in well-known paths and is fetched + rendered client-side:
+
+| Path | Renders to |
+|---|---|
+| `README.md` | Overview page (`/#overview`, default route) |
+| `archive.md` | Archive page (`/#archive`) |
+| `modules.md` | Course module overview, used for sidebar metadata |
+| `content/module-<N>.md` | Per-deliverable section bodies on the Module-N page (`/#module-N`); each `## Heading` defines a section, a `[Paragraph]` body falls back to the three bracketed `CONTEXT_PLACEHOLDERS` |
+| `content/skills/<slug>/<lens>.md` | Module-1 skill page panels — `lens ∈ {research, module, expert}` maps to the three tabs |
+
+**Skill lens file structure** (`content/skills/<slug>/<lens>.md`):
+
+- A leading `# Heading` is promoted to **both** the tab label and the panel head title, replacing the generic "Initial Research" / "Module Knowledge" / "Rylee's Expert" defaults.
+- An optional `*italic subtitle*` on the next non-empty line replaces the default panel hint (`Pre-module orientation` / `Synthesized from lesson` / `Weighs heaviest downstream`).
+- Everything after that renders as the panel body through marked + the `.md-body` design system (tables, `<details>` collapsibles, lists inside blockquotes, etc. are all supported).
+- Missing files fall back to the bracketed `[…Context — …]` placeholder text. No error.
+
+This is purely a presentation layer — the source of truth for skill *behavior* is still `.claude/skills/<slug>/SKILL.md`. The `content/skills/<slug>/*.md` files are the rendered narrative surface for the dashboard.
+
 ## PII policy
 
 - **Never commit**: full student names, full school district names, parent contact info, EIN, SSN, dates of birth, NPI of minors
