@@ -123,6 +123,7 @@ All three carry `[hidden]` toggled exclusively; CSS rule `.auth-loading[hidden],
 - Data source: `fetch('./workspace/clients/manifest.json')` (array of client_ids; absent → empty).
 - Sections (string-concatenated): `.cli-hero` (count stat) + `.cli-pii` (sample `marcus-t-d214` / `Marcus T.`) + `.cli-add` (run `/new-client`) + `.cli-section` roster (`.cli-roster` rows or `.cli-roster-empty`) + `.cli-section` anatomy (`.cli-tree` ASCII folder tree).
 - No event wiring beyond static "Open folder" links.
+- **Rebuild note:** the Next.js rebuild replaces this `manifest.json` read with a Mongo `clients` collection written by a new "New Client" modal (mock-only, `isMock:true`) — the app's first regulated-data store. See §9 and rebuild-spec "Data sensitivity & Illinois legal baseline".
 
 ### Artifacts — `#page-artifacts`
 - Inner target `#artifacts-wrap` (`.crs-wrap`). Render fn: `loadArtifactsPage(filter)`.
@@ -323,3 +324,18 @@ No `sessionStorage` usage.
 10. **`#page-module` is the default active view in static HTML** (`class="page-view active"`), and the routing fallback is `showModule(1)`. Overview is the visual "home" in the sidebar but Module-1 is what renders if the hash is empty/unrecognized.
 
 11. **`renderDeliverableLinks` is fully dead code** — defined at line 2002 but called from **zero** sites (confirmed via grep). Module pages render via `renderModuleBelow` (sections). It builds `.deliverable-links` / `.deliverable-link` markup that nothing ever invokes; the `.deliverable-link*` CSS and `data-skill-link` routing therefore only matter for paths that DO emit them (Business "Run skill" buttons and module-source `[data-skill-link]` injected via content). Safe to drop in the port.
+
+---
+
+## 9. Data sensitivity (current app) & the rebuild's first regulated-data store
+
+The current static app persists **no personal data**: the Clients page reads only de-identified `client_id` strings from a gitignored `workspace/clients/manifest.json` (§3, §7); all real client PII lives under `workspace/` (gitignored) per `.claude/shared/pii-policy.md`; localStorage holds only course-progress booleans (§7). So the static app has no regulated-data surface.
+
+The rebuild introduces one — a Mongo **`clients` collection** written by the new "New Client" modal, the app's first store of identifiable student/parent data. Treat it as regulated (mock-only / `isMock:true` until an encryption + consent pass). The Illinois + federal baseline lives in **rebuild-spec.md → "Data sensitivity & Illinois legal baseline"**:
+
+- **PIPA (815 ILCS 530/)** — binds the practice directly: reasonable security, vendor flow-down (Atlas), breach notice (encryption exception).
+- **FERPA** — records arrive via the parent's signed written consent; redisclosure limited to the student's educational needs.
+- **ISSRA (105 ILCS 10/)** — schools' records law; sets the retention norm (`backend-systems`: 7 yr from last service date).
+- **SOPPA (105 ILCS 85/)** — ed-tech "operators" only; a solo advocate's internal DB is out of scope.
+
+Not legal advice — consent/data-handling contract language is attorney territory (CLAUDE.md scope gates).
