@@ -41,12 +41,14 @@ lib/
 content/  (unchanged)         # README.md, modules.md, archive.md, content/module-N.md, content/skills/<slug>/<lens>.md
 ```
 
+**New Client additions to the tree:** `proxy.ts` (root; Next-16 rename of `middleware.ts` — `clerkMiddleware()` gate), `lib/clients.ts` (`ClientDoc` type + collection accessor + unique `{clientId:1}` index + `deriveClientId`/`deriveDisplayName` helpers), `app/actions/clients.ts` (`'use server'` `createClient`), `app/(app)/clients/NewClientModal.tsx` (`'use client'` — Dialog + react-hook-form/zod + live-derived ids + "sample data only" guardrail).
+
 ### Route map (current hash → real Next route)
 | Current | New route | Notes |
 |---|---|---|
 | `#overview` | `/` | renders `README.md` |
 | `#business` | `/business` | `BUSINESS_FILES` + `BIZ_GROUPS`; `workspace/business/*` probes become server reads |
-| `#clients` | `/clients` | `workspace/clients/manifest.json` → server read |
+| `#clients` | `/clients` | Mongo **`clients`** collection read; New Client modal writes via the `createClient` server action (replaces the gitignored `manifest.json`) |
 | `#artifacts` / `#artifacts/m<N>` | `/artifacts?m=<N>` | filter via search param (real, shareable) |
 | `#module-<N>` | `/module/[n]` | **Course Modules workspace + notepad.** Fixes the single-digit `\d` route limit |
 | `#skill/<slug>` | `/skill/[slug]` | M1 slug → rich 3-lens page; else placeholder |
@@ -245,6 +247,32 @@ await db.collection("progress").aggregate([
   { $group:{ _id:"$moduleNumber", done:{ $sum:1 } } }, { $sort:{ _id:1 } } ]).toArray();
 ```
 
+**`clients`** — NEW (written by the "New Client" modal; outside the original notes/progress scope). Mirrors `.claude/skills/intake-process/assets/intake-form.md`; `clientId`/`displayName` are auto-derived per `.claude/shared/pii-policy.md`:
+```json
+{ "clientId": "marcus-t-d214", "displayName": "Marcus T.",
+  "family": { "parentGuardianNames": "", "preferredContact": "email", "phone": "", "email": "", "bestTimesToReach": "", "timeZone": "" },
+  "student": { "firstName": "Marcus", "lastInitial": "T", "dobYear": 2014, "grade": "", "districtAbbr": "d214", "currentSchool": "", "disabilityCategory": "", "mostRecentIepDate": "", "mostRecentEvalDate": "" },
+  "presentingConcern": { "summary": "", "ninetyDayOutcome": "" },
+  "supports": { "iepServices": "", "relatedServices": "", "privateTherapies": "", "recentEvaluations": "" },
+  "docsNeeded": { "mostRecentIep": false, "evaluationReports": false, "priorWrittenNotices": false, "progressReports": false, "districtCorrespondence": false },
+  "referral": { "source": "", "priorAdvocate": "", "priorAttorney": "" },
+  "logistics": { "meetingModality": "video", "workingHours": "", "anythingElse": "" },
+  "isMock": true, "createdBy": "<clerkUserId>", "moduleContext": "module-1",
+  "createdAt": "2026-…Z", "updatedAt": "2026-…Z" }
+```
+Index: unique `{ clientId: 1 }`. PII-shape rules (enforced in the zod schema + re-checked server-side): `student.lastInitial` = single letter (the intake form collects first name only; the modal adds this to build the id); `student.dobYear` = **year only** (never full DOB); `student.districtAbbr` = **abbreviation only** (never the full district name). Every family/student/concern/support/referral/logistics field is sensitive — tag for the field-level-encryption pass. `isMock:true` is the seam between today's sample data and the future real-PII pass.
+
+## Data sensitivity & Illinois legal baseline (clients collection)
+
+`notes`/`progress` hold no personal data. The **`clients` collection is different** — the first place this app persists data about identifiable third parties (students/parents). Treat it as regulated data. **Current posture: mock/sample only** — every doc carries `isMock:true` and the modal shows a "sample data only" banner; real PII must not be entered until the items below are met. Not legal advice — binding consent/contract language is Rylee's attorney's call (CLAUDE.md scope gates).
+
+- **PIPA — Personal Information Protection Act (815 ILCS 530/).** Binds any IL business storing residents' "personal information." Requires *reasonable security measures*, vendor flow-down (Atlas), and breach notification — with an **encryption exception** (no notice if data was encrypted/unreadable). → before real data: TLS in transit + encryption at rest (Atlas defaults) + **field-level encryption** on sensitive fields; notify the AG if a breach affects >500 IL residents.
+- **FERPA (20 U.S.C. §1232g).** Binds schools, not the advocate directly — records reach Rylee via the parent's **signed, dated, written consent**, and redisclosure is limited to the student's educational needs. → capture a consent record at intake; don't redisclose beyond scope. Wording → attorney.
+- **ISSRA — IL School Student Records Act (105 ILCS 10/).** Governs *schools'* records (custodian; permanent 60 yr / temporary 5 yr). Not a direct obligation on a private advocate, but sets the retention norm — `backend-systems` adopts **7-yr retention from last service date** (ratify with attorney).
+- **SOPPA (105 ILCS 85/).** Applies to ed-tech "operators" contracted by schools / marketed for K-12 use. A solo advocate's internal client DB is **not** an operator → out of scope (documented to avoid mis-assuming coverage).
+
+**In the data model above:** sensitive fields are encryption-pass targets; `dobYear`/`districtAbbr`/`lastInitial` already constrain shape to the PII-safe form per `.claude/shared/pii-policy.md`. `isMock` separates sample data from the future real-PII pass (field-level encryption + signed-consent capture + retention/secure-delete).
+
 ---
 
 ## 5. Markdown rendering (replace `marked@9`)
@@ -285,7 +313,7 @@ Content files stay in-repo and are read server-side (`lib/content.ts`) for `/` (
 
 ```bash
 npx shadcn@latest init
-npx shadcn@latest add card tabs badge collapsible sidebar command sonner textarea skeleton scroll-area tooltip button
+npx shadcn@latest add card tabs badge collapsible sidebar command sonner textarea skeleton scroll-area tooltip button dialog form input select label checkbox
 ```
 (`components.json` + `lib/utils.ts`'s `cn()` come from `init`.)
 
@@ -304,6 +332,7 @@ npx shadcn@latest add card tabs badge collapsible sidebar command sonner textare
 | long lists / sidebar | **ScrollArea** |
 | glyph/info affordances | **Tooltip** |
 | (new) global search/jump | **Command** (⌘K palette, §8) |
+| (new) New Client modal → MongoDB | **Dialog** + **Form** (react-hook-form + zod) + **Input**/**Textarea**/**Select**/**Label**/**Checkbox**; **Sonner** toast on save; **Button** trigger |
 
 Auth screens (`#auth-loading`/`#auth-gate`/`#app-shell`) → Clerk's Next.js components (`<ClerkProvider>`, `<SignIn>`, `<UserButton>`) with the same appearance vars (`colorPrimary:#D4A84B`, `colorText:#1C1A15`, `colorBackground:#FFFEFB`, `fontFamily:"DM Sans"`).
 
@@ -351,5 +380,5 @@ Dev workflow with the MCP:
 - **Drop dead code:** `renderDeliverableLinks` (unused), the always-`'Active'` `statLabel` ternary, orphaned cohort machinery (`computeCohortState`/`COURSE_START`/`COURSE_WEEKS`/`.crs-hero*`/`.crs-progress*`), unused `.art-hero` CSS.
 - **`#artifacts` is the former Course page** — decide whether it stays "Artifacts" or is reframed now that modules + notepad cover the course workflow.
 - **Single-source the data:** move `MODULES`/`MODULE1_SKILLS`/`BUSINESS_FILES`/`BIZ_GROUPS`/`MODULE_BLURB`/`SKILL_INDEX` into typed `lib/data.ts`; keep `M1S_LENSES` but note its num/order inversion (§8.8) when rendering tab numbers.
-- **Keep Clerk** auth + the `pk_test_…` key/appearance; gate the `(app)` route group with Clerk middleware.
+- **Keep Clerk** auth + the `pk_test_…` key/appearance; gate the `(app)` route group with `clerkMiddleware()` in **`proxy.ts`** (Next 16 renames `middleware.ts`→`proxy.ts`; Node runtime; Clerk's default export works unchanged).
 - **Content files unchanged** — the rebuild reads the same `README.md`/`modules.md`/`archive.md`/`content/**` so no content migration is needed; only the *render* path changes (marked → react-markdown) and *editable* state moves to MongoDB.
