@@ -1,10 +1,26 @@
 # Client and business data — never commit
 workspace/
 
+# Dependencies and build output
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
 # Environment
 .env
 .env.*
 !.env.example
+
+# Tooling output
+.vercel/
+.playwright-mcp/
+.pnpm-debug.log*
+.next-*.log
+v-*.png
 
 # OS
 .DS_Store
