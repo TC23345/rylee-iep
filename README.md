@@ -1,6 +1,6 @@
 # Rylee IEP Advocacy Workspace
 
-> Welcome, Rylee. This is your internal workspace for turning the PIVOT course, your BCBA experience, and Taylor's build support into the operating system for your private-pay IEP advocacy practice.
+> Welcome Rylee! Congratulations on taking your first steps into private-pay IEP advocacy. Scroll through and tap around on this page, then use the sidebar menu in the top left to explore the course modules, business workspace, client area, artifacts, and skills.
 
 ## What This Platform Is For
 
