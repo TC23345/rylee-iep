@@ -50,7 +50,7 @@ Once a module's notepads are filled in, Taylor walks them back with Rylee to des
 
 ---
 
-<a class="overview-cta" href="#business" data-page-link="business">
+<a class="overview-cta" href="/business">
   <span class="overview-cta-label">Head to the Business workspace</span>
   <span class="overview-cta-arrow" aria-hidden="true">→</span>
 </a>

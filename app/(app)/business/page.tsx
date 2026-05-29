@@ -4,7 +4,7 @@ import path from "node:path";
 import { ScopeDisclaimer } from "@/components/ScopeDisclaimer";
 import { BUSINESS_FILES, BIZ_GROUPS } from "@/lib/data";
 
-// Business — was #business / loadBusinessPage. BUSINESS_FILES grouped by BIZ_GROUPS,
+// Business workspace. BUSINESS_FILES grouped by BIZ_GROUPS,
 // each item's status probed server-side against the local (gitignored) workspace/.
 // "Open file" is a disabled placeholder: workspace/ is not served by Next (local-only);
 // "Run skill" deep-links to the in-app skill page.

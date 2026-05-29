@@ -1,6 +1,6 @@
-# Dashboard Architecture — `index.html`
+# Historical Dashboard Architecture - former `index.html`
 
-Source: `/home/user/rylee-iep/index.html` (3,009 lines, single-file SPA). This document is the rebuild map for porting to Next.js / TypeScript / Tailwind / shadcn. All identifiers, route strings, content paths, and CSS token values below are verbatim from the source.
+Source: former `/home/user/rylee-iep/index.html` (3,009 lines, single-file SPA). This document is retained as an archive of the static prototype that was ported to Next.js / TypeScript / Tailwind / shadcn. The source file has been removed from the runtime repo; use the root Next.js app as the implementation source of truth.
 
 ---
 

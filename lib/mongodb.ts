@@ -13,8 +13,8 @@ const globalForMongo = global as unknown as { _mongo?: MongoCache };
 const cached: MongoCache = (globalForMongo._mongo ??= {});
 
 function getMongoUri(): string {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error("Missing MONGODB_URI");
+  const uri = process.env.MONGODB_URI ?? process.env.MONGO_URI;
+  if (!uri) throw new Error("Missing MONGODB_URI or MONGO_URI");
   return uri;
 }
 

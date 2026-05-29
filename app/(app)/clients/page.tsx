@@ -74,7 +74,7 @@ export default async function ClientsPage() {
         <div className="cli-roster">
           {dbError ? (
             <div className="cli-roster-empty">
-              Database unavailable — set <code>MONGODB_URI</code> in{" "}
+              Database unavailable — set <code>MONGODB_URI</code> or <code>MONGO_URI</code> in{" "}
               <code>.env</code> and restart.
             </div>
           ) : count === 0 ? (

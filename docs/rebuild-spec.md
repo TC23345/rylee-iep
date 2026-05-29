@@ -1,11 +1,11 @@
-# Rebuild Spec — `index.html` → Next.js + TypeScript + Tailwind + shadcn/ui + MongoDB
+# Historical Rebuild Spec - `index.html` to Next.js + TypeScript + Tailwind + shadcn/ui + MongoDB
 
-Companion to `docs/dashboard-architecture.md` (the verified map of the current app). This is the blueprint a fresh Claude Code session — **with a MongoDB MCP enabled** — builds the new app from. Scope: planning only; no code is scaffolded by this document.
+Companion to `docs/dashboard-architecture.md` (the verified map of the former static app). This document is retained as historical rebuild context. The production app is now the root Next.js app deployed on Railway.
 
 **Sourcing (read before trusting snippets):**
 - ✅ **Web-verified:** the MongoDB MCP tool list + config; the markdown stack (`react-markdown` + `remark-gfm` + `rehype-raw`).
 - ⚠️ **From knowledge (re-verify against live docs in the build session):** App Router, Tailwind v4, and current shadcn/ui CLI snippets. Doc domains (nextjs.org, ui.shadcn.com, tailwindcss.com) were network-blocked when this was written. **Version baseline: target Next.js 16.2 / React 19.2 / Tailwind v4** (snippets here were drafted against 15 — `params`/`searchParams` are async, await them). The runbook `.claude/commands/PLAN-rylee-iep.md` carries the authoritative version notes + Next 16/React 19 patterns; follow it over any 15-era detail below.
-- 🎨 **Color tokens are verbatim** from `index.html` `:root` (cross-checked against the map). Never substitute invented values.
+- Color tokens were copied from the former `index.html` `:root` and remain the canonical dashboard palette.
 
 ---
 

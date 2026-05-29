@@ -1,7 +1,7 @@
 import "server-only";
 
 // Server-side reads of the in-repo markdown content. Ports the parse helpers from
-// index.html (parseModulesMd, parseModuleContentSections, extractLeadingH1) so the
+// former static dashboard (parseModulesMd, parseModuleContentSections, extractLeadingH1) so the
 // rendered output matches the current app. Server-only (uses node:fs) — never import
 // from a Client Component.
 
@@ -80,7 +80,7 @@ export async function getModuleContent(n: number): Promise<ContentSection[] | nu
 }
 
 /** Body to render for a deliverable section: empty / "[Paragraph]" falls back to the
- *  three bracketed lens placeholders (matches index.html renderSectionBody). */
+ *  three bracketed lens placeholders (matches the former renderSectionBody). */
 export function sectionBodyOrPlaceholder(body: string | undefined): string {
   const t = (body ?? "").trim();
   return !t || t === "[Paragraph]" ? CONTEXT_PLACEHOLDERS : body!;
@@ -94,7 +94,7 @@ export interface LensContent {
 }
 
 /** A leading `# H1` promotes to tab label + panel title; an `*italic*` line below it
- *  becomes the hint; the rest is the body (ported from index.html extractLeadingH1). */
+ *  becomes the hint; the rest is the body (ported from the former extractLeadingH1). */
 export function extractLeadingH1(md: string): LensContent {
   const lines = md.split("\n");
   let i = 0;

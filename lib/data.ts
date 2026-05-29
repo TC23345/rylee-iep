@@ -1,4 +1,4 @@
-// Typed port of the in-app data structures from index.html (architecture map §7).
+// Typed port of the former static dashboard data structures (architecture map §7).
 // Pure data + helpers — no "use client", safe to import in Server Components.
 //
 // Module-7 fix (architecture map §8.1): MODULES[6] carries all 5 deliverables and
@@ -184,7 +184,7 @@ export const MODULE1_SKILLS: Record<string, M1Skill> = {
   },
 };
 
-// ORDER preserved from index.html (expert → research → module); the displayed `num`
+// ORDER preserved from the former dashboard (expert → research → module); the displayed `num`
 // is 01/02/03 in array order, so tab #1 ("01") is "Rylee's Expert" (architecture §8.8).
 export const M1S_LENSES: M1Lens[] = [
   { key: "expert", num: "01", label: "Rylee's Expert", hint: "Weighs heaviest downstream" },

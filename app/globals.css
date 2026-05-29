@@ -58,7 +58,7 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-/* Exact brand tokens (verbatim from index.html :root) mapped onto shadcn
+/* Exact brand tokens from the former static dashboard mapped onto shadcn
    semantic vars. shadcn here references vars RAW (var(--x)), not hsl()-wrapped,
    so hex values render correctly. */
 :root {
@@ -70,7 +70,7 @@
   --ink: #1c1a15;
   --parchment: #f6f3ee;
 
-  /* legacy aliases so ported index.html CSS works verbatim */
+  /* legacy aliases so ported dashboard CSS works verbatim */
   --text: #1c1a15;
   --text-muted: #7a7060;
   --bg: #f6f3ee;
@@ -141,7 +141,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Shared content surfaces ported verbatim from index.html.
+   Shared content surfaces ported from the former static dashboard.
    Page-specific families (.biz-*, .crs-*, .art-*, .m1s-*, .skl-*, .cli-*)
    are appended as each page is built.
    ───────────────────────────────────────────────────────────────────────── */

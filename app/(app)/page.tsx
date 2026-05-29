@@ -3,7 +3,7 @@ import { requireSignedInUser } from "@/lib/authz";
 import { getReadmeChecklistState } from "@/lib/workspace-state";
 import { ChecklistMarkdown } from "@/components/ChecklistMarkdown";
 
-// Overview — renders README.md (was #overview / loadReadme in index.html).
+// Overview renders README.md, replacing the former static dashboard overview.
 export default async function OverviewPage() {
   const actor = await requireSignedInUser();
   const readme = await getReadme();
