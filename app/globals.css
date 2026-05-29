@@ -313,6 +313,43 @@
   margin: 18px 0 28px;
 }
 
+.overview-job-list {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 26px;
+  max-width: 74ch;
+}
+
+.overview-job {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-card);
+  padding: 12px 14px;
+}
+
+.overview-job-num {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(212, 168, 75, 0.14);
+  color: var(--gold-dim);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.overview-job p {
+  margin: 0;
+  color: #3a342b;
+  line-height: 1.55;
+}
+
 .overview-step {
   position: relative;
   display: grid;

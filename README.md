@@ -8,9 +8,20 @@ This is not a public marketing site. It is the private workspace Taylor and Ryle
 
 The platform has three jobs:
 
-1. Keep the PIVOT module workload organized week by week.
-2. Track business setup decisions, open questions, and completed deliverables.
-3. Prepare for client work without storing sensitive client information before the security, consent, and retention process is ready.
+<div class="overview-job-list">
+  <div class="overview-job">
+    <span class="overview-job-num">01</span>
+    <p>Keep the PIVOT module workload organized week by week.</p>
+  </div>
+  <div class="overview-job">
+    <span class="overview-job-num">02</span>
+    <p>Track business setup decisions, open questions, and completed deliverables.</p>
+  </div>
+  <div class="overview-job">
+    <span class="overview-job-num">03</span>
+    <p>Prepare for client work without storing sensitive client information before the security, consent, and retention process is ready.</p>
+  </div>
+</div>
 
 ## Start Here
 
@@ -55,25 +66,3 @@ The platform has three jobs:
     </div>
   </div>
 </div>
-
-## Current Build Priorities
-
-- Finish Module 1 business setup notes so Rylee can enter the course with a clear Illinois-specific starting point.
-- Add note-taking fields to module sections so prep, class notes, and post-class decisions persist in the app.
-- Keep the client area metadata-only until full intake storage has encryption, consent, retention, and attorney-reviewed boundaries.
-- Build client forms next, starting with safe drafts and then deciding what can be stored in MongoDB versus private file storage.
-- Turn completed module work into artifacts that Rylee can actually reuse in the practice.
-
-## Guardrails
-
-This workspace supports operations and planning. It does not replace the professionals Rylee needs around the business.
-
-- Legal questions go to an Illinois attorney.
-- Tax questions go to a CPA.
-- IDFPR scope/entity questions go to IDFPR or an Illinois attorney.
-- Clinical determinations about a specific child stay with Rylee's judgment and the school team.
-- Real student records, parent contact details, dates of birth, full district names, EINs, SSNs, and documents do not belong in committed files.
-
-## Near-Term Direction
-
-The overview should stay simple: it is the front door to the workspace. The deeper pages should hold the detail. Module pages carry course work, Business carries launch decisions, Clients carries safe client workflow, and Artifacts becomes the final shelf of what Rylee and Taylor have produced.
