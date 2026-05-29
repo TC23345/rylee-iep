@@ -307,12 +307,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.overview-timeline {
-  display: grid;
-  gap: 0;
-  margin: 18px 0 28px;
-}
-
 .overview-job-list {
   display: grid;
   gap: 10px;
@@ -348,88 +342,6 @@
   margin: 0;
   color: #3a342b;
   line-height: 1.55;
-}
-
-.overview-step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 16px;
-  padding: 0 0 20px;
-}
-
-.overview-step:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  left: 26px;
-  top: 48px;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(
-    to bottom,
-    rgba(212, 168, 75, 0.65),
-    rgba(212, 168, 75, 0.12)
-  );
-}
-
-.overview-step-marker {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  border: 1px solid rgba(212, 168, 75, 0.45);
-  border-radius: 50%;
-  background: var(--sidebar-bg);
-  color: var(--gold);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  box-shadow: 0 8px 18px rgba(34, 30, 21, 0.12);
-}
-
-.overview-step-body {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-card);
-  padding: 16px 18px 15px;
-}
-
-.overview-step-body h3 {
-  margin: 0 0 6px;
-  font-family: var(--font-serif);
-  font-size: 1.02rem;
-  line-height: 1.25;
-  color: var(--text);
-}
-
-.overview-step-body p {
-  margin: 0;
-  color: var(--text-muted);
-  line-height: 1.65;
-}
-
-@media (max-width: 640px) {
-  .overview-step {
-    grid-template-columns: 42px minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .overview-step:not(:last-child)::after {
-    left: 20px;
-    top: 42px;
-  }
-
-  .overview-step-marker {
-    width: 42px;
-    height: 42px;
-    font-size: 0.68rem;
-  }
-
-  .overview-step-body {
-    padding: 14px 15px;
-  }
 }
 
 .page-header {

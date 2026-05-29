@@ -36,33 +36,20 @@ The platform has three jobs:
 
 ## How We Will Use It
 
-<div class="overview-timeline">
-  <div class="overview-step">
-    <div class="overview-step-marker">01</div>
-    <div class="overview-step-body">
-      <h3>Prep before class</h3>
-      <p>Rylee opens the current module page, scans the deliverable checklist, and adds questions or hunches under each section. Taylor can add initial research context ahead of time so class starts from a stronger baseline.</p>
-    </div>
-  </div>
-  <div class="overview-step">
-    <div class="overview-step-marker">02</div>
-    <div class="overview-step-body">
-      <h3>Use the module page during class</h3>
-      <p>The module page stays open as the working surface. Notes should land under the relevant deliverable instead of getting scattered across chat, documents, and memory.</p>
-    </div>
-  </div>
-  <div class="overview-step">
-    <div class="overview-step-marker">03</div>
-    <div class="overview-step-body">
-      <h3>Review decisions after class</h3>
-      <p>Rylee and Taylor review each section together, decide what changed, identify what is ready to become an artifact, and flag what still needs Dr. Annie, an Illinois attorney, a CPA, IDFPR, or a carrier/broker.</p>
-    </div>
-  </div>
-  <div class="overview-step">
-    <div class="overview-step-marker">04</div>
-    <div class="overview-step-body">
-      <h3>Build the practice assets</h3>
-      <p>Taylor uses the skills and notes to produce artifacts. Business decisions land in Business, polished outputs land in Artifacts, and future client-specific work lands in Clients once the privacy model is ready.</p>
-    </div>
-  </div>
-</div>
+### Before class
+
+Rylee can use the current module page as a quick orientation space before class: scan the deliverables, notice what feels unclear, and drop early questions under the sections that matter most. Taylor can add light research context ahead of time so the class material has somewhere to land.
+
+### During class
+
+During class, the module page can stay open as the shared working surface. The goal is not to capture every word; it is to catch the parts that change a decision, clarify a deliverable, or spark a question we should bring back into the build.
+
+### After class
+
+After class, Rylee and Taylor can review the notes together and decide what they mean in practice. Some items may become business decisions, some may become client-facing artifacts, and some may stay open until there is more guidance from the course or the right professional.
+
+### During the build week
+
+During the build week, Taylor can use the notes and skills to turn the clearest ideas into working assets. Business decisions can land in Business, finished outputs can land in Artifacts, and client-specific workflows can move into Clients as the privacy model becomes ready.
+
+This workflow is intentionally flexible. The platform should shape itself around what is actually useful for Rylee and Taylor, not the other way around. As the course starts, the client process becomes clearer, and Rylee gets a better feel for what she wants at her fingertips, we can keep adjusting the pages, notes, and workflows until the tool fits the work.
