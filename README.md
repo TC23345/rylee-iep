@@ -1,56 +1,64 @@
-# Rylee Coteus: IEP Advocacy Consultant
+# Rylee IEP Advocacy Workspace
 
----
+> Internal operating hub for Rylee's private-pay IEP advocacy practice buildout. Taylor pilots the system in support of Rylee while the PIVOT course, business setup, client workflow, and deliverable production come together.
 
-> This is the working surface where the [PIVOT](https://iepadvocacytraining.com) course material, Rylee's domain expertise and Taylor's operational support come together each week to produce real deliverables that Rylee will use to launch and establish her IEP Advocacy Consulting Practice.
+## What This Platform Is For
 
-## Workflow Framework
+This is not a public marketing site. It is the private workspace Taylor and Rylee use to keep the launch organized, make decisions visible, and turn course work into usable practice assets.
 
-**The following workflow is subject-to-change based on Rylee's availability:**
+The platform has three jobs:
 
-1. **Prep** — *Rylee, day before class*
-   Open the module page. Skim the deliverable checklist at the top. Drop questions or hunches into the *Questions and curiosities* prompt under each section. Goal: walk into class knowing what you want answered.
+1. Keep the PIVOT module workload organized week by week.
+2. Track business setup decisions, open questions, and completed deliverables.
+3. Prepare for client work without storing sensitive client information before the security, consent, and retention process is ready.
 
-2. **Class** — *Rylee, during the call*
-   Each section footer links to the lesson video + cohort discussion. Open both. Capture takeaways into the section's notepad as Dr. Annie teaches or the group discussion lands on something useful.
+## Start Here
 
-3. **Review** — *Rylee + Taylor, post-class*
-   We sit down with the module page open. Walk each section's notepad together. Decide which deliverables this module is ready to produce, and what shape each artifact should take.
+| Area | Use it for | Link |
+| --- | --- | --- |
+| Course modules | Weekly course workload, research notes, class questions, and deliverable checklists. | [Open Module 1](/module/1) |
+| Business | Entity, name, insurance, services, fees, backend systems, and attorney/CPA/IDFPR follow-up items. | [Open Business](/business) |
+| Clients | Metadata-only client index for now. Full intake storage is intentionally deferred. | [Open Clients](/clients) |
+| Artifacts | Polished outputs produced from each module and skill run. | [Open Artifacts](/artifacts) |
+| Skills | The working playbooks Taylor uses to turn course lessons into practice deliverables. | [Open first skill](/skill/business-name) |
+| Archive | Historical notes and older workspace context. | [Open Archive](/archive) |
 
-4. **Design** — *Taylor, mid-week heads-down*
-   I take the reviewed notes and design the skill that produces the deliverable — synthesizing Dr. Annie's lessons with your domain expertise. Skills live under **Tools → Skills**.
+## How We Will Use It
 
-5. **Deliver** — *Taylor, end of week*
-   Skill runs, artifact ships to **Artifacts**. Business decisions land in **Business**. Once Rylee has clients, per-client work lands in **Clients**.
+### Before class
 
----
+Rylee opens the current module page, scans the deliverable checklist, and adds questions or hunches under each section. Taylor can add initial research context ahead of time so the class discussion has a better starting point.
 
-### Workspace
+### During class
 
-The three Workspace pages — **Business**, **Clients**, and **Artifacts** — separate the artifacts produced by Taylor + Rylee during the class into clear pillars: internal business operations vs. client-facing assets that integrate with them. From the Artifacts directory, each module card's **Course Notes** button jumps back to the module page (where the notes live) and each skill card jumps to the skill that produced it — so the path between a deliverable and the work that informed it is always one click.
+The module page stays open as the working surface. Notes should land under the relevant deliverable instead of getting scattered across chat, documents, and memory.
 
-- **Business** holds Rylee's internal decisions: entity, name, fees, insurance, backend systems. The records that document *"here's what we chose and why."*
-- **Clients** holds per-client folders once Rylee has clients — intake form, IEP checklist, session log. PII stays out of git and off the deployed site.
-- **Artifacts** is the directory of polished deliverables produced from each module. Filterable by module so it's easy to find what came from where.
+### After class
 
-Examples of artifacts we'll build:
+Rylee and Taylor review each section together. The goal is to decide what changed, what is ready to become a business/client artifact, and what still needs clarification from Dr. Annie, an attorney, a CPA, IDFPR, or a carrier/broker.
 
-1. **Services & fees** — a 3-tier offering card: the most standard offering on the left, fanning out to the most comprehensive on the right. The foundation everything else gets built on, so completeness here is priority.
-2. **Client intake** — a packet that includes the intake form itself, plus per-disability resource guides for parents, plus a what-to-expect guide tied to the chosen offerings.
+### During the build week
 
-### Course Modules
+Taylor uses the skills and notes to produce artifacts. Business decisions land in Business, polished outputs land in Artifacts, and future client-specific work will land in Clients once the privacy model is ready.
 
-Each module page is the workspace for that week of the course. The top of the page is the deliverable checklist — straight from Dr. Annie's syllabus, with checkboxes Rylee ticks as work moves. Underneath, a section per deliverable structured for note-taking:
+## Current Build Priorities
 
-- **Top — Questions and curiosities**: drop questions or hunches before class so we walk in knowing what to ask.
-- **Middle — Notepad** *(coming soon)*: an expandable space to type notes during class without losing the question prompt above.
-- **Bottom — Video + discussion links**: the lesson video and the cohort discussion thread.
+- Finish Module 1 business setup notes so Rylee can enter the course with a clear Illinois-specific starting point.
+- Add note-taking fields to module sections so prep, class notes, and post-class decisions persist in the app.
+- Keep the client area metadata-only until full intake storage has encryption, consent, retention, and attorney-reviewed boundaries.
+- Build client forms next, starting with safe drafts and then deciding what can be stored in MongoDB versus private file storage.
+- Turn completed module work into artifacts that Rylee can actually reuse in the practice.
 
-Once a module's notepads are filled in, Taylor walks them back with Rylee to design the skills that will produce that module's artifacts.
+## Guardrails
 
----
+This workspace supports operations and planning. It does not replace the professionals Rylee needs around the business.
 
-<a class="overview-cta" href="/business">
-  <span class="overview-cta-label">Head to the Business workspace</span>
-  <span class="overview-cta-arrow" aria-hidden="true">→</span>
-</a>
+- Legal questions go to an Illinois attorney.
+- Tax questions go to a CPA.
+- IDFPR scope/entity questions go to IDFPR or an Illinois attorney.
+- Clinical determinations about a specific child stay with Rylee's judgment and the school team.
+- Real student records, parent contact details, dates of birth, full district names, EINs, SSNs, and documents do not belong in committed files.
+
+## Near-Term Direction
+
+The overview should stay simple: it is the front door to the workspace. The deeper pages should hold the detail. Module pages carry course work, Business carries launch decisions, Clients carries safe client workflow, and Artifacts becomes the final shelf of what Rylee and Taylor have produced.
