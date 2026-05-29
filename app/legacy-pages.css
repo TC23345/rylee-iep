@@ -410,7 +410,28 @@
     .m1s-hero-desc {
       font-size: .92rem; line-height: 1.65;
       color: var(--text-muted);
-      max-width: 64ch; margin: 0;
+      max-width: 78ch; margin: 0 0 16px;
+    }
+    .m1s-frontmatter-details {
+      margin-top: 16px;
+    }
+    .m1s-frontmatter-details summary {
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: .68rem; letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .m1s-frontmatter-details summary::before {
+      content: '▸';
+      color: var(--text-muted);
+      transition: transform .15s;
+    }
+    .m1s-frontmatter-details[open] summary::before {
+      transform: rotate(90deg);
     }
     .m1s-frontmatter {
       background: var(--sidebar-bg);

@@ -71,11 +71,16 @@ export default async function SkillPage({
             <span className="m1s-hero-chip">Authored</span>
             <span className="m1s-hero-slug">{slug}</span>
           </div>
-          <pre className="m1s-frontmatter">
-            <code>
-              {`---\nname: ${slug}\ndescription: ${meta.description}\n---`}
-            </code>
-          </pre>
+          <h1>{meta.title}</h1>
+          <p className="m1s-hero-desc">{meta.description}</p>
+          <details className="m1s-frontmatter-details">
+            <summary>Skill front matter</summary>
+            <pre className="m1s-frontmatter">
+              <code>
+                {`---\nname: ${slug}\ndescription: ${meta.description}\n---`}
+              </code>
+            </pre>
+          </details>
         </header>
 
         <div className="m1s-deliverable" aria-label="Course deliverable">

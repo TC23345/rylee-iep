@@ -1,29 +1,42 @@
 # Branding Rationale
 
-*The brandable hook out front*
+*Why "Keystone" is the right lead word*
 
-Branding was the smallest decision on this page — because the keyword data made it small. The SEO research had already locked the back half of the name (**IEP Advocacy**), so all that was left was the word in front of it. We landed on **Keystone**.
+The descriptor **IEP Advocacy** does the clarity work. That means the first word can do a different job: it can make the practice feel grounded, steady, and parent-centered before the parent reads a single service page.
 
-Here's the birds-eye view of how that ran. I handed the research agent the seed-phrase data from the **SEO Strategy** tab with one rule: let the demand decide the *structure* of the name, then go looking for a brandable word to lead it. The data was blunt — parents search "IEP advocacy" and "IEP advocate," while the credential ("BCBA") and any city or state pull effectively zero. So before branding even started, the descriptor was settled and the agent had a tightly-bounded job.
+**Keystone** works because it is structural. In an arch, the keystone is the piece that locks the other stones into place. That maps cleanly onto IEP advocacy: the goal is not to replace the parent, the team, or the school process. The goal is to help the pieces hold together under pressure.
 
-## What the data left us to decide
+## Brand position
 
-Running the seed-phrase insights forward collapsed the whole naming problem into three facts:
+Keystone should feel:
 
-1. **The descriptor is fixed.** "IEP Advocacy" carries the search demand, so it stays in the name word-for-word — no synonyms, no credential, no geography.
-2. **The lead word is free.** Because the descriptor does the SEO work, the first word doesn't have to be a keyword at all. It can be pure brand — a metaphor that makes a parent *feel* something.
-3. **It still has to be distinguishable.** Whatever leads can't collide with a name already on file in Illinois — the same distinguishability rule that anchors the **Keystone IEP Advocacy LLC** tab.
+- Calm, not combative.
+- Skilled, not clinical-first.
+- Parent-aligned, not district-facing.
+- Structured, not generic "support."
+- Serious enough for a professional service, but still warm enough for families.
 
-That last constraint settled the obvious candidate fast: **Compass** — the natural "we guide you" metaphor — was already in use by [Family Matters PTIC](https://fmptic.org/), whose program is literally "COMPASS: Special Education Navigation." Too close to clear. That left a shortlist of **Cornerstone**, **Keystone**, and **Beacon**.
+## Why not lead with the credential
 
-## Why Keystone
+Rylee's BCBA background is a differentiator, but it is not the name. The name should meet parents where they are searching. The credential should show up immediately after that as proof of depth:
 
-A keystone is the wedge-shaped stone at the very top of an arch — the last one set, the one that locks every other stone in place so the whole thing can bear weight. It maps cleanly onto the work: the parent, with the advocate beside them, is the piece that holds the IEP team together.
+> Keystone IEP Advocacy LLC  
+> BCBA-led IEP advocacy for Illinois families.
 
-But the reason it actually won is a detail from the engineering:
+That gives the practice two layers: the name says what the service is, and the tagline says why Rylee is especially equipped to provide it.
 
-> "The keystone experiences the least stress of any voussoirs due to its position at the apex."
+## Alternatives considered
 
-A *voussoir* is just one of the wedge stones that make up the arch. All branding shenanigans aside, that line is the entire reason this practice exists: put Rylee at the apex — the spot under the **least stress** — by positioning her as the advocate instead of the one absorbing all the pressure. It's the sentence we can point back to whenever we need to remember why we started.
+| Option | Why it did not lead |
+| --- | --- |
+| Compass | Strong metaphor, but too close to existing special-education navigation language in Illinois. |
+| Beacon | Warm and recognizable, but more common and less structurally specific. |
+| Cornerstone | Strong, but broader and slightly heavier than Keystone. |
+| Keystone | Specific, memorable, structural, and aligned with the advocacy role. |
 
-Snap the pieces together and the name builds itself: **Keystone** (the brand) + **IEP Advocacy** (the descriptor the data demanded) + **LLC** (the legal requirement) = **Keystone IEP Advocacy LLC**.
+## How this should guide the rest of the brand
+
+- Use language around structure, clarity, preparation, and pressure relief.
+- Avoid aggressive legal-style positioning unless an attorney is explicitly involved.
+- Avoid therapy-clinic language unless the business intentionally adds a reviewed clinical service line.
+- Keep the visual identity restrained and professional: warm neutrals, readable typography, and simple parent-facing language.

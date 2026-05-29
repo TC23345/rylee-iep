@@ -25,21 +25,36 @@ The platform has three jobs:
 
 ## How We Will Use It
 
-### Before class
-
-Rylee opens the current module page, scans the deliverable checklist, and adds questions or hunches under each section. Taylor can add initial research context ahead of time so the class discussion has a better starting point.
-
-### During class
-
-The module page stays open as the working surface. Notes should land under the relevant deliverable instead of getting scattered across chat, documents, and memory.
-
-### After class
-
-Rylee and Taylor review each section together. The goal is to decide what changed, what is ready to become a business/client artifact, and what still needs clarification from Dr. Annie, an attorney, a CPA, IDFPR, or a carrier/broker.
-
-### During the build week
-
-Taylor uses the skills and notes to produce artifacts. Business decisions land in Business, polished outputs land in Artifacts, and future client-specific work will land in Clients once the privacy model is ready.
+<div class="overview-timeline">
+  <div class="overview-step">
+    <div class="overview-step-marker">01</div>
+    <div class="overview-step-body">
+      <h3>Prep before class</h3>
+      <p>Rylee opens the current module page, scans the deliverable checklist, and adds questions or hunches under each section. Taylor can add initial research context ahead of time so class starts from a stronger baseline.</p>
+    </div>
+  </div>
+  <div class="overview-step">
+    <div class="overview-step-marker">02</div>
+    <div class="overview-step-body">
+      <h3>Use the module page during class</h3>
+      <p>The module page stays open as the working surface. Notes should land under the relevant deliverable instead of getting scattered across chat, documents, and memory.</p>
+    </div>
+  </div>
+  <div class="overview-step">
+    <div class="overview-step-marker">03</div>
+    <div class="overview-step-body">
+      <h3>Review decisions after class</h3>
+      <p>Rylee and Taylor review each section together, decide what changed, identify what is ready to become an artifact, and flag what still needs Dr. Annie, an Illinois attorney, a CPA, IDFPR, or a carrier/broker.</p>
+    </div>
+  </div>
+  <div class="overview-step">
+    <div class="overview-step-marker">04</div>
+    <div class="overview-step-body">
+      <h3>Build the practice assets</h3>
+      <p>Taylor uses the skills and notes to produce artifacts. Business decisions land in Business, polished outputs land in Artifacts, and future client-specific work lands in Clients once the privacy model is ready.</p>
+    </div>
+  </div>
+</div>
 
 ## Current Build Priorities
 
