@@ -8,21 +8,15 @@ export default async function OverviewPage() {
   const actor = await requireSignedInUser();
   const readme = await getReadme();
   let progress = {};
-  let progressUnavailable = false;
 
   try {
     progress = await getReadmeChecklistState(actor);
   } catch {
-    progressUnavailable = true;
+    progress = {};
   }
 
   return (
     <div className="mx-auto max-w-[72ch]">
-      {progressUnavailable && (
-        <div className="mb-4 rounded-md border border-secondary/30 bg-secondary/10 px-4 py-3 text-sm text-secondary">
-          Checklist progress is temporarily unavailable. Content is still readable.
-        </div>
-      )}
       <ChecklistMarkdown
         markdown={readme}
         initialChecked={progress}

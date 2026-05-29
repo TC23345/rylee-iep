@@ -1,6 +1,6 @@
 # Rylee IEP Advocacy Workspace
 
-> Internal operating hub for Rylee's private-pay IEP advocacy practice buildout. Taylor pilots the system in support of Rylee while the PIVOT course, business setup, client workflow, and deliverable production come together.
+> Welcome, Rylee. This is your internal workspace for turning the PIVOT course, your BCBA experience, and Taylor's build support into the operating system for your private-pay IEP advocacy practice.
 
 ## What This Platform Is For
 
