@@ -31,3 +31,9 @@ Format:
   - Documented the above in `CLAUDE.md` under a new `## Dashboard content conventions` section.
 - **Why**: First module deliverable surfaces on the dashboard; the content convention had to land before Modules 2–8 (and the other Module-1 skills) layer in.
 - **Who**: Taylor + Claude
+
+## 2026-07-04 - Legacy Mintlify harness reconciliation
+
+- **What**: merged useful internal boundaries from `iep-harness` into `.claude/skills/business-name/SKILL.md`, copied non-PII legacy workspace notes into gitignored `workspace/`, and added `docs/legacy-mintlify-harness-migration.md`.
+- **Why**: consolidate course/harness/workspace context into `rylee-iep` before reworking the separate Mintlify site as public Shirley Road IEP Advocacy client education.
+- **Who**: Taylor + Codex
