@@ -70,7 +70,7 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <h2 className="font-serif text-2xl font-semibold leading-tight">
               {isToday ? "Today" : dayLabel(date)}
             </h2>
@@ -103,14 +103,16 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
             </Button>
           )}
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
-          <AddEntryDialog
-            date={date}
-            isToday={isToday}
-            lastEnd={last?.endTime ?? null}
-            lastType={last?.caseType ?? null}
-            recentTypes={recentTypes}
-          />
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="flex-1 sm:flex-none [&>button]:w-full sm:[&>button]:w-auto">
+            <AddEntryDialog
+              date={date}
+              isToday={isToday}
+              lastEnd={last?.endTime ?? null}
+              lastType={last?.caseType ?? null}
+              recentTypes={recentTypes}
+            />
+          </div>
           {actions}
         </div>
       </header>
