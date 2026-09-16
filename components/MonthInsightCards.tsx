@@ -11,7 +11,14 @@ import { cn } from "@/lib/utils";
 import { StatTile } from "@/components/StatTile";
 import { TypeBar } from "@/components/TypeMix";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface MonthInsightCardsProps {
   months: MonthSummary[];
@@ -34,7 +41,6 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
   const byDate = new Map(monthDays.map((d) => [d.date, d]));
   const maxCount = Math.max(1, ...monthDays.map((d) => d.count));
   const allMinutes = month.mix.reduce((s, m) => s + m.minutes, 0);
-  const top = month.mix.find((m) => m.caseType !== "lunch") ?? null;
   const perCase = month.cases ? Math.round(month.caseMinutes / month.cases) : 0;
 
   const [y, m] = month.ym.split("-").map(Number);
@@ -128,39 +134,39 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
             <StatTile label="Minutes per case" value={perCase} hint="average" />
           </div>
           {allMinutes > 0 && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="cursor-help" tabIndex={0} aria-label="Time by type; hover for the breakdown">
-                  <TypeBar mix={month.mix} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="max-w-xs p-3">
-                <p className="mb-2">
-                  {month.cases} cases across {month.days} {month.days === 1 ? "day" : "days"},{" "}
-                  {formatDuration(month.caseMinutes)} of case time.
-                  {top && (
-                    <>
-                      {" "}
-                      {typeLabel(top.caseType)} took the most time ({formatDuration(top.minutes)},{" "}
-                      {Math.round((top.minutes / allMinutes) * 100)}%).
-                    </>
-                  )}
-                </p>
-                <ul className="space-y-0.5">
+            <div className="space-y-3">
+              <TypeBar mix={month.mix} />
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>Type</TableHead>
+                    <TableHead className="w-16 text-right">Rows</TableHead>
+                    <TableHead className="w-20 text-right">Time</TableHead>
+                    <TableHead className="w-16 text-right">Share</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {month.mix.map((row) => (
-                    <li key={row.caseType} className="flex items-center gap-1.5 tabular-nums">
-                      <span aria-hidden className={cn("inline-block size-2 rounded-full", typeStyle(row.caseType).bar)} />
-                      <span className="flex-1">{typeLabel(row.caseType)}</span>
-                      <span>{row.rows}</span>
-                      <span className="w-10 text-right">{formatDuration(row.minutes)}</span>
-                      <span className="w-9 text-right opacity-70">
+                    <TableRow key={row.caseType}>
+                      <TableCell>
+                        <span className="flex items-center gap-1.5">
+                          <span
+                            aria-hidden
+                            className={cn("inline-block size-2.5 rounded-full", typeStyle(row.caseType).bar)}
+                          />
+                          {typeLabel(row.caseType)}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right tabular-nums">{row.rows}</TableCell>
+                      <TableCell className="text-right tabular-nums">{formatDuration(row.minutes)}</TableCell>
+                      <TableCell className="text-right tabular-nums text-muted-foreground">
                         {Math.round((row.minutes / allMinutes) * 100)}%
-                      </span>
-                    </li>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </ul>
-              </TooltipContent>
-            </Tooltip>
+                </TableBody>
+              </Table>
+            </div>
           )}
         </div>
       </article>
