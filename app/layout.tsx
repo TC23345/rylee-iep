@@ -56,7 +56,7 @@ export default function RootLayout({
         <body className="min-h-dvh">
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <TooltipProvider>{children}</TooltipProvider>
-            <Toaster />
+            <Toaster position="bottom-center" />
           </ThemeProvider>
         </body>
       </html>

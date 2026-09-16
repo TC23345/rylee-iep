@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { deleteEntry, updateEntry } from "@/app/actions/entries";
+import { createEntry, deleteEntry, updateEntry } from "@/app/actions/entries";
 import type { CaseEntry } from "@/lib/entries";
 import {
   CASE_TYPE_GROUPS,
@@ -18,17 +18,6 @@ import { formatDuration, formatTime12, minutesBetween } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import type { TypeFilter } from "@/components/TypeMix";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import {
   Select,
@@ -70,51 +59,101 @@ function sameDraft(a: Draft, b: Draft): boolean {
   );
 }
 
-function DeleteEntryDialog({
-  entry,
-  open,
-  onOpenChange,
-}: {
-  entry: CaseEntry;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
+const HOLD_MS = 1500;
+
+function toFormValues(e: CaseEntry): EntryFormValues {
+  return {
+    date: e.date,
+    caseNumber: e.caseNumber,
+    caseType: e.caseType,
+    startTime: e.startTime ?? "",
+    endTime: e.endTime ?? "",
+    note: e.note,
+  };
+}
+
+/**
+ * Press and hold for 1.5 s to delete the row; letting go early cancels. The
+ * deletion is announced in a toast whose Undo puts the row back. Keyboard
+ * users delete with Enter or Space and rely on the same Undo.
+ */
+function HoldToDeleteButton({ entry }: { entry: CaseEntry }) {
+  const [holding, setHolding] = useState(false);
   const [pending, startTransition] = useTransition();
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const what = entry.caseNumber ? `case ${entry.caseNumber}` : typeLabel(entry.caseType).toLowerCase();
 
+  function cancel() {
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+    setHolding(false);
+  }
+
+  function begin() {
+    if (pending || timer.current) return;
+    setHolding(true);
+    timer.current = setTimeout(() => {
+      timer.current = null;
+      setHolding(false);
+      remove();
+    }, HOLD_MS);
+  }
+
+  function remove() {
+    startTransition(async () => {
+      const res = await deleteEntry(entry.id);
+      if (!res.ok) {
+        toast.error(res.error);
+        return;
+      }
+      toast("Row deleted", {
+        description: `${entry.caseNumber ? `Case ${entry.caseNumber} · ` : ""}${typeLabel(entry.caseType)}${
+          entry.startTime ? ` · ${formatTime12(entry.startTime)}` : ""
+        }`,
+        duration: 8000,
+        action: {
+          label: "Undo",
+          onClick: () => {
+            void createEntry(toFormValues(entry)).then((r) => {
+              if (r.ok) toast.success("Row restored.");
+              else toast.error(r.error);
+            });
+          },
+        },
+      });
+    });
+  }
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif">Delete this row?</AlertDialogTitle>
-          <AlertDialogDescription>
-            The {what} row
-            {entry.startTime ? ` starting ${formatTime12(entry.startTime)}` : ""} will be removed
-            from the log. This cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Keep row</AlertDialogCancel>
-          <AlertDialogAction
-            disabled={pending}
-            onClick={(event) => {
-              event.preventDefault();
-              startTransition(async () => {
-                const res = await deleteEntry(entry.id);
-                if (res.ok) {
-                  toast.success("Row deleted.");
-                  onOpenChange(false);
-                } else {
-                  toast.error(res.error);
-                }
-              });
-            }}
-          >
-            {pending ? "Deleting..." : "Delete row"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <button
+      type="button"
+      aria-label={`Hold to delete ${what}`}
+      title="Hold 1.5 s to delete"
+      disabled={pending}
+      onPointerDown={(e) => {
+        if (e.button === 0) begin();
+      }}
+      onPointerUp={cancel}
+      onPointerLeave={cancel}
+      onPointerCancel={cancel}
+      onContextMenu={(e) => e.preventDefault()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          remove();
+        }
+      }}
+      className="relative inline-flex size-7 touch-none select-none items-center justify-center overflow-hidden rounded-md text-muted-foreground opacity-40 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
+    >
+      <span
+        aria-hidden
+        className="absolute inset-y-0 left-0 bg-destructive/25 transition-[width] ease-linear"
+        style={{ width: holding ? "100%" : 0, transitionDuration: holding ? `${HOLD_MS}ms` : "150ms" }}
+      />
+      <Trash2 className="relative size-4" />
+    </button>
   );
 }
 
@@ -144,7 +183,6 @@ function Cell({
  */
 function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
   const [draft, setDraft] = useState<Draft>(() => toDraft(entry));
-  const [deleting, setDeleting] = useState(false);
   const [saving, startTransition] = useTransition();
   const isBreak = draft.caseType === "lunch";
 
@@ -213,7 +251,8 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
             >
               <SelectTrigger
                 aria-label="Case type"
-                className="h-7 w-auto gap-1 border-transparent bg-transparent px-1 shadow-none hover:border-border focus:border-gold data-[state=open]:border-gold"
+                title="Click to change the type"
+                className="h-7 w-full cursor-pointer justify-start border-transparent bg-transparent px-1 shadow-none hover:border-border focus:border-gold data-[state=open]:border-gold [&_svg]:hidden"
               >
                 <Badge variant="secondary" className={cn("font-medium", typeStyle(draft.caseType).chip)}>
                   {CASE_TYPE_LABELS[draft.caseType]}
@@ -269,21 +308,7 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
             />
           </Cell>
           <Cell className="justify-end px-1">
-            {shown && (
-              <>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={`Delete ${entry.caseNumber || typeLabel(entry.caseType)}`}
-                  className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100"
-                  onClick={() => setDeleting(true)}
-                >
-                  <Trash2 className="size-4" />
-                </Button>
-                <DeleteEntryDialog entry={entry} open={deleting} onOpenChange={setDeleting} />
-              </>
-            )}
+            {shown && <HoldToDeleteButton entry={entry} />}
           </Cell>
         </div>
       </div>
