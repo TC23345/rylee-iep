@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans, DM_Mono } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkAppearanceProvider } from "@/components/ClerkAppearanceProvider";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,30 +36,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        variables: {
-          colorPrimary: "#D4A84B",
-          colorText: "#1C1A15",
-          colorBackground: "#FFFEFB",
-          colorInputBackground: "#FFFEFB",
-          borderRadius: "8px",
-          fontFamily: "var(--font-dm-sans)",
-        },
-      }}
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable}`}
     >
-      <html
-        lang="en"
-        suppressHydrationWarning
-        className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable}`}
-      >
-        <body className="min-h-dvh">
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body className="min-h-dvh">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ClerkAppearanceProvider>
             <TooltipProvider>{children}</TooltipProvider>
             <Toaster position="bottom-center" />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </ClerkAppearanceProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
