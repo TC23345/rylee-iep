@@ -326,13 +326,13 @@ export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
           role="row"
           className={cn("grid border-b border-border text-muted-foreground", COLUMNS)}
         >
-          <Cell header className="px-3 text-xs font-medium">Case #</Cell>
-          <Cell header className="px-3 text-xs font-medium">Type</Cell>
-          <Cell header className="px-3 text-xs font-medium">Start</Cell>
-          <Cell header className="px-3 text-xs font-medium">End</Cell>
-          <Cell header className="px-3 text-xs font-medium">Length</Cell>
-          <Cell header className="px-3 text-xs font-medium">Notes</Cell>
-          <Cell header />
+          <Cell header className="h-12 px-3 text-xs font-medium">Case #</Cell>
+          <Cell header className="h-12 px-3 text-xs font-medium">Type</Cell>
+          <Cell header className="h-12 px-3 text-xs font-medium">Start</Cell>
+          <Cell header className="h-12 px-3 text-xs font-medium">End</Cell>
+          <Cell header className="h-12 px-3 text-xs font-medium">Length</Cell>
+          <Cell header className="h-12 px-3 text-xs font-medium">Notes</Cell>
+          <Cell header className="h-12" />
         </div>
         <div role="rowgroup" className="[&>[role=row]:last-child_.border-b]:border-0">
           {entries.map((e) => (
