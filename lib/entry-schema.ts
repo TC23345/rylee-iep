@@ -66,16 +66,16 @@ export function countsAsCase(type: CaseType, caseNumber: string): boolean {
 
 /** Colour coding that matches the spreadsheet's cell fills (chip + bar segment). */
 export const CASE_TYPE_STYLES: Record<CaseType, { chip: string; bar: string }> = {
-  reconsideration: { chip: "bg-amber-100 text-amber-900", bar: "bg-amber-400" },
-  recon_reply: { chip: "bg-lime-100 text-lime-900", bar: "bg-lime-400" },
-  continuation: { chip: "bg-fuchsia-100 text-fuchsia-900", bar: "bg-fuchsia-400" },
-  bcba_reply: { chip: "bg-sky-100 text-sky-900", bar: "bg-sky-400" },
-  authorization_revision: { chip: "bg-emerald-100 text-emerald-900", bar: "bg-emerald-400" },
-  additional_info: { chip: "bg-yellow-100 text-yellow-900", bar: "bg-yellow-300" },
-  initial: { chip: "bg-indigo-100 text-indigo-900", bar: "bg-indigo-400" },
-  phone_call: { chip: "bg-orange-100 text-orange-900", bar: "bg-orange-400" },
-  meeting: { chip: "bg-violet-100 text-violet-900", bar: "bg-violet-400" },
-  admin_tasks: { chip: "bg-stone-200 text-stone-800", bar: "bg-stone-400" },
+  reconsideration: { chip: "bg-amber-100 text-amber-900 dark:bg-amber-400/20 dark:text-amber-200", bar: "bg-amber-400" },
+  recon_reply: { chip: "bg-lime-100 text-lime-900 dark:bg-lime-400/20 dark:text-lime-200", bar: "bg-lime-400" },
+  continuation: { chip: "bg-fuchsia-100 text-fuchsia-900 dark:bg-fuchsia-400/20 dark:text-fuchsia-200", bar: "bg-fuchsia-400" },
+  bcba_reply: { chip: "bg-sky-100 text-sky-900 dark:bg-sky-400/20 dark:text-sky-200", bar: "bg-sky-400" },
+  authorization_revision: { chip: "bg-emerald-100 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-200", bar: "bg-emerald-400" },
+  additional_info: { chip: "bg-yellow-100 text-yellow-900 dark:bg-yellow-400/20 dark:text-yellow-200", bar: "bg-yellow-300" },
+  initial: { chip: "bg-indigo-100 text-indigo-900 dark:bg-indigo-400/20 dark:text-indigo-200", bar: "bg-indigo-400" },
+  phone_call: { chip: "bg-orange-100 text-orange-900 dark:bg-orange-400/20 dark:text-orange-200", bar: "bg-orange-400" },
+  meeting: { chip: "bg-violet-100 text-violet-900 dark:bg-violet-400/20 dark:text-violet-200", bar: "bg-violet-400" },
+  admin_tasks: { chip: "bg-stone-200 text-stone-800 dark:bg-stone-500/25 dark:text-stone-200", bar: "bg-stone-400" },
   lunch: { chip: "bg-muted text-muted-foreground", bar: "bg-stone-300" },
 };
 

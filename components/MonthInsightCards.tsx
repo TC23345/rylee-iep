@@ -27,7 +27,6 @@ const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
  */
 export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
   const [index, setIndex] = useState(0);
-  const [hover, setHover] = useState<DailyCount | null>(null);
 
   if (months.length === 0) return null;
   const month = months[Math.min(index, months.length - 1)];
@@ -44,12 +43,6 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
     ...Array<null>(lead).fill(null),
     ...Array.from({ length: daysInMonth(y, m) }, (_, i) => `${month.ym}-${String(i + 1).padStart(2, "0")}`),
   ];
-
-  const caption = hover
-    ? `${numericDate(hover.date)} · ${hover.count} ${hover.count === 1 ? "case" : "cases"} · ${
-        hover.minutes ? formatDuration(hover.minutes) : "no time logged"
-      }`
-    : "Darker days were busier. Pick one to open it.";
 
   return (
     <section aria-label="Months">
@@ -91,7 +84,7 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
               <span key={d}>{d}</span>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-1.5" onMouseLeave={() => setHover(null)}>
+          <div className="grid grid-cols-7 gap-1.5">
             {cells.map((date, i) => {
               if (!date) return <span key={`pad-${i}`} />;
               const day = byDate.get(date);
@@ -110,9 +103,9 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
                 <Link
                   key={date}
                   href={`/month/${month.ym}?d=${date}`}
-                  title={`${numericDate(date)} · ${day.count} cases`}
-                  onMouseEnter={() => setHover(day)}
-                  onFocus={() => setHover(day)}
+                  title={`${numericDate(date)} · ${day.count} ${day.count === 1 ? "case" : "cases"}${
+                    day.minutes ? ` · ${formatDuration(day.minutes)}` : ""
+                  }`}
                   className="relative flex h-9 items-center justify-center rounded-md text-xs font-medium text-foreground transition-transform hover:scale-105 sm:h-11"
                 >
                   <span
@@ -121,60 +114,55 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
                     style={{ opacity: 0.25 + 0.75 * (day.count / maxCount) }}
                   />
                   <span className="relative">{dayNumber}</span>
-                  <span className="relative ml-1 hidden text-[0.6rem] text-foreground/70 sm:inline">
-                    {day.count}
-                  </span>
                 </Link>
               );
             })}
           </div>
-          <p className="text-xs text-muted-foreground" aria-live="polite">
-            {caption}
-          </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <StatTile label="Cases" value={month.cases} />
-          <StatTile label="Days logged" value={month.days} />
-          <StatTile label="Case time" value={formatDuration(month.caseMinutes)} hint="hours:minutes" />
-          <StatTile label="Minutes per case" value={perCase} hint="average" />
+        <div className="space-y-4 rounded-lg border border-border p-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <StatTile label="Cases" value={month.cases} />
+            <StatTile label="Days logged" value={month.days} />
+            <StatTile label="Case time" value={formatDuration(month.caseMinutes)} hint="hours:minutes" />
+            <StatTile label="Minutes per case" value={perCase} hint="average" />
+          </div>
+          {allMinutes > 0 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="cursor-help" tabIndex={0} aria-label="Time by type; hover for the breakdown">
+                  <TypeBar mix={month.mix} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-xs p-3">
+                <p className="mb-2">
+                  {month.cases} cases across {month.days} {month.days === 1 ? "day" : "days"},{" "}
+                  {formatDuration(month.caseMinutes)} of case time.
+                  {top && (
+                    <>
+                      {" "}
+                      {typeLabel(top.caseType)} took the most time ({formatDuration(top.minutes)},{" "}
+                      {Math.round((top.minutes / allMinutes) * 100)}%).
+                    </>
+                  )}
+                </p>
+                <ul className="space-y-0.5">
+                  {month.mix.map((row) => (
+                    <li key={row.caseType} className="flex items-center gap-1.5 tabular-nums">
+                      <span aria-hidden className={cn("inline-block size-2 rounded-full", typeStyle(row.caseType).bar)} />
+                      <span className="flex-1">{typeLabel(row.caseType)}</span>
+                      <span>{row.rows}</span>
+                      <span className="w-10 text-right">{formatDuration(row.minutes)}</span>
+                      <span className="w-9 text-right opacity-70">
+                        {Math.round((row.minutes / allMinutes) * 100)}%
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
-
-        {allMinutes > 0 && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="cursor-help" tabIndex={0} aria-label="Time by type; hover for the breakdown">
-                <TypeBar mix={month.mix} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="max-w-xs p-3">
-              <p className="mb-2">
-                {month.cases} cases across {month.days} {month.days === 1 ? "day" : "days"},{" "}
-                {formatDuration(month.caseMinutes)} of case time.
-                {top && (
-                  <>
-                    {" "}
-                    {typeLabel(top.caseType)} took the most time ({formatDuration(top.minutes)},{" "}
-                    {Math.round((top.minutes / allMinutes) * 100)}%).
-                  </>
-                )}
-              </p>
-              <ul className="space-y-0.5">
-                {month.mix.map((row) => (
-                  <li key={row.caseType} className="flex items-center gap-1.5 tabular-nums">
-                    <span aria-hidden className={cn("inline-block size-2 rounded-full", typeStyle(row.caseType).bar)} />
-                    <span className="flex-1">{typeLabel(row.caseType)}</span>
-                    <span>{row.rows}</span>
-                    <span className="w-10 text-right">{formatDuration(row.minutes)}</span>
-                    <span className="w-9 text-right opacity-70">
-                      {Math.round((row.minutes / allMinutes) * 100)}%
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </TooltipContent>
-          </Tooltip>
-        )}
       </article>
     </section>
   );

@@ -9,6 +9,7 @@ import {
   type DailyCount,
   type TypeMixRow,
 } from "@/lib/entries";
+import { getMonthTabLabel } from "@/lib/months";
 import { DayPanel } from "@/components/DayPanel";
 import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
@@ -35,14 +36,16 @@ export default async function MonthPage({
   const range = monthRange(ym);
 
   const actor = await requireSignedInUser();
+  let title = monthLabel(ym);
   let counts: DailyCount[] = [];
   let mix: TypeMixRow[] = [];
   let dbError = false;
 
   try {
-    [counts, mix] = await Promise.all([
+    [counts, mix, title] = await Promise.all([
       getDailyCounts(actor.orgId, range),
       getTypeMix(actor.orgId, range),
+      getMonthTabLabel(actor.orgId, ym),
     ]);
   } catch {
     dbError = true;
@@ -74,7 +77,7 @@ export default async function MonthPage({
       {dbError && <DbNotice />}
 
       <header className="space-y-4">
-        <h1 className="font-serif text-3xl font-bold">{monthLabel(ym)}</h1>
+        <h1 className="font-serif text-3xl font-bold">{title}</h1>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <StatTile
             label="Cases"

@@ -117,6 +117,48 @@
   --sidebar-ring: #d4a84b;
 }
 
+
+/* Dark mode: the same brand, lit from behind. Toggled by next-themes via .dark on <html>. */
+.dark {
+  color-scheme: dark;
+  --gold-dim: #e0bb63;
+  --text: #ede7d9;
+  --text-muted: #a2977f;
+  --bg: #16140f;
+  --bg-card: #1e1b14;
+
+  --background: #16140f;
+  --foreground: #ede7d9;
+  --card: #1e1b14;
+  --card-foreground: #ede7d9;
+  --popover: #1e1b14;
+  --popover-foreground: #ede7d9;
+  --primary: #d4a84b;
+  --primary-foreground: #1c1a15;
+  --secondary: #c9744e;
+  --secondary-foreground: #1c1a15;
+  --muted: #2a261c;
+  --muted-foreground: #a2977f;
+  --accent: #5f8f6d;
+  --accent-foreground: #1c1a15;
+  --destructive: #d07352;
+  --border: #35301f;
+  --input: #35301f;
+  --ring: #d4a84b;
+}
+.dark .btn-primary {
+  background: var(--gold);
+  color: #1c1a15;
+  border-color: var(--gold);
+}
+.dark .btn-primary:hover {
+  background: #e0bb63;
+}
+.dark .btn:hover {
+  background: var(--muted);
+  border-color: #4a4330;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

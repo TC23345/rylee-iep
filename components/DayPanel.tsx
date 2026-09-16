@@ -1,8 +1,12 @@
-import { dayLabel, formatDuration, formatTime12 } from "@/lib/dates";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { addDays, dayLabel, formatDuration, formatTime12, monthOf } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
 import { countsAsCase, type CaseType } from "@/lib/entry-schema";
 import { AddEntryDialog } from "@/components/AddEntryDialog";
 import { DayLog } from "@/components/DayLog";
+import { Button } from "@/components/ui/button";
 
 interface DayPanelProps {
   date: string;
@@ -12,10 +16,15 @@ interface DayPanelProps {
   actions?: React.ReactNode;
 }
 
+function dayHref(date: string): string {
+  return `/month/${monthOf(date)}?d=${date}`;
+}
+
 export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
   const cases = entries.filter((e) => countsAsCase(e.caseType, e.caseNumber));
   const caseMinutes = cases.reduce((sum, e) => sum + (e.durationMin ?? 0), 0);
   const isToday = date === today;
+  const canGoForward = date < today;
 
   const starts = entries.map((e) => e.startTime).filter((t): t is string => !!t);
   const ends = entries.map((e) => e.endTime).filter((t): t is string => !!t);
@@ -49,14 +58,50 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
   return (
     <section aria-label={`Cases for ${dayLabel(date)}`} className="space-y-4">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h2 className="font-serif text-2xl font-semibold leading-tight">
-            {isToday ? "Today" : dayLabel(date)}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {isToday ? `${dayLabel(date)}. ` : ""}
-            {summary}
-          </p>
+        <div className="flex min-w-0 items-start gap-1">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="mt-1 shrink-0 text-muted-foreground"
+            aria-label="Previous day"
+            asChild
+          >
+            <Link href={dayHref(addDays(date, -1))}>
+              <ChevronLeft className="size-4" />
+            </Link>
+          </Button>
+          <div className="min-w-0">
+            <h2 className="font-serif text-2xl font-semibold leading-tight">
+              {isToday ? "Today" : dayLabel(date)}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {isToday ? `${dayLabel(date)}. ` : ""}
+              {summary}
+            </p>
+          </div>
+          {canGoForward ? (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="mt-1 shrink-0 text-muted-foreground"
+              aria-label="Next day"
+              asChild
+            >
+              <Link href={dayHref(addDays(date, 1))}>
+                <ChevronRight className="size-4" />
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="mt-1 shrink-0"
+              aria-label="Next day"
+              disabled
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          )}
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
           <AddEntryDialog
