@@ -26,11 +26,15 @@ The directory is organized around the course's 8-module deliverable list. Each m
 
 ## Web app: Rylee's Case Log
 
-The root-level Next.js app (deployed to https://rylee-iep-production.up.railway.app) is **no longer the course dashboard**. It is a daily case log for Rylee's day job, modelled on the Excel workbook she kept by hand: a "Daily Case Counts" sheet plus one sheet per month with rows of Date · Case # · Case Type · Start · End · Duration · Notes. See `README.md` for the file map.
+The root-level Next.js app (deployed to https://rylee-iep-production.up.railway.app) is **no longer the course dashboard**. It is a daily case log for Rylee's day job, modelled on the Excel workbook she kept by hand: a "Daily Case Counts" sheet plus one sheet per month with rows of Date · Case # · Case Type · Start · End · Duration · Notes. `README.md` describes every feature and has the file map.
 
-- Rows live in MongoDB (`case_entries`), scoped by Clerk `orgId`. Server actions in `app/actions/entries.ts` are the only write path.
-- Case types, labels and colours are defined once in `lib/entry-schema.ts`. Add new types there; `lunch` is the only type that does not count as a case.
-- Month tabs are derived in `lib/dates.ts` (`FIRST_MONTH` through the current month, Chicago time). Nothing else needs editing when a new month starts.
+- **Branches and deploy.** `master` is the only branch that matters; Railway deploys every push to it. `nextjs-rebuild` is kept fast-forwarded to master for history. Day-to-day work happens in the worktree `.claude/worktrees/case-log` on branch `case-log-design`, then fast-forward merged into master and pushed.
+- **Data.** Rows live in MongoDB `case_entries`; added or renamed tabs in `month_tabs`; `audit_events` records writes. Everything is scoped by `orgId`, which is the Clerk user id. Server actions under `app/actions/` are the only write path. Rylee's log holds her real rows; Taylor's own log holds synthetic demo data (July to September 2026) imported from `docs/import-samples/`.
+- **Users.** Rylee is the data owner. Taylor is the admin (`RYLEE_ADMIN_USER_IDS`) and browses her log through **View as** inside the Clerk avatar menu, never by writing under his own id. Never backfill or write rows under Taylor's id when the intent is Rylee's data.
+- **Case types.** Eleven types in `lib/entry-schema.ts` (case work vs other time). A row counts as a case only when it has a case number and is not lunch; `lib/entries.ts` mirrors that rule in its aggregates. Note templates per type live in the same file.
+- **Importing spreadsheets.** `docs/import-format.md` is the contract; `docs/import-samples/` are the reference files. When converting one of Rylee's unstructured sheets, produce a workbook matching them exactly, then use Import Excel on a month tab. The importer dedupes on day + case number + start time.
+- **UI conventions.** Rows edit inline and save on blur. Delete is hold-to-delete with an Undo toast, no confirm dialog. The Next button and submit button in the add dialog must stay separately keyed (React reuses the node otherwise and a real click submits). The type legend and the day log belong on the month pages; the home page is tiles, month card, and the daily sheet.
+- **Local quirks.** `MONGODB_DNS_SERVERS` in `.env.local` is required on this Windows machine. Turbopack can serve stale CSS after `globals.css` edits; restart the dev server with `.next` removed. Sign an automation browser in with a Clerk sign-in token, never Google OAuth.
 - The markdown files (`modules.md`, `content/`, `archive.md`) are no longer rendered by the app; they remain as inputs to the Claude harness below.
 
 ## PII policy
