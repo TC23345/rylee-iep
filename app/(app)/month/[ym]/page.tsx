@@ -3,11 +3,9 @@ import { requireSignedInUser } from "@/lib/authz";
 import { formatDuration, isIsoDate, isIsoMonth, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
 import {
   getDailyCounts,
-  getTypeMix,
   listEntriesForDate,
   type CaseEntry,
   type DailyCount,
-  type TypeMixRow,
 } from "@/lib/entries";
 import { getMonthTabLabel } from "@/lib/months";
 import { DayPanel } from "@/components/DayPanel";
@@ -15,7 +13,6 @@ import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
 import { SpreadsheetActions } from "@/components/SpreadsheetActions";
 import { StatTile } from "@/components/StatTile";
-import { TypeMix } from "@/components/TypeMix";
 
 export const dynamic = "force-dynamic";
 
@@ -38,13 +35,11 @@ export default async function MonthPage({
   const actor = await requireSignedInUser();
   let title = monthLabel(ym);
   let counts: DailyCount[] = [];
-  let mix: TypeMixRow[] = [];
   let dbError = false;
 
   try {
-    [counts, mix, title] = await Promise.all([
+    [counts, title] = await Promise.all([
       getDailyCounts(actor.orgId, range),
-      getTypeMix(actor.orgId, range),
       getMonthTabLabel(actor.orgId, ym),
     ]);
   } catch {
@@ -88,7 +83,6 @@ export default async function MonthPage({
           <StatTile label="Cases per day" value={avg} hint="on logged days" />
           <StatTile label="Minutes per case" value={perCase} hint="average" />
         </div>
-        {daysLogged > 1 && <TypeMix mix={mix} size="sm" />}
       </header>
 
       <DayPanel

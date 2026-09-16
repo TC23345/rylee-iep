@@ -4,37 +4,33 @@ import {
   getDailyCounts,
   getDailyTypeMix,
   getMonthlySummaries,
-  listEntriesForDate,
-  type CaseEntry,
   type DailyCount,
   type DailyTypeMixRow,
   type MonthSummary,
 } from "@/lib/entries";
 import { DailyCountsTable } from "@/components/DailyCountsTable";
-import { DayPanel } from "@/components/DayPanel";
 import { DbNotice } from "@/components/DbNotice";
 import { MonthInsightCards } from "@/components/MonthInsightCards";
 import { StatTile } from "@/components/StatTile";
 
 export const dynamic = "force-dynamic";
 
-// Home: today's log, one card per month, then the "Daily Case Counts" sheet
-// (every logged day, newest first).
-export default async function TodayPage() {
+// Home: the overview. Headline numbers, one card per month with its calendar,
+// totals and type mix, then the "Daily Case Counts" sheet. Day-by-day logging
+// lives under the month tabs.
+export default async function OverviewPage() {
   const actor = await requireSignedInUser();
   const today = todayIso();
   const ym = monthOf(today);
   const weekStart = addDays(today, -6);
 
-  let entries: CaseEntry[] = [];
   let allDays: DailyCount[] = [];
   let months: MonthSummary[] = [];
   let dailyMix: DailyTypeMixRow[] = [];
   let dbError = false;
 
   try {
-    [entries, allDays, months, dailyMix] = await Promise.all([
-      listEntriesForDate(actor.orgId, today),
+    [allDays, months, dailyMix] = await Promise.all([
       getDailyCounts(actor.orgId),
       getMonthlySummaries(actor.orgId),
       getDailyTypeMix(actor.orgId),
@@ -69,8 +65,6 @@ export default async function TodayPage() {
         />
       </div>
 
-      <DayPanel date={today} today={today} entries={entries} />
-
       <MonthInsightCards months={months} days={allDays} />
 
       <section aria-label="Daily case counts" className="space-y-2">
@@ -83,7 +77,7 @@ export default async function TodayPage() {
           mix={dailyMix}
           highlight={today}
           emptyTitle="No days logged yet"
-          emptyMessage="Add today's first case above and this sheet starts filling in."
+          emptyMessage="Open a month tab and add today's first case. This sheet fills in as the log grows."
         />
       </section>
     </div>
