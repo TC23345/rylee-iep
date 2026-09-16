@@ -34,6 +34,7 @@ const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
  */
 export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
   const [index, setIndex] = useState(0);
+  const [breakdownOpen, setBreakdownOpen] = useState(true);
 
   if (months.length === 0) return null;
   const month = months[Math.min(index, months.length - 1)];
@@ -139,13 +140,29 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead>Type</TableHead>
+                    <TableHead>
+                      <button
+                        type="button"
+                        aria-expanded={breakdownOpen}
+                        aria-controls={`breakdown-${month.ym}`}
+                        onClick={() => setBreakdownOpen((o) => !o)}
+                        className="-ml-1 inline-flex items-center gap-1 rounded-md px-1 py-0.5 hover:bg-muted"
+                      >
+                        <ChevronRight
+                          className={cn(
+                            "size-3.5 text-muted-foreground transition-transform",
+                            breakdownOpen && "rotate-90"
+                          )}
+                        />
+                        Type
+                      </button>
+                    </TableHead>
                     <TableHead className="w-16 text-right">Rows</TableHead>
                     <TableHead className="w-20 text-right">Time</TableHead>
                     <TableHead className="w-16 text-right">Share</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody id={`breakdown-${month.ym}`} className={cn(!breakdownOpen && "hidden")}>
                   {month.mix.map((row) => (
                     <TableRow key={row.caseType}>
                       <TableCell>
