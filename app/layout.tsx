@@ -25,8 +25,8 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rylee's IEP Practice — Workspace Dashboard",
-  description: "Private-pay IEP advocacy practice workspace.",
+  title: "Rylee's Case Log",
+  description: "Daily case log and case counts.",
 };
 
 export default function RootLayout({

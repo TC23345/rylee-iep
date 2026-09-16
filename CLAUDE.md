@@ -24,28 +24,14 @@ The directory is organized around the course's 8-module deliverable list. Each m
 
 **Editing `assets/` vs `workspace/`**: `assets/` files are the *templates* — edit them when Rylee wants to change the form/structure for all future clients. `workspace/clients/<id>/` files are the *populated copies* — edit them when working with a specific client. Never edit a workspace file thinking it will affect future clients; never edit an asset file thinking it will retroactively update existing client folders.
 
-## Dashboard content conventions
+## Web app: Rylee's Case Log
 
-The repo now deploys a root-level Next.js App Router dashboard to https://rylee-iep-production.up.railway.app. Markdown content for each surface lives in well-known paths and is loaded server-side through the Next app:
+The root-level Next.js app (deployed to https://rylee-iep-production.up.railway.app) is **no longer the course dashboard**. It is a daily case log for Rylee's day job, modelled on the Excel workbook she kept by hand: a "Daily Case Counts" sheet plus one sheet per month with rows of Date · Case # · Case Type · Start · End · Duration · Notes. See `README.md` for the file map.
 
-| Path | Renders to |
-|---|---|
-| `README.md` | Overview page (`/`) |
-| `archive.md` | Archive page (`/archive`) |
-| `modules.md` | Course module overview, used for sidebar metadata |
-| `content/module-<N>.md` | Per-deliverable section bodies on `/module/<N>`; each `## Heading` defines a section, a `[Paragraph]` body falls back to the three bracketed `CONTEXT_PLACEHOLDERS` |
-| `content/skills/<slug>/<lens>.md` | Skill page panels at `/skill/<slug>`; `lens` in `{research, module, expert}` maps to the three tabs |
-
-**Skill lens file structure** (`content/skills/<slug>/<lens>.md`):
-
-- A leading `# Heading` is promoted to **both** the tab label and the panel head title, replacing the generic "Initial Research" / "Module Knowledge" / "Rylee's Expert" defaults.
-- An optional `*italic subtitle*` on the next non-empty line replaces the default panel hint (`Pre-module orientation` / `Synthesized from lesson` / `Weighs heaviest downstream`).
-- Everything after that renders as the panel body through the React markdown renderer and the `.md-body` design system (tables, `<details>` collapsibles, lists inside blockquotes, etc. are all supported).
-- Missing files fall back to the bracketed `[…Context — …]` placeholder text. No error.
-
-This is purely a presentation layer — the source of truth for skill *behavior* is still `.claude/skills/<slug>/SKILL.md`. The `content/skills/<slug>/*.md` files are the rendered narrative surface for the dashboard.
-
-**How to write these pages** (structure, voice, the Taylor-explaining-to-Rylee register, readability rules): `.claude/shared/skill-page-style.md`.
+- Rows live in MongoDB (`case_entries`), scoped by Clerk `orgId`. Server actions in `app/actions/entries.ts` are the only write path.
+- Case types, labels and colours are defined once in `lib/entry-schema.ts`. Add new types there; `lunch` is the only type that does not count as a case.
+- Month tabs are derived in `lib/dates.ts` (`FIRST_MONTH` through the current month, Chicago time). Nothing else needs editing when a new month starts.
+- The markdown files (`modules.md`, `content/`, `archive.md`) are no longer rendered by the app; they remain as inputs to the Claude harness below.
 
 ## PII policy
 
