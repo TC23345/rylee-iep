@@ -10,6 +10,7 @@ import { typeLabel, typeStyle, type EntryFormValues } from "@/lib/entry-schema";
 import { formatDuration, formatTime12 } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
+import type { TypeFilter } from "@/components/TypeMix";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,14 +37,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
+// Case # · Type · Start · End · Length · Notes · menu
+const COLUMNS =
+  "grid-cols-[7.5rem_minmax(9.5rem,1.1fr)_5.5rem_5.5rem_4.5rem_minmax(10rem,2fr)_2.5rem]";
+const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
 
 function toFormValues(e: CaseEntry): EntryFormValues {
   return {
@@ -167,35 +165,82 @@ function RowMenu({ entry }: { entry: CaseEntry }) {
   );
 }
 
-function EntryRow({ entry }: { entry: CaseEntry }) {
-  const isBreak = entry.caseType === "lunch";
-
+function Cell({
+  className,
+  children,
+  header = false,
+}: {
+  className?: string;
+  children?: React.ReactNode;
+  header?: boolean;
+}) {
   return (
-    <TableRow className={cn(isBreak && "bg-muted/40 text-muted-foreground")}>
-      <TableCell className="font-mono tabular-nums">{entry.caseNumber || "—"}</TableCell>
-      <TableCell>
-        <Badge variant="secondary" className={cn("font-medium", typeStyle(entry.caseType).chip)}>
-          {typeLabel(entry.caseType)}
-        </Badge>
-      </TableCell>
-      <TableCell className="tabular-nums">
-        {entry.startTime ? formatTime12(entry.startTime) : "—"}
-      </TableCell>
-      <TableCell className="tabular-nums">
-        {entry.endTime ? formatTime12(entry.endTime) : "—"}
-      </TableCell>
-      <TableCell className="tabular-nums text-muted-foreground">
-        {entry.durationMin === null ? "—" : formatDuration(entry.durationMin)}
-      </TableCell>
-      <TableCell className="max-w-72 whitespace-normal text-foreground/80">{entry.note}</TableCell>
-      <TableCell className="py-1 pr-2 text-right">
-        <RowMenu entry={entry} />
-      </TableCell>
-    </TableRow>
+    <div
+      role={header ? "columnheader" : "cell"}
+      className={cn("flex min-w-0 items-center px-3 py-2 text-sm", className)}
+    >
+      {children}
+    </div>
   );
 }
 
-export function EntryTable({ entries }: { entries: CaseEntry[] }) {
+/**
+ * One row, wrapped in a grid whose single track collapses to 0fr when the row
+ * is filtered out. The row stays mounted so its dialogs keep their state.
+ */
+function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
+  const isBreak = entry.caseType === "lunch";
+
+  return (
+    <div
+      role="row"
+      aria-hidden={!shown}
+      className="grid transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none"
+      style={{
+        gridTemplateRows: shown ? "1fr" : "0fr",
+        opacity: shown ? 1 : 0,
+        transitionTimingFunction: EASE,
+      }}
+    >
+      <div className="overflow-hidden">
+        <div
+          className={cn(
+            "grid border-b border-border transition-colors duration-100 hover:bg-muted/40",
+            COLUMNS,
+            isBreak && "bg-muted/40 text-muted-foreground"
+          )}
+        >
+          <Cell className="font-mono tabular-nums">{entry.caseNumber || "—"}</Cell>
+          <Cell>
+            <Badge
+              variant="secondary"
+              className={cn("font-medium", typeStyle(entry.caseType).chip)}
+            >
+              {typeLabel(entry.caseType)}
+            </Badge>
+          </Cell>
+          <Cell className="tabular-nums">{entry.startTime ? formatTime12(entry.startTime) : "—"}</Cell>
+          <Cell className="tabular-nums">{entry.endTime ? formatTime12(entry.endTime) : "—"}</Cell>
+          <Cell className="tabular-nums text-muted-foreground">
+            {entry.durationMin === null ? "—" : formatDuration(entry.durationMin)}
+          </Cell>
+          <Cell className="whitespace-normal text-foreground/80">{entry.note}</Cell>
+          <Cell className="justify-end px-1 py-1">
+            {shown && <RowMenu entry={entry} />}
+          </Cell>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface EntryTableProps {
+  entries: CaseEntry[];
+  /** "all" or one case type; other rows collapse away. */
+  filter?: TypeFilter;
+}
+
+export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
   if (entries.length === 0) {
     return (
       <Empty className="border border-dashed border-border py-10">
@@ -209,26 +254,40 @@ export function EntryTable({ entries }: { entries: CaseEntry[] }) {
     );
   }
 
+  const visible = entries.filter((e) => filter === "all" || e.caseType === filter).length;
+
   return (
-    <div className="rounded-lg border border-border bg-card shadow-sm">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="w-32">Case #</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead className="w-24">Start</TableHead>
-            <TableHead className="w-24">End</TableHead>
-            <TableHead className="w-20">Length</TableHead>
-            <TableHead>Notes</TableHead>
-            <TableHead className="w-10" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+    <div
+      role="region"
+      aria-label="Rows for this day"
+      tabIndex={0}
+      className="overflow-x-auto rounded-lg border border-border bg-card shadow-sm"
+      style={{ scrollbarWidth: "none" }}
+    >
+      <div role="table" className="min-w-[44rem]">
+        <div
+          role="row"
+          className={cn("grid border-b border-border text-muted-foreground", COLUMNS)}
+        >
+          <Cell header className="text-xs font-medium">Case #</Cell>
+          <Cell header className="text-xs font-medium">Type</Cell>
+          <Cell header className="text-xs font-medium">Start</Cell>
+          <Cell header className="text-xs font-medium">End</Cell>
+          <Cell header className="text-xs font-medium">Length</Cell>
+          <Cell header className="text-xs font-medium">Notes</Cell>
+          <Cell header />
+        </div>
+        <div role="rowgroup" className="[&>[role=row]:last-child_.border-b]:border-0">
           {entries.map((e) => (
-            <EntryRow key={e.id} entry={e} />
+            <EntryRow key={e.id} entry={e} shown={filter === "all" || e.caseType === filter} />
           ))}
-        </TableBody>
-      </Table>
+        </div>
+        {visible === 0 && (
+          <p className="px-3 py-4 text-center text-sm text-muted-foreground">
+            No {filter === "all" ? "" : typeLabel(filter) + " "}rows on this day.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

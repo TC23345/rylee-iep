@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 
 import { createEntry } from "@/app/actions/entries";
 import { emptyEntryValues, type CaseType } from "@/lib/entry-schema";
+import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,8 @@ interface AddEntryDialogProps {
   lastEnd: string | null;
   /** Case type of the last row that day; the picker defaults to it. */
   lastType: CaseType | null;
+  /** Types used recently that day, offered as one-tap picks on step one. */
+  recentTypes?: CaseType[];
 }
 
 const STEP_HINTS: Record<1 | 2, string> = {
@@ -30,7 +33,13 @@ const STEP_HINTS: Record<1 | 2, string> = {
 };
 
 /** "Add a row" button that opens the two-step add form. */
-export function AddEntryDialog({ date, isToday, lastEnd, lastType }: AddEntryDialogProps) {
+export function AddEntryDialog({
+  date,
+  isToday,
+  lastEnd,
+  lastType,
+  recentTypes = [],
+}: AddEntryDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
 
@@ -47,10 +56,26 @@ export function AddEntryDialog({ date, isToday, lastEnd, lastType }: AddEntryDia
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-serif text-xl">Add a case</DialogTitle>
-            <DialogDescription>
-              Step {step} of 2. {STEP_HINTS[step]}
-            </DialogDescription>
+            <div className="flex items-center justify-between gap-3 pr-6">
+              <DialogTitle className="font-serif text-xl">Add a case</DialogTitle>
+              <span className="flex items-center gap-2" aria-label={`Step ${step} of 2`}>
+                <span className="flex gap-1" aria-hidden>
+                  {([1, 2] as const).map((s) => (
+                    <span
+                      key={s}
+                      className={cn(
+                        "h-1.5 w-4 rounded-full transition-colors",
+                        s <= step ? "bg-gold" : "bg-muted"
+                      )}
+                    />
+                  ))}
+                </span>
+                <span className="rounded-full bg-muted px-2 py-0.5 text-xs tabular-nums text-muted-foreground">
+                  {step} / 2
+                </span>
+              </span>
+            </div>
+            <DialogDescription>{STEP_HINTS[step]}</DialogDescription>
           </DialogHeader>
           {open && (
             <EntryForm
@@ -63,6 +88,7 @@ export function AddEntryDialog({ date, isToday, lastEnd, lastType }: AddEntryDia
               submitLabel="Add case"
               successMessage="Case added."
               stepped
+              recentTypes={recentTypes}
               showDate={!isToday}
               nowStart={isToday && !lastEnd}
               nowEnd={isToday}

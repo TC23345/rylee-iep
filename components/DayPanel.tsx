@@ -1,9 +1,8 @@
 import { dayLabel, formatDuration, formatTime12 } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
-import { countsAsCase } from "@/lib/entry-schema";
+import { countsAsCase, type CaseType } from "@/lib/entry-schema";
 import { AddEntryDialog } from "@/components/AddEntryDialog";
-import { EntryTable } from "@/components/EntryTable";
-import { TypeMix, mixFromEntries } from "@/components/TypeMix";
+import { DayLog } from "@/components/DayLog";
 
 interface DayPanelProps {
   date: string;
@@ -24,11 +23,18 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
   const lastEnd = ends.length ? ends.reduce((a, b) => (a > b ? a : b)) : null;
 
   // The new row starts where the latest row ended.
-  const last = entries.reduce<CaseEntry | null>((best, e) => {
-    if (!e.endTime) return best;
-    if (!best || !best.endTime || e.endTime >= best.endTime) return e;
-    return best;
-  }, null);
+  const byEnd = [...entries]
+    .filter((e) => e.endTime)
+    .sort((a, b) => ((a.endTime ?? "") < (b.endTime ?? "") ? 1 : -1));
+  const last = byEnd[0] ?? null;
+
+  // Types used most recently today, for one-tap picking in the add dialog.
+  const recentTypes: CaseType[] = [];
+  for (const e of byEnd) {
+    if (e.caseType === "lunch" || recentTypes.includes(e.caseType)) continue;
+    recentTypes.push(e.caseType);
+    if (recentTypes.length === 4) break;
+  }
 
   const summary =
     cases.length === 0
@@ -58,14 +64,13 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
             isToday={isToday}
             lastEnd={last?.endTime ?? null}
             lastType={last?.caseType ?? null}
+            recentTypes={recentTypes}
           />
           {actions}
         </div>
       </header>
 
-      <TypeMix mix={mixFromEntries(entries)} />
-
-      <EntryTable entries={entries} />
+      <DayLog entries={entries} />
     </section>
   );
 }
