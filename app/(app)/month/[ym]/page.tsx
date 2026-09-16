@@ -1,15 +1,25 @@
 import { notFound } from "next/navigation";
 import { requireSignedInUser } from "@/lib/authz";
 import { formatDuration, isIsoDate, isIsoMonth, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
-import { getDailyCounts, listEntriesForDate, type CaseEntry, type DailyCount } from "@/lib/entries";
-import { DailyCountsTable } from "@/components/DailyCountsTable";
+import {
+  getDailyCounts,
+  getTypeMix,
+  listEntriesForDate,
+  type CaseEntry,
+  type DailyCount,
+  type TypeMixRow,
+} from "@/lib/entries";
 import { DayPanel } from "@/components/DayPanel";
+import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
+import { SpreadsheetActions } from "@/components/SpreadsheetActions";
 import { StatTile } from "@/components/StatTile";
+import { TypeMix } from "@/components/TypeMix";
 
 export const dynamic = "force-dynamic";
 
-// One workbook sheet: the month's daily counts plus the full log for a chosen day.
+// One workbook sheet: the month's totals, its logged days, and the full log for
+// the chosen day.
 export default async function MonthPage({
   params,
   searchParams,
@@ -26,10 +36,14 @@ export default async function MonthPage({
 
   const actor = await requireSignedInUser();
   let counts: DailyCount[] = [];
+  let mix: TypeMixRow[] = [];
   let dbError = false;
 
   try {
-    counts = await getDailyCounts(actor.orgId, range);
+    [counts, mix] = await Promise.all([
+      getDailyCounts(actor.orgId, range),
+      getTypeMix(actor.orgId, range),
+    ]);
   } catch {
     dbError = true;
   }
@@ -53,37 +67,44 @@ export default async function MonthPage({
   const totalMinutes = counts.reduce((sum, c) => sum + c.minutes, 0);
   const daysLogged = counts.length;
   const avg = daysLogged ? (totalCases / daysLogged).toFixed(1) : "0";
+  const perCase = totalCases ? Math.round(totalMinutes / totalCases) : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {dbError && <DbNotice />}
 
-      <header>
-        <h1 className="font-serif text-2xl font-bold">{monthLabel(ym)}</h1>
-        <p className="text-sm text-muted-foreground">
-          Pick a day on the left to see or edit its rows.
-        </p>
+      <header className="space-y-4">
+        <h1 className="font-serif text-3xl font-bold">{monthLabel(ym)}</h1>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatTile
+            label="Cases"
+            value={totalCases}
+            hint={`${daysLogged} ${daysLogged === 1 ? "day" : "days"} logged`}
+          />
+          <StatTile label="Case time" value={formatDuration(totalMinutes)} hint="hours:minutes" />
+          <StatTile label="Cases per day" value={avg} hint="on logged days" />
+          <StatTile label="Minutes per case" value={perCase} hint="average" />
+        </div>
+        {daysLogged > 1 && <TypeMix mix={mix} size="sm" />}
       </header>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile label="Cases" value={totalCases} />
-        <StatTile label="Days logged" value={daysLogged} />
-        <StatTile label="Avg per day" value={avg} hint="on logged days" />
-        <StatTile label="Case time" value={formatDuration(totalMinutes)} hint="hours:minutes" />
-      </div>
+      <DayPanel
+        date={selected}
+        today={today}
+        entries={entries}
+        actions={<SpreadsheetActions ym={ym} />}
+      />
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <section aria-label="Daily case counts" className="space-y-2">
-          <h2 className="font-serif text-base font-semibold">Daily case counts</h2>
-          <DailyCountsTable
-            rows={counts}
-            highlight={selected}
-            emptyMessage={`Nothing logged in ${monthLabel(ym)} yet.`}
-          />
-        </section>
-
-        <DayPanel date={selected} today={today} entries={entries} />
-      </div>
+      <section aria-label="Days this month" className="space-y-2">
+        <h2 className="font-serif text-xl font-semibold">Days this month</h2>
+        <p className="text-sm text-muted-foreground">Pick a date to open that day above.</p>
+        <DailyCountsTable
+          rows={[...counts].reverse()}
+          highlight={selected}
+          emptyTitle={`Nothing logged in ${monthLabel(ym)}`}
+          emptyMessage="Rows added above will start the month."
+        />
+      </section>
     </div>
   );
 }

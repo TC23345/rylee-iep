@@ -1,5 +1,5 @@
 import { requireSignedInUser } from "@/lib/authz";
-import { addDays, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
+import { addDays, formatDuration, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
 import { getDailyCounts, listEntriesForDate, type CaseEntry, type DailyCount } from "@/lib/entries";
 import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DayPanel } from "@/components/DayPanel";
@@ -31,14 +31,18 @@ export default async function TodayPage() {
 
   const monthToDate = allDays.filter((d) => d.date >= monthRange(ym).from && d.date <= today);
   const lastSeven = allDays.filter((d) => d.date >= weekStart && d.date <= today);
-  const todayCount = allDays.find((d) => d.date === today)?.count ?? 0;
+  const todayRow = allDays.find((d) => d.date === today);
 
   return (
     <div className="space-y-8">
       {dbError && <DbNotice />}
 
       <div className="grid grid-cols-3 gap-3">
-        <StatTile label="Today" value={todayCount} hint="cases" />
+        <StatTile
+          label="Today"
+          value={todayRow?.count ?? 0}
+          hint={todayRow?.minutes ? `${formatDuration(todayRow.minutes)} of case time` : "cases"}
+        />
         <StatTile
           label="Last 7 days"
           value={lastSeven.reduce((sum, d) => sum + d.count, 0)}
@@ -51,17 +55,18 @@ export default async function TodayPage() {
         />
       </div>
 
-      <DayPanel date={today} today={today} entries={entries} formOpen />
+      <DayPanel date={today} today={today} entries={entries} />
 
       <section aria-label="Daily case counts" className="space-y-2">
         <h2 className="font-serif text-xl font-semibold">Daily case counts</h2>
         <p className="text-sm text-muted-foreground">
-          Every day logged so far, newest first. Tap a date to open that day.
+          Every day logged so far, newest first. Pick a date to open that day.
         </p>
         <DailyCountsTable
           rows={[...allDays].reverse()}
           highlight={today}
-          emptyMessage="No days logged yet. Add today's first case above."
+          emptyTitle="No days logged yet"
+          emptyMessage="Add today's first case above and this sheet starts filling in."
         />
       </section>
     </div>

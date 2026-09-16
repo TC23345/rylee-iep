@@ -1,15 +1,27 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { deleteEntry, updateEntry } from "@/app/actions/entries";
 import type { CaseEntry } from "@/lib/entries";
-import { CASE_TYPE_LABELS, CASE_TYPE_STYLES, type EntryFormValues } from "@/lib/entry-schema";
+import { typeLabel, typeStyle, type EntryFormValues } from "@/lib/entry-schema";
 import { formatDuration, formatTime12 } from "@/lib/dates";
+import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +29,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 function toFormValues(e: CaseEntry): EntryFormValues {
   return {
@@ -59,122 +86,149 @@ function EditEntryDialog({
   );
 }
 
-function DeleteEntryButton({ id }: { id: string }) {
-  const [confirming, setConfirming] = useState(false);
+function DeleteEntryDialog({
+  entry,
+  open,
+  onOpenChange,
+}: {
+  entry: CaseEntry;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const [pending, startTransition] = useTransition();
-
-  if (!confirming) {
-    return (
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        className="text-muted-foreground hover:text-destructive"
-        onClick={() => setConfirming(true)}
-        aria-label="Delete row"
-      >
-        <Trash2 className="size-4" />
-      </Button>
-    );
-  }
+  const what = entry.caseNumber ? `case ${entry.caseNumber}` : typeLabel(entry.caseType).toLowerCase();
 
   return (
-    <span className="inline-flex items-center gap-1">
-      <Button
-        type="button"
-        variant="destructive"
-        size="sm"
-        disabled={pending}
-        onClick={() =>
-          startTransition(async () => {
-            const res = await deleteEntry(id);
-            if (res.ok) toast.success("Row deleted.");
-            else toast.error(res.error);
-            setConfirming(false);
-          })
-        }
-      >
-        {pending ? "Deleting..." : "Delete"}
-      </Button>
-      <Button type="button" variant="ghost" size="sm" onClick={() => setConfirming(false)}>
-        Keep
-      </Button>
-    </span>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle className="font-serif">Delete this row?</AlertDialogTitle>
+          <AlertDialogDescription>
+            The {what} row
+            {entry.startTime ? ` starting ${formatTime12(entry.startTime)}` : ""} will be removed
+            from the log. This cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Keep row</AlertDialogCancel>
+          <AlertDialogAction
+            disabled={pending}
+            onClick={(event) => {
+              event.preventDefault();
+              startTransition(async () => {
+                const res = await deleteEntry(entry.id);
+                if (res.ok) {
+                  toast.success("Row deleted.");
+                  onOpenChange(false);
+                } else {
+                  toast.error(res.error);
+                }
+              });
+            }}
+          >
+            {pending ? "Deleting..." : "Delete row"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function RowMenu({ entry }: { entry: CaseEntry }) {
+  const [editing, setEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="text-muted-foreground hover:text-foreground"
+            aria-label={`Actions for ${entry.caseNumber || typeLabel(entry.caseType)}`}
+          >
+            <MoreHorizontal className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => setEditing(true)}>
+            <Pencil /> Edit row
+          </DropdownMenuItem>
+          <DropdownMenuItem variant="destructive" onClick={() => setDeleting(true)}>
+            <Trash2 /> Delete row
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <EditEntryDialog entry={entry} open={editing} onOpenChange={setEditing} />
+      <DeleteEntryDialog entry={entry} open={deleting} onOpenChange={setDeleting} />
+    </>
   );
 }
 
 function EntryRow({ entry }: { entry: CaseEntry }) {
-  const [editing, setEditing] = useState(false);
   const isBreak = entry.caseType === "lunch";
 
   return (
-    <tr className={`border-b border-border last:border-0 ${isBreak ? "bg-muted/40" : ""}`}>
-      <td className="whitespace-nowrap px-3 py-2 font-mono text-sm">{entry.caseNumber || "—"}</td>
-      <td className="px-3 py-2">
-        <span
-          className={`inline-block whitespace-nowrap rounded px-2 py-0.5 text-xs font-medium ${CASE_TYPE_STYLES[entry.caseType]}`}
-        >
-          {CASE_TYPE_LABELS[entry.caseType]}
-        </span>
-      </td>
-      <td className="whitespace-nowrap px-3 py-2 font-mono text-sm tabular-nums">
+    <TableRow className={cn(isBreak && "bg-muted/40 text-muted-foreground")}>
+      <TableCell className="font-mono tabular-nums">{entry.caseNumber || "—"}</TableCell>
+      <TableCell>
+        <Badge variant="secondary" className={cn("font-medium", typeStyle(entry.caseType).chip)}>
+          {typeLabel(entry.caseType)}
+        </Badge>
+      </TableCell>
+      <TableCell className="tabular-nums">
         {entry.startTime ? formatTime12(entry.startTime) : "—"}
-      </td>
-      <td className="whitespace-nowrap px-3 py-2 font-mono text-sm tabular-nums">
+      </TableCell>
+      <TableCell className="tabular-nums">
         {entry.endTime ? formatTime12(entry.endTime) : "—"}
-      </td>
-      <td className="whitespace-nowrap px-3 py-2 font-mono text-sm tabular-nums text-muted-foreground">
+      </TableCell>
+      <TableCell className="tabular-nums text-muted-foreground">
         {entry.durationMin === null ? "—" : formatDuration(entry.durationMin)}
-      </td>
-      <td className="min-w-40 max-w-md whitespace-pre-wrap px-3 py-2 text-sm text-foreground/80">
-        {entry.note}
-      </td>
-      <td className="whitespace-nowrap px-1 py-1 text-right">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={() => setEditing(true)}
-          aria-label="Edit row"
-        >
-          <Pencil className="size-4" />
-        </Button>
-        <DeleteEntryButton id={entry.id} />
-        <EditEntryDialog entry={entry} open={editing} onOpenChange={setEditing} />
-      </td>
-    </tr>
+      </TableCell>
+      <TableCell className="max-w-72 whitespace-normal text-foreground/80">{entry.note}</TableCell>
+      <TableCell className="py-1 pr-2 text-right">
+        <RowMenu entry={entry} />
+      </TableCell>
+    </TableRow>
   );
 }
 
 export function EntryTable({ entries }: { entries: CaseEntry[] }) {
   if (entries.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
-        No rows for this day yet.
-      </p>
+      <Empty className="border border-dashed border-border py-10">
+        <EmptyHeader>
+          <EmptyTitle className="font-serif">No rows for this day</EmptyTitle>
+          <EmptyDescription>
+            Add a row above and it will show up here, newest at the bottom.
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     );
   }
+
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-card shadow-sm">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-border text-left font-mono text-[0.65rem] uppercase tracking-wider text-muted-foreground">
-            <th className="px-3 py-2 font-medium">Case #</th>
-            <th className="px-3 py-2 font-medium">Case type</th>
-            <th className="px-3 py-2 font-medium">Start</th>
-            <th className="px-3 py-2 font-medium">End</th>
-            <th className="px-3 py-2 font-medium">Duration</th>
-            <th className="px-3 py-2 font-medium">Notes</th>
-            <th className="px-3 py-2" />
-          </tr>
-        </thead>
-        <tbody>
+    <div className="rounded-lg border border-border bg-card shadow-sm">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-32">Case #</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead className="w-24">Start</TableHead>
+            <TableHead className="w-24">End</TableHead>
+            <TableHead className="w-20">Length</TableHead>
+            <TableHead>Notes</TableHead>
+            <TableHead className="w-10" />
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {entries.map((e) => (
             <EntryRow key={e.id} entry={e} />
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

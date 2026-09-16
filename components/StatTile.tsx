@@ -9,11 +9,9 @@ export function StatTile({
 }) {
   return (
     <div className="rounded-lg border border-border bg-card px-4 py-3 shadow-sm">
-      <div className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted-foreground">
-        {label}
-      </div>
-      <div className="mt-1 font-serif text-3xl font-semibold leading-none">{value}</div>
-      {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
+      <div className="text-sm text-muted-foreground">{label}</div>
+      <div className="mt-1 font-serif text-3xl font-semibold leading-none tabular-nums">{value}</div>
+      {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
 }

@@ -1,55 +1,85 @@
 import Link from "next/link";
 import { formatDuration, monthOf, numericDate, shortDayLabel } from "@/lib/dates";
 import type { DailyCount } from "@/lib/entries";
+import { cn } from "@/lib/utils";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface DailyCountsTableProps {
   rows: DailyCount[];
   /** Date to highlight (the selected or current day). */
   highlight?: string | null;
+  emptyTitle: string;
   emptyMessage: string;
 }
 
-/** The "Daily Case Counts" sheet: one row per logged day. */
-export function DailyCountsTable({ rows, highlight, emptyMessage }: DailyCountsTableProps) {
+/** The "Daily Case Counts" sheet: one row per logged day, with a bar scaled to the busiest day. */
+export function DailyCountsTable({ rows, highlight, emptyTitle, emptyMessage }: DailyCountsTableProps) {
   if (rows.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
-        {emptyMessage}
-      </p>
+      <Empty className="border border-dashed border-border py-10">
+        <EmptyHeader>
+          <EmptyTitle className="font-serif">{emptyTitle}</EmptyTitle>
+          <EmptyDescription>{emptyMessage}</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     );
   }
+
+  const max = Math.max(...rows.map((r) => r.count), 1);
+
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b border-border text-left font-mono text-[0.65rem] uppercase tracking-wider text-muted-foreground">
-            <th className="px-4 py-2 font-medium">Date</th>
-            <th className="px-4 py-2 text-right font-medium">Case count</th>
-            <th className="hidden px-4 py-2 text-right font-medium sm:table-cell">Time</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="rounded-lg border border-border bg-card shadow-sm">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-36">Date</TableHead>
+            <TableHead className="w-16 text-right">Cases</TableHead>
+            <TableHead className="hidden sm:table-cell">
+              <span className="sr-only">Cases relative to the busiest day</span>
+            </TableHead>
+            <TableHead className="w-20 text-right">Time</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {rows.map((r) => (
-            <tr
-              key={r.date}
-              className={`border-b border-border last:border-0 ${r.date === highlight ? "bg-gold/10" : ""}`}
-            >
-              <td className="px-4 py-2">
-                <Link href={`/month/${monthOf(r.date)}?d=${r.date}`} className="hover:underline">
-                  <span className="font-mono tabular-nums">{numericDate(r.date)}</span>
-                  <span className="ml-2 text-muted-foreground">{shortDayLabel(r.date).slice(0, 3)}</span>
+            <TableRow key={r.date} className={cn(r.date === highlight && "bg-gold/10")}>
+              <TableCell>
+                <Link
+                  href={`/month/${monthOf(r.date)}?d=${r.date}`}
+                  className="inline-flex items-baseline gap-2 hover:underline"
+                >
+                  <span className="tabular-nums">{numericDate(r.date)}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {shortDayLabel(r.date).slice(0, 3)}
+                  </span>
                 </Link>
-              </td>
-              <td className="px-4 py-2 text-right font-serif text-lg font-semibold tabular-nums">
+              </TableCell>
+              <TableCell className="text-right font-serif text-lg font-semibold tabular-nums">
                 {r.count}
-              </td>
-              <td className="hidden px-4 py-2 text-right font-mono tabular-nums text-muted-foreground sm:table-cell">
+              </TableCell>
+              <TableCell className="hidden sm:table-cell">
+                <div className="h-2 w-full rounded-full bg-muted" aria-hidden>
+                  <div
+                    className="h-2 rounded-full bg-gold"
+                    style={{ width: `${(r.count / max) * 100}%` }}
+                  />
+                </div>
+              </TableCell>
+              <TableCell className="text-right tabular-nums text-muted-foreground">
                 {r.minutes ? formatDuration(r.minutes) : "—"}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

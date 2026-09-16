@@ -1,21 +1,27 @@
-import { dayLabel, formatDuration } from "@/lib/dates";
+import { dayLabel, formatDuration, formatTime12 } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
 import { countsAsCase } from "@/lib/entry-schema";
-import { AddEntryCard } from "@/components/AddEntryCard";
+import { AddEntryDialog } from "@/components/AddEntryDialog";
 import { EntryTable } from "@/components/EntryTable";
+import { TypeMix, mixFromEntries } from "@/components/TypeMix";
 
 interface DayPanelProps {
   date: string;
   today: string;
   entries: CaseEntry[];
-  /** Keep the add form expanded (Today page). */
-  formOpen?: boolean;
+  /** Extra buttons shown beside "Add a row" (the month tabs add import / export). */
+  actions?: React.ReactNode;
 }
 
-export function DayPanel({ date, today, entries, formOpen = false }: DayPanelProps) {
-  const cases = entries.filter((e) => countsAsCase(e.caseType));
-  const minutes = cases.reduce((sum, e) => sum + (e.durationMin ?? 0), 0);
+export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
+  const cases = entries.filter((e) => countsAsCase(e.caseType, e.caseNumber));
+  const caseMinutes = cases.reduce((sum, e) => sum + (e.durationMin ?? 0), 0);
   const isToday = date === today;
+
+  const starts = entries.map((e) => e.startTime).filter((t): t is string => !!t);
+  const ends = entries.map((e) => e.endTime).filter((t): t is string => !!t);
+  const firstStart = starts.length ? starts.reduce((a, b) => (a < b ? a : b)) : null;
+  const lastEnd = ends.length ? ends.reduce((a, b) => (a > b ? a : b)) : null;
 
   // The new row starts where the latest row ended.
   const last = entries.reduce<CaseEntry | null>((best, e) => {
@@ -24,36 +30,41 @@ export function DayPanel({ date, today, entries, formOpen = false }: DayPanelPro
     return best;
   }, null);
 
-  const addCard = (
-    <AddEntryCard
-      date={date}
-      isToday={isToday}
-      lastEnd={last?.endTime ?? null}
-      lastType={last?.caseType ?? null}
-      defaultOpen={formOpen}
-    />
-  );
+  const summary =
+    cases.length === 0
+      ? isToday
+        ? "Nothing logged yet."
+        : "No cases logged."
+      : `${cases.length} ${cases.length === 1 ? "case" : "cases"} in ${formatDuration(caseMinutes)}` +
+        (firstStart && lastEnd
+          ? `, ${formatTime12(firstStart)} to ${formatTime12(lastEnd)}`
+          : "");
 
   return (
     <section aria-label={`Cases for ${dayLabel(date)}`} className="space-y-4">
-      <header className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <h2 className="font-serif text-xl font-semibold">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h2 className="font-serif text-2xl font-semibold leading-tight">
             {isToday ? "Today" : dayLabel(date)}
-            {isToday && (
-              <span className="ml-2 text-base font-normal text-muted-foreground">
-                {dayLabel(date)}
-              </span>
-            )}
           </h2>
           <p className="text-sm text-muted-foreground">
-            {cases.length} {cases.length === 1 ? "case" : "cases"}
-            {minutes > 0 ? ` · ${formatDuration(minutes)} logged` : ""}
+            {isToday ? `${dayLabel(date)}. ` : ""}
+            {summary}
           </p>
         </div>
-        {!formOpen && addCard}
+        <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
+          <AddEntryDialog
+            date={date}
+            isToday={isToday}
+            lastEnd={last?.endTime ?? null}
+            lastType={last?.caseType ?? null}
+          />
+          {actions}
+        </div>
       </header>
-      {formOpen && addCard}
+
+      <TypeMix mix={mixFromEntries(entries)} />
+
       <EntryTable entries={entries} />
     </section>
   );
