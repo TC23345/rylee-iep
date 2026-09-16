@@ -1,31 +1,27 @@
+import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { AppSidebar } from "@/components/AppSidebar";
-import { Topbar } from "@/components/Topbar";
+import { MonthNav } from "@/components/MonthNav";
 import { requireSignedInUser } from "@/lib/authz";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { trackedMonths } from "@/lib/dates";
 
 export default async function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   await requireSignedInUser();
+  const months = trackedMonths();
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-card/80 px-4 backdrop-blur">
-          <SidebarTrigger className="-ml-1" />
-          <Topbar />
+    <div className="flex min-h-dvh flex-col">
+      <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+          <Link href="/" className="font-serif text-lg font-bold leading-tight">
+            Rylee&apos;s <span className="text-gold">Case</span> Log
+          </Link>
           <UserButton />
-        </header>
-        <div className="flex-1 overflow-y-auto px-5 py-6 md:px-8 md:py-8">
-          {children}
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+        <MonthNav months={months} />
+      </header>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">{children}</main>
+    </div>
   );
 }
