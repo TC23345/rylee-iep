@@ -9,7 +9,6 @@ import {
 } from "@/lib/entries";
 import { getMonthTabLabel } from "@/lib/months";
 import { DayPanel } from "@/components/DayPanel";
-import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
 import { SpreadsheetActions } from "@/components/SpreadsheetActions";
 import { StatTile } from "@/components/StatTile";
@@ -92,16 +91,6 @@ export default async function MonthPage({
         actions={<SpreadsheetActions ym={ym} />}
       />
 
-      <section aria-label="Days this month" className="space-y-2">
-        <h2 className="font-serif text-xl font-semibold">Days this month</h2>
-        <p className="text-sm text-muted-foreground">Pick a date to open that day above.</p>
-        <DailyCountsTable
-          rows={[...counts].reverse()}
-          highlight={selected}
-          emptyTitle={`Nothing logged in ${monthLabel(ym)}`}
-          emptyMessage="Rows added above will start the month."
-        />
-      </section>
     </div>
   );
 }
