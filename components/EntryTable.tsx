@@ -145,7 +145,7 @@ function HoldToDeleteButton({ entry }: { entry: CaseEntry }) {
           remove();
         }
       }}
-      className="relative inline-flex size-7 touch-none select-none items-center justify-center overflow-hidden rounded-md text-muted-foreground opacity-40 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
+      className="relative inline-flex size-7 touch-none select-none items-center justify-center overflow-hidden rounded-md text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
     >
       <span
         aria-hidden
