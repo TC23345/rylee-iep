@@ -2,23 +2,20 @@ import { requireSignedInUser } from "@/lib/authz";
 import { addDays, formatDuration, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
 import {
   getDailyCounts,
-  getDailyTypeMix,
   getMonthlySummaries,
   type DailyCount,
-  type DailyTypeMixRow,
   type MonthSummary,
 } from "@/lib/entries";
-import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
 import { MonthInsightCards } from "@/components/MonthInsightCards";
 import { StatTile } from "@/components/StatTile";
 
 export const dynamic = "force-dynamic";
 
-// Home: the overview. Headline numbers, one card per month with its calendar,
-// totals and type mix, then the "Daily Case Counts" sheet. Day-by-day logging
-// lives under the month tabs.
-export default async function OverviewPage() {
+// Calendar: the overview. Headline numbers and one card per month with its
+// calendar, totals and type mix. The daily sheet lives at /counts; day-by-day
+// logging lives under the month tabs.
+export default async function CalendarPage() {
   const actor = await requireSignedInUser();
   const today = todayIso();
   const ym = monthOf(today);
@@ -26,14 +23,12 @@ export default async function OverviewPage() {
 
   let allDays: DailyCount[] = [];
   let months: MonthSummary[] = [];
-  let dailyMix: DailyTypeMixRow[] = [];
   let dbError = false;
 
   try {
-    [allDays, months, dailyMix] = await Promise.all([
+    [allDays, months] = await Promise.all([
       getDailyCounts(actor.orgId),
       getMonthlySummaries(actor.orgId),
-      getDailyTypeMix(actor.orgId),
     ]);
   } catch {
     dbError = true;
@@ -67,19 +62,6 @@ export default async function OverviewPage() {
 
       <MonthInsightCards months={months} days={allDays} />
 
-      <section aria-label="Daily case counts" className="space-y-2">
-        <h2 className="font-serif text-xl font-semibold">Daily case counts</h2>
-        <p className="text-sm text-muted-foreground">
-          Every day logged so far, newest first. Bars show time by type; pick a date to open that day.
-        </p>
-        <DailyCountsTable
-          rows={[...allDays].reverse()}
-          mix={dailyMix}
-          highlight={today}
-          emptyTitle="No days logged yet"
-          emptyMessage="Open a month tab and add today's first case. This sheet fills in as the log grows."
-        />
-      </section>
     </div>
   );
 }

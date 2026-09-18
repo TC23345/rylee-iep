@@ -6,11 +6,14 @@ Live at https://rylee-iep-production.up.railway.app (Clerk sign-in required).
 
 ## What it does
 
-### Daily Case Counts (home tab)
+### Calendar (home tab)
 
 - Three headline tiles: today, the last seven days, and the month so far.
-- A **month card** with a `<` `>` pager: a calendar where each day's shade shows how busy it was (tap a day to open it), four totals underneath (cases, days logged, case time, minutes per case), the stacked **time-by-type bar**, and a collapsible per-type table (rows, time, share).
-- The **Daily Case Counts** sheet: every logged day, newest first, with a stacked bar of time by type and a footer of totals.
+- A **month card** with a `<` `>` pager: a calendar where each day's shade shows how busy it was on a five-step green ramp (tap a day to open it), four totals underneath (cases, days logged, case time, minutes per case), the stacked **time-by-type bar**, and a collapsible per-type table (rows, time, share).
+
+### Case Counts
+
+The workbook's "Daily Case Counts" sheet on its own tab: every logged day, newest first, with a stacked bar of time by type and a footer of totals.
 
 ### Month tabs
 
@@ -34,6 +37,7 @@ Eleven types, matching the workbook's dropdown, in two groups. **Case work** (ne
 - Each Clerk user sees only their own log. Rylee's data is scoped to her user id.
 - Admins (ids in `RYLEE_ADMIN_USER_IDS`) get **View as …** entries inside the Clerk avatar menu to browse and edit another user's log; **Back to my log** returns. Nothing about this shows on the page for other users.
 - A moon/sun button in the header toggles dark mode; Clerk's sign-in card and menu follow it.
+- Branding follows Acentra Health (green wordmark, Roboto and Lato, pill buttons); see `docs/acentra-design.md`.
 
 ## Spreadsheet format
 
@@ -45,7 +49,8 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 
 | Path | Purpose |
 |---|---|
-| `app/(app)/page.tsx` | Home: tiles, month card, Daily Case Counts sheet |
+| `app/(app)/page.tsx` | Calendar (home): tiles and the month card |
+| `app/(app)/counts/page.tsx` | Case Counts: the daily sheet |
 | `app/(app)/month/[ym]/page.tsx` | Month tab (`/month/2026-08?d=2026-08-17`) |
 | `app/(app)/layout.tsx` | Header: month tabs, theme toggle, account menu |
 | `app/actions/entries.ts` | Server actions: create / update / delete a row |

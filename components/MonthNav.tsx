@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { CalendarDays, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { addMonthTab, renameMonthTab } from "@/app/actions/months";
@@ -62,9 +62,19 @@ export function MonthNav({ months }: { months: MonthTab[] }) {
           <Link
             href="/"
             aria-current={pathname === "/" ? "page" : undefined}
-            className={cn(TAB, pathname === "/" ? ACTIVE : IDLE)}
+            className={cn(TAB, "inline-flex items-center gap-1.5", pathname === "/" ? ACTIVE : IDLE)}
           >
-            Daily Case Counts
+            <CalendarDays className="size-4" aria-hidden />
+            Calendar
+          </Link>
+        </li>
+        <li className="shrink-0">
+          <Link
+            href="/counts"
+            aria-current={pathname === "/counts" ? "page" : undefined}
+            className={cn(TAB, pathname === "/counts" ? ACTIVE : IDLE)}
+          >
+            Case Counts
           </Link>
         </li>
         {months.map((tab) => {
