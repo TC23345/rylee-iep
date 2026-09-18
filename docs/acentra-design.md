@@ -218,6 +218,7 @@ waits on review of the screenshots below before merging.
 | `acentra-logo-retina.png` / `acentra-logo-white.png` | The same logo as served by acentra.com, ink and white "Health" variants |
 | `acentra-footer-logo.svg` | Their footer logo; a raster wrapped in SVG, kept for reference only |
 | `acentra-wordmark.png` | The cropped green wordmark used in the header (also `public/brand/`) |
+| `ry-avatar.jpg` | Rylee's profile photo, 200 by 200; uploaded to her Clerk profile on 2026-09-17 |
 | `acentra-favicon.png` | The supplied favicon, 278 by 224 (also `app/icon.png` and `app/apple-icon.png`) |
 | `acentra-home-hero.png` | acentra.com above the fold, 1280 wide |
 | `acentra-home-full.png` | acentra.com full page |

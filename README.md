@@ -36,7 +36,7 @@ Eleven types, matching the workbook's dropdown, in two groups. **Case work** (ne
 
 - Each Clerk user sees only their own log. Rylee's data is scoped to her user id.
 - Admins (ids in `RYLEE_ADMIN_USER_IDS`) get **View as …** entries inside the Clerk avatar menu to browse and edit another user's log; **Back to my log** returns. Nothing about this shows on the page for other users.
-- A moon/sun button in the header toggles dark mode; Clerk's sign-in card and menu follow it.
+- The avatar menu holds a Dark mode / Light mode switch; Clerk's sign-in card and menu follow the theme.
 - Branding follows Acentra Health (green wordmark, Roboto and Lato, pill buttons); see `docs/acentra-design.md`.
 
 ## Spreadsheet format
@@ -52,7 +52,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `app/(app)/page.tsx` | Calendar (home): tiles and the month card |
 | `app/(app)/counts/page.tsx` | Case Counts: the daily sheet |
 | `app/(app)/month/[ym]/page.tsx` | Month tab (`/month/2026-08?d=2026-08-17`) |
-| `app/(app)/layout.tsx` | Header: month tabs, theme toggle, account menu |
+| `app/(app)/layout.tsx` | Header: wordmark, tabs, account menu |
 | `app/actions/entries.ts` | Server actions: create / update / delete a row |
 | `app/actions/import.ts`, `app/api/export/[ym]/route.ts` | Workbook import and export |
 | `app/actions/months.ts`, `lib/months.ts` | Month tabs: add the next month, rename |
@@ -64,7 +64,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `components/DayPanel.tsx`, `DayLog.tsx`, `EntryTable.tsx` | The day header, filter chips, and inline-editable rows |
 | `components/AddEntryDialog.tsx`, `EntryForm.tsx` | The two-step add dialog and the shared form |
 | `components/MonthInsightCards.tsx`, `DailyCountsTable.tsx`, `TypeMix.tsx` | Calendar card, daily sheet, type bar and chips |
-| `components/MonthNav.tsx`, `AccountMenu.tsx`, `ThemeToggle.tsx`, `ClerkAppearanceProvider.tsx` | Header pieces |
+| `components/MonthNav.tsx`, `AccountMenu.tsx`, `ClerkAppearanceProvider.tsx` | Header pieces; the account menu carries the theme switch and View as |
 | `proxy.ts` | Clerk middleware; everything except `/sign-in` and `/api/health` requires sign-in |
 
 MongoDB collections: `case_entries` (rows), `month_tabs` (added or renamed tabs), `audit_events`. All are scoped by `orgId`, which is the Clerk user id unless an admin is viewing as someone else.

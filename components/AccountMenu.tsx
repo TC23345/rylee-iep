@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
-import { Eye, Undo2 } from "lucide-react";
+import { Eye, Moon, Sun, Undo2 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
 import { setViewAs } from "@/app/actions/view-as";
@@ -17,11 +18,14 @@ interface AccountMenuProps {
 }
 
 /**
- * Clerk's account button. For admins the menu also carries "View as" entries,
- * so switching logs lives behind the avatar instead of on the page.
+ * Clerk's account button. The menu carries the light / dark switch, and for
+ * admins the "View as" entries, so both live behind the avatar instead of on
+ * the page.
  */
 export function AccountMenu({ members, selfId, currentId }: AccountMenuProps) {
   const router = useRouter();
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const others = members.filter((m) => m.id !== selfId);
   const viewingOther = currentId !== selfId;
 
@@ -35,9 +39,13 @@ export function AccountMenu({ members, selfId, currentId }: AccountMenuProps) {
     });
   }
 
-  if (others.length === 0) return <UserButton />;
-
   const actions = [
+    <UserButton.Action
+      key="theme"
+      label={isDark ? "Light mode" : "Dark mode"}
+      labelIcon={isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+    />,
     ...(viewingOther
       ? [
           <UserButton.Action

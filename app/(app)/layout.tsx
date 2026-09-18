@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { AccountMenu } from "@/components/AccountMenu";
 import { MonthNav } from "@/components/MonthNav";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { requireSignedInUser } from "@/lib/authz";
 import { todayIso } from "@/lib/dates";
 import { getMonthTabs, type MonthTab } from "@/lib/months";
@@ -44,10 +43,7 @@ export default async function AppLayout({
               className="h-6 w-auto shrink-0"
             />
           </Link>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <AccountMenu members={members} selfId={actor.userId} currentId={actor.orgId} />
-          </div>
+          <AccountMenu members={members} selfId={actor.userId} currentId={actor.orgId} />
         </div>
         <MonthNav months={months} />
       </header>
