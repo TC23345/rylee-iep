@@ -1,22 +1,21 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, DM_Mono } from "next/font/google";
+import { Roboto, Lato, DM_Mono } from "next/font/google";
 import { ClerkAppearanceProvider } from "@/components/ClerkAppearanceProvider";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const roboto = Roboto({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-playfair",
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
 });
 
-const dmSans = DM_Sans({
+const lato = Lato({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-dm-sans",
+  weight: ["400", "700"],
+  variable: "--font-lato",
 });
 
 const dmMono = DM_Mono({
@@ -39,7 +38,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable}`}
+      className={`${roboto.variable} ${lato.variable} ${dmMono.variable}`}
     >
       <body className="min-h-dvh">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
