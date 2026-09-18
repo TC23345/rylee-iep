@@ -34,7 +34,7 @@ export default async function AppLayout({
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Case Log home">
+          <Link href="/" className="flex min-w-0 items-center" aria-label="Case Log home">
             <Image
               src="/brand/acentra-wordmark.png"
               alt="Acentra"
@@ -43,8 +43,6 @@ export default async function AppLayout({
               priority
               className="h-6 w-auto shrink-0"
             />
-            <span aria-hidden className="h-6 w-px bg-border" />
-            <span className="truncate font-serif text-lg font-bold leading-tight">Case Log</span>
           </Link>
           <div className="flex items-center gap-3">
             <ThemeToggle />
