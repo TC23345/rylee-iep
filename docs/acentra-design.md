@@ -3,8 +3,9 @@
 Written 2026-09-17 on the `acentra-rebrand` branch. Source material lives in
 `docs/brand/`: the logo and favicon Taylor supplied, full-page and hero
 screenshots of https://acentra.com/ taken the same day, and a screenshot of our
-header with the logo in place. Nothing in this document is applied yet beyond
-the logo and favicon; the rest is the plan.
+header with the logo in place. Sections 3 and 4 are applied on this branch
+(commits "Rebrand step 1" through "step 5"); the screenshots in section 5 show
+the result and are what to review before merging.
 
 ## 1. What acentra.com actually uses
 
@@ -177,8 +178,8 @@ Revision) against the primary button. If either muddies, shift Recon Reply to
 
 ## 4. Implementation plan
 
-Each step is a commit on `acentra-rebrand`; nothing merges until the
-screenshots in step 6 are approved.
+Each step is a commit on `acentra-rebrand`. Steps 1 to 6 are done; the branch
+waits on review of the screenshots below before merging.
 
 1. **Tokens.** Replace the `:root` and `.dark` blocks in `app/globals.css`
    with section 3. Add `--brand` and `--brand-dim`, keep `--gold` as an alias
@@ -206,4 +207,10 @@ screenshots in step 6 are approved.
 | `acentra-favicon.png` | The supplied favicon, 278 by 224 (also `app/icon.png` and `app/apple-icon.png`) |
 | `acentra-home-hero.png` | acentra.com above the fold, 1280 wide |
 | `acentra-home-full.png` | acentra.com full page |
-| `header-light.png` / `header-dark.png` | Our header with the logo tile in each theme |
+| `header-light.png` / `header-dark.png` | Our header with the logo tile, before the restyle |
+| `rebrand-home-{light,dark}-1280.png` | Daily Case Counts page after the restyle, desktop |
+| `rebrand-home-light-390.png` | The same at phone width |
+| `rebrand-month-{light,dark}-1280.png` | A month tab after the restyle, desktop |
+| `rebrand-month-{light,dark}-390.png` | A month tab at phone width, with the day's rows and chips |
+| `rebrand-dialog-light-1280.png` | The two-step add dialog with the green pill Next |
+| `rebrand-signin-{light,dark}-390.png` | Clerk sign-in card on the new palette |
