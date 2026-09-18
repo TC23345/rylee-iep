@@ -31,10 +31,13 @@ the secondary is white with an ink border. The hero is a dark photograph with
 white type and the white logo variant.
 
 The logo we were given (`docs/brand/acentra-logo.webp`, 330 by 94) is the
-**dark-background variant**: 91% of its opaque pixels are Acentra green and the
-rest white. On a light surface the white lettering disappears, so it is shown
-on an ink tile in the header in both modes. Their light variant is
-`logo-retina.png` on their site if we ever want the ink wordmark instead.
+white-on-dark variant: the "acentra" wordmark is green and only the small
+"Health" line beneath it is white. acentra.com serves the same 330 by 94 PNG
+in an ink-"Health" variant (`acentra-logo-retina.png`) and a white one; its
+"SVG" footer logo is a raster wrapped in an SVG, so there is no vector to be
+had. The header therefore uses `acentra-wordmark.png`, the top 57 rows of the
+PNG: the green wordmark alone on a transparent background, which reads on
+both light and dark surfaces without a tile.
 
 ## 2. How we standardize the app's UI and UX
 
@@ -114,8 +117,8 @@ already broke them.
 
 ## 3. The Acentra token set
 
-Light keeps the site's white-and-sand feel; dark is built from the ink so the
-logo tile disappears into the header rather than sitting on it.
+Light keeps the site's white-and-sand feel; dark is a neutral graphite with the
+green held back to a single accent.
 
 ### 3.1 Light
 
@@ -139,19 +142,24 @@ logo tile disappears into the header rather than sitting on it.
 
 ### 3.2 Dark
 
+A conventional graphite dark theme. Green appears only where it means
+something: the primary button, the active tab, the calendar shading and focus
+rings. Surfaces, text and borders carry no green tint, so the one accent reads
+as an accent rather than a second green fighting the first.
+
 | Token | Value | Derivation |
 |---|---|---|
-| `--background` | `#031A1E` | ink darkened 20% |
-| `--card` | `#0B2C31` | ink lightened 8% |
-| `--foreground` | `#E6F1F0` | mint desaturated to near-white |
-| `--muted` | `#123A40` | card lightened |
-| `--muted-foreground` | `#9DB9BC` | 4.6:1 on card |
-| `--border` / `--input` | `#1E474D` | |
-| `--brand` | `#2BBC2B` | unchanged; passes 4.5:1 on ink |
-| `--brand-dim` | `#5FD65F` | lifted for text on dark |
-| `--primary` / `--primary-foreground` | `#2BBC2B` / `#042126` | same button as light |
-| `--secondary` / `--secondary-foreground` | `#ACF2E5` / `#042126` | mint takes teal's job on dark |
-| `--accent` / `--accent-foreground` | `#B4EA54` / `#042126` | lime |
+| `--background` | `#0F1214` | graphite, near-black with a cool cast |
+| `--card` | `#171B1E` | one step up from the page |
+| `--foreground` | `#E7E9EA` | off-white |
+| `--muted` | `#22272B` | two steps up; hover surfaces |
+| `--muted-foreground` | `#9AA3A8` | 5.1:1 on card |
+| `--border` / `--input` | `#2B3236` | |
+| `--brand` | `#2BBC2B` | unchanged |
+| `--brand-dim` | `#6FD66F` | lifted for green text on dark |
+| `--primary` / `--primary-foreground` | `#2BBC2B` / `#06210A` | the one green button |
+| `--secondary` / `--secondary-foreground` | `#2A3236` / `#E7E9EA` | neutral, no mint |
+| `--accent` / `--accent-foreground` | `#1D2F22` / `#CDEACD` | the hint of green: a dark green wash for highlighted rows |
 | `--destructive` | `#F0705A` | |
 | `--ring` | `#2BBC2B` | |
 | link colour | `#8EC5FF` | navy lifted for dark |
@@ -203,11 +211,14 @@ waits on review of the screenshots below before merging.
 
 | File | What it is |
 |---|---|
-| `acentra-logo.webp` | The supplied logo, dark-background variant, 330 by 94 |
+| `acentra-logo.webp` | The supplied logo, white-"Health" variant, 330 by 94 |
+| `acentra-logo-retina.png` / `acentra-logo-white.png` | The same logo as served by acentra.com, ink and white "Health" variants |
+| `acentra-footer-logo.svg` | Their footer logo; a raster wrapped in SVG, kept for reference only |
+| `acentra-wordmark.png` | The cropped green wordmark used in the header (also `public/brand/`) |
 | `acentra-favicon.png` | The supplied favicon, 278 by 224 (also `app/icon.png` and `app/apple-icon.png`) |
 | `acentra-home-hero.png` | acentra.com above the fold, 1280 wide |
 | `acentra-home-full.png` | acentra.com full page |
-| `header-light.png` / `header-dark.png` | Our header with the logo tile, before the restyle |
+| `header-light.png` / `header-dark.png` | Our header with the wordmark in each theme |
 | `rebrand-home-{light,dark}-1280.png` | Daily Case Counts page after the restyle, desktop |
 | `rebrand-home-light-390.png` | The same at phone width |
 | `rebrand-month-{light,dark}-1280.png` | A month tab after the restyle, desktop |

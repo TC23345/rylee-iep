@@ -123,33 +123,34 @@
   --sidebar-ring: #2bbc2b;
 }
 
-/* Dark mode: built from the ink so the logo tile sinks into the header. */
+/* Dark mode: a conventional graphite dark theme with the brand green kept for
+   the primary action, the active tab and the calendar; nothing else is green. */
 .dark {
   color-scheme: dark;
-  --brand-dim: #5fd65f;
+  --brand-dim: #6fd66f;
   --navy: #8ec5ff;
-  --text: #e6f1f0;
-  --text-muted: #9db9bc;
-  --bg: #031a1e;
-  --bg-card: #0b2c31;
+  --text: #e7e9ea;
+  --text-muted: #9aa3a8;
+  --bg: #0f1214;
+  --bg-card: #171b1e;
 
-  --background: #031a1e;
-  --foreground: #e6f1f0;
-  --card: #0b2c31;
-  --card-foreground: #e6f1f0;
-  --popover: #0b2c31;
-  --popover-foreground: #e6f1f0;
+  --background: #0f1214;
+  --foreground: #e7e9ea;
+  --card: #171b1e;
+  --card-foreground: #e7e9ea;
+  --popover: #171b1e;
+  --popover-foreground: #e7e9ea;
   --primary: #2bbc2b;
-  --primary-foreground: #042126;
-  --secondary: #acf2e5;
-  --secondary-foreground: #042126;
-  --muted: #123a40;
-  --muted-foreground: #9db9bc;
-  --accent: #b4ea54;
-  --accent-foreground: #042126;
+  --primary-foreground: #06210a;
+  --secondary: #2a3236;
+  --secondary-foreground: #e7e9ea;
+  --accent: #1d2f22;
+  --accent-foreground: #cdeacd;
   --destructive: #f0705a;
-  --border: #1e474d;
-  --input: #1e474d;
+  --muted: #22272b;
+  --muted-foreground: #9aa3a8;
+  --border: #2b3236;
+  --input: #2b3236;
   --ring: #2bbc2b;
 }
 
