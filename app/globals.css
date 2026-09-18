@@ -37,18 +37,21 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* brand utilities: bg-gold / text-terracotta / border-sage, etc. */
-  --color-gold: var(--gold);
-  --color-gold-dim: var(--gold-dim);
-  --color-terracotta: var(--terracotta);
-  --color-sage: var(--sage);
+  /* brand utilities: bg-brand / text-brand-dim / bg-ink / bg-sand.
+     gold-* are aliases of brand-* kept for one release. */
+  --color-brand: var(--brand);
+  --color-brand-dim: var(--brand-dim);
+  --color-gold: var(--brand);
+  --color-gold-dim: var(--brand-dim);
   --color-ink: var(--ink);
-  --color-parchment: var(--parchment);
+  --color-sand: var(--sand);
+  --color-mint: var(--mint);
+  --color-teal: var(--teal);
 
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-lato);
+  --font-serif: var(--font-roboto);
   --font-mono: var(--font-dm-mono);
-  --font-heading: var(--font-playfair);
+  --font-heading: var(--font-roboto);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -56,107 +59,98 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-/* Exact brand tokens from the former static dashboard mapped onto shadcn
-   semantic vars. shadcn here references vars RAW (var(--x)), not hsl()-wrapped,
-   so hex values render correctly. */
+/* Acentra Health brand mapped onto shadcn semantic vars (docs/acentra-design.md §3).
+   shadcn references vars RAW (var(--x)), not hsl()-wrapped, so hex values work. */
 :root {
-  /* brand palette */
-  --gold: #d4a84b;
-  --gold-dim: #9a7930;
-  --terracotta: #b85c38;
-  --sage: #4f7c5c;
-  --ink: #1c1a15;
-  --parchment: #f6f3ee;
+  /* brand palette, measured from acentra.com */
+  --ink: #042126;
+  --teal: #005f68;
+  --navy: #15497e;
+  --brand: #2bbc2b;
+  --brand-dim: #1c8b38;
+  --mint: #acf2e5;
+  --lime: #b4ea54;
+  --sand: #f2ece4;
 
-  /* legacy aliases so ported dashboard CSS works verbatim */
-  --text: #1c1a15;
-  --text-muted: #7a7060;
-  --bg: #f6f3ee;
-  --bg-card: #fffefb;
-  --sidebar-bg: #221e15;
-  --sidebar-text: #ede7d9;
-  --sidebar-dim: #9c9080;
-  --check-done: #4f7c5c;
-  --badge-pre: rgba(212, 168, 75, 0.18);
+  /* legacy aliases so older dashboard CSS keeps working */
+  --gold: var(--brand);
+  --gold-dim: var(--brand-dim);
+  --text: #042126;
+  --text-muted: #4f6b6e;
+  --bg: #f4f6f6;
+  --bg-card: #ffffff;
+  --sidebar-bg: #042126;
+  --sidebar-text: #e6f1f0;
+  --sidebar-dim: #9db9bc;
+  --check-done: #1c8b38;
+  --badge-pre: rgba(43, 188, 43, 0.18);
 
-  /* shadcn semantic mapping */
-  --background: #f6f3ee;
-  --foreground: #1c1a15;
-  --card: #fffefb;
-  --card-foreground: #1c1a15;
-  --popover: #fffefb;
-  --popover-foreground: #1c1a15;
-  --primary: #d4a84b;
-  --primary-foreground: #1c1a15;
-  --secondary: #b85c38;
-  --secondary-foreground: #fffefb;
-  --muted: #ede8df;
-  --muted-foreground: #7a7060;
-  --accent: #4f7c5c;
-  --accent-foreground: #fffefb;
-  --destructive: #b85c38;
-  --border: #e3ddd3;
-  --input: #e3ddd3;
-  --ring: #d4a84b;
+  /* shadcn semantic mapping (light) */
+  --background: #f4f6f6;
+  --foreground: #042126;
+  --card: #ffffff;
+  --card-foreground: #042126;
+  --popover: #ffffff;
+  --popover-foreground: #042126;
+  --primary: #2bbc2b;
+  --primary-foreground: #042126;
+  --secondary: #005f68;
+  --secondary-foreground: #ffffff;
+  --muted: #e8eeee;
+  --muted-foreground: #4f6b6e;
+  --accent: #acf2e5;
+  --accent-foreground: #042126;
+  --destructive: #b42318;
+  --border: #d6e0e1;
+  --input: #d6e0e1;
+  --ring: #2bbc2b;
   --radius: 0.5rem;
 
-  --chart-1: #d4a84b;
-  --chart-2: #b85c38;
-  --chart-3: #4f7c5c;
-  --chart-4: #9a7930;
-  --chart-5: #1c1a15;
+  --chart-1: #2bbc2b;
+  --chart-2: #005f68;
+  --chart-3: #15497e;
+  --chart-4: #1c8b38;
+  --chart-5: #042126;
 
-  /* shadcn sidebar block — fixed dark surface (#221E15) */
-  --sidebar: #221e15;
-  --sidebar-foreground: #ede7d9;
-  --sidebar-primary: #d4a84b;
-  --sidebar-primary-foreground: #221e15;
-  --sidebar-accent: rgba(212, 168, 75, 0.12);
-  --sidebar-accent-foreground: #ede7d9;
-  --sidebar-border: rgba(237, 231, 217, 0.08);
-  --sidebar-ring: #d4a84b;
+  /* shadcn sidebar block: ink */
+  --sidebar: #042126;
+  --sidebar-foreground: #e6f1f0;
+  --sidebar-primary: #2bbc2b;
+  --sidebar-primary-foreground: #042126;
+  --sidebar-accent: rgba(43, 188, 43, 0.12);
+  --sidebar-accent-foreground: #e6f1f0;
+  --sidebar-border: rgba(230, 241, 240, 0.08);
+  --sidebar-ring: #2bbc2b;
 }
 
-
-/* Dark mode: the same brand, lit from behind. Toggled by next-themes via .dark on <html>. */
+/* Dark mode: built from the ink so the logo tile sinks into the header. */
 .dark {
   color-scheme: dark;
-  --gold-dim: #e0bb63;
-  --text: #ede7d9;
-  --text-muted: #a2977f;
-  --bg: #16140f;
-  --bg-card: #1e1b14;
+  --brand-dim: #5fd65f;
+  --navy: #8ec5ff;
+  --text: #e6f1f0;
+  --text-muted: #9db9bc;
+  --bg: #031a1e;
+  --bg-card: #0b2c31;
 
-  --background: #16140f;
-  --foreground: #ede7d9;
-  --card: #1e1b14;
-  --card-foreground: #ede7d9;
-  --popover: #1e1b14;
-  --popover-foreground: #ede7d9;
-  --primary: #d4a84b;
-  --primary-foreground: #1c1a15;
-  --secondary: #c9744e;
-  --secondary-foreground: #1c1a15;
-  --muted: #2a261c;
-  --muted-foreground: #a2977f;
-  --accent: #5f8f6d;
-  --accent-foreground: #1c1a15;
-  --destructive: #d07352;
-  --border: #35301f;
-  --input: #35301f;
-  --ring: #d4a84b;
-}
-.dark .btn-primary {
-  background: var(--gold);
-  color: #1c1a15;
-  border-color: var(--gold);
-}
-.dark .btn-primary:hover {
-  background: #e0bb63;
-}
-.dark .btn:hover {
-  background: var(--muted);
-  border-color: #4a4330;
+  --background: #031a1e;
+  --foreground: #e6f1f0;
+  --card: #0b2c31;
+  --card-foreground: #e6f1f0;
+  --popover: #0b2c31;
+  --popover-foreground: #e6f1f0;
+  --primary: #2bbc2b;
+  --primary-foreground: #042126;
+  --secondary: #acf2e5;
+  --secondary-foreground: #042126;
+  --muted: #123a40;
+  --muted-foreground: #9db9bc;
+  --accent: #b4ea54;
+  --accent-foreground: #042126;
+  --destructive: #f0705a;
+  --border: #1e474d;
+  --input: #1e474d;
+  --ring: #2bbc2b;
 }
 
 @layer base {
@@ -420,29 +414,36 @@
 
 .btn {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
-  border-radius: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
+  background: var(--card);
+  color: var(--foreground);
   cursor: pointer;
   text-decoration: none;
   transition: background 0.15s, border-color 0.15s;
 }
 .btn:hover {
-  background: #ede8df;
-  border-color: #cfc7ba;
+  background: var(--muted);
+  border-color: var(--border);
 }
 .btn-primary {
-  background: var(--sidebar-bg);
-  color: var(--sidebar-text);
-  border-color: var(--sidebar-bg);
+  background: var(--brand);
+  color: var(--ink);
+  border-color: var(--brand);
+  border-radius: 999px;
+  font-weight: 700;
 }
 .btn-primary:hover {
-  background: #2e2719;
+  background: #24a824;
+  border-color: #24a824;
+}
+.dark .btn-primary:hover {
+  background: #5fd65f;
+  border-color: #5fd65f;
 }
