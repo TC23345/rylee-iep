@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { AccountMenu } from "@/components/AccountMenu";
 import { MonthNav } from "@/components/MonthNav";
@@ -33,8 +34,19 @@ export default async function AppLayout({
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
-          <Link href="/" className="font-serif text-lg font-bold leading-tight">
-            Rylee&apos;s <span className="text-gold">Case</span> Log
+          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Case Log home">
+            <span className="inline-flex shrink-0 items-center rounded-md bg-[#042126] px-2 py-1">
+              <Image
+                src="/brand/acentra-logo.webp"
+                alt="Acentra Health"
+                width={330}
+                height={94}
+                priority
+                className="h-5 w-auto"
+              />
+            </span>
+            <span aria-hidden className="h-6 w-px bg-border" />
+            <span className="truncate font-serif text-lg font-bold leading-tight">Case Log</span>
           </Link>
           <div className="flex items-center gap-3">
             <ThemeToggle />
