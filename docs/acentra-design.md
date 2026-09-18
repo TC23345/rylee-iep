@@ -173,8 +173,11 @@ as an accent rather than a second green fighting the first.
 - Numbers and case ids: DM Mono, unchanged.
 - Buttons become pills (`rounded-full`) to match their site; cards and
   dialogs stay at 8 to 12px. Chips are already pills.
-- Calendar shading uses the brand green ramp instead of gold; the selected
-  row highlight becomes mint at 25%.
+- Calendar shading uses a five-step green ramp (`--heat-1` to `--heat-5`,
+  light: pale to deep green; dark: dim to vivid green), spread between the
+  month's lightest and busiest logged days so a run of similar days still
+  shows its differences. Text on each step flips for contrast. The selected
+  row highlight becomes the accent at 25%.
 
 ### 3.4 Case-type chips on the new surfaces
 
@@ -224,4 +227,5 @@ waits on review of the screenshots below before merging.
 | `rebrand-month-{light,dark}-1280.png` | A month tab after the restyle, desktop |
 | `rebrand-month-{light,dark}-390.png` | A month tab at phone width, with the day's rows and chips |
 | `rebrand-dialog-light-1280.png` | The two-step add dialog with the green pill Next |
+| `rebrand-calendar-{light,dark}-1280.png` | The month card with the five-step heat ramp |
 | `rebrand-signin-{light,dark}-390.png` | Clerk sign-in card on the new palette |

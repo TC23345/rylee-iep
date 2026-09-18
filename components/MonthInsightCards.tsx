@@ -28,6 +28,25 @@ interface MonthInsightCardsProps {
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+/** Five-step green ramp (tokens in globals.css); index 0 is the lightest day. */
+const HEAT = [
+  "bg-heat-1 text-heat-fg-1",
+  "bg-heat-2 text-heat-fg-2",
+  "bg-heat-3 text-heat-fg-3",
+  "bg-heat-4 text-heat-fg-4",
+  "bg-heat-5 text-heat-fg-5",
+];
+
+/**
+ * Which step a day lands on, spread between the month's lightest and busiest
+ * logged days so a run of similar days still shows its differences.
+ */
+function heatStep(count: number, min: number, max: number): number {
+  if (max <= min) return 2;
+  const t = (count - min) / (max - min);
+  return Math.min(HEAT.length - 1, Math.max(0, Math.round(t * (HEAT.length - 1))));
+}
+
 /**
  * One month per card, paged newest first: the calendar on top, totals under
  * it, and the type bar whose hover shows the breakdown.
@@ -41,6 +60,7 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
   const monthDays = days.filter((d) => d.date.startsWith(month.ym));
   const byDate = new Map(monthDays.map((d) => [d.date, d]));
   const maxCount = Math.max(1, ...monthDays.map((d) => d.count));
+  const minCount = monthDays.length ? Math.min(...monthDays.map((d) => d.count)) : 0;
   const allMinutes = month.mix.reduce((s, m) => s + m.minutes, 0);
   const perCase = month.cases ? Math.round(month.caseMinutes / month.cases) : 0;
 
@@ -113,14 +133,12 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
                   title={`${numericDate(date)} · ${day.count} ${day.count === 1 ? "case" : "cases"}${
                     day.minutes ? ` · ${formatDuration(day.minutes)}` : ""
                   }`}
-                  className="relative flex h-9 items-center justify-center rounded-md text-xs font-medium text-foreground transition-transform hover:scale-105 sm:h-11"
+                  className={cn(
+                    "flex h-9 items-center justify-center rounded-md text-xs font-medium transition-transform hover:scale-105 sm:h-11",
+                    HEAT[heatStep(day.count, minCount, maxCount)]
+                  )}
                 >
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 rounded-md bg-brand"
-                    style={{ opacity: 0.25 + 0.75 * (day.count / maxCount) }}
-                  />
-                  <span className="relative">{dayNumber}</span>
+                  {dayNumber}
                 </Link>
               );
             })}

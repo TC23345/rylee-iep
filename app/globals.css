@@ -48,6 +48,18 @@
   --color-mint: var(--mint);
   --color-teal: var(--teal);
 
+  /* calendar heat ramp: bg-heat-1 (lightest day) to bg-heat-5 (busiest) */
+  --color-heat-1: var(--heat-1);
+  --color-heat-2: var(--heat-2);
+  --color-heat-3: var(--heat-3);
+  --color-heat-4: var(--heat-4);
+  --color-heat-5: var(--heat-5);
+  --color-heat-fg-1: var(--heat-fg-1);
+  --color-heat-fg-2: var(--heat-fg-2);
+  --color-heat-fg-3: var(--heat-fg-3);
+  --color-heat-fg-4: var(--heat-fg-4);
+  --color-heat-fg-5: var(--heat-fg-5);
+
   --font-sans: var(--font-lato);
   --font-serif: var(--font-roboto);
   --font-mono: var(--font-dm-mono);
@@ -71,6 +83,18 @@
   --mint: #acf2e5;
   --lime: #b4ea54;
   --sand: #f2ece4;
+
+  /* calendar heat ramp, light: pale green to deep green, busiest darkest */
+  --heat-1: #dcf3dc;
+  --heat-2: #a9e3a9;
+  --heat-3: #62cd62;
+  --heat-4: #2bbc2b;
+  --heat-5: #157f2a;
+  --heat-fg-1: #0f4a1f;
+  --heat-fg-2: #0f4a1f;
+  --heat-fg-3: #06210a;
+  --heat-fg-4: #06210a;
+  --heat-fg-5: #ffffff;
 
   /* legacy aliases so older dashboard CSS keeps working */
   --gold: var(--brand);
@@ -152,6 +176,18 @@
   --border: #2b3236;
   --input: #2b3236;
   --ring: #2bbc2b;
+
+  /* calendar heat ramp, dark: dim green to full green, busiest most vivid */
+  --heat-1: #163d21;
+  --heat-2: #1c5a2c;
+  --heat-3: #227b36;
+  --heat-4: #2bbc2b;
+  --heat-5: #6fd66f;
+  --heat-fg-1: #b9dfc0;
+  --heat-fg-2: #d7f0da;
+  --heat-fg-3: #ffffff;
+  --heat-fg-4: #06210a;
+  --heat-fg-5: #06210a;
 }
 
 @layer base {
