@@ -275,8 +275,8 @@ export function EntryForm({
                   className={cn(
                     "flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors",
                     active
-                      ? "border-gold bg-gold/15 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:border-gold/60 hover:text-foreground"
+                      ? "border-brand bg-brand/15 text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-brand/60 hover:text-foreground"
                   )}
                 >
                   <span aria-hidden className={cn("size-1.5 rounded-full", typeStyle(t).bar)} />

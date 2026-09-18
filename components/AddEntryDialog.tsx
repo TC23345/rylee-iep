@@ -65,7 +65,7 @@ export function AddEntryDialog({
                       key={s}
                       className={cn(
                         "h-1.5 w-4 rounded-full transition-colors",
-                        s <= step ? "bg-gold" : "bg-muted"
+                        s <= step ? "bg-brand" : "bg-muted"
                       )}
                     />
                   ))}

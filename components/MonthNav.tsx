@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const TAB =
   "inline-block border-b-2 px-3 py-2.5 text-sm font-medium transition-colors";
-const ACTIVE = "border-gold text-foreground";
+const ACTIVE = "border-brand text-foreground";
 const IDLE = "border-transparent text-muted-foreground hover:text-foreground";
 
 /**

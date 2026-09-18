@@ -35,7 +35,7 @@ const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
 
 /** Borderless field that reveals its edge on hover and focus. */
 const FIELD =
-  "w-full rounded-md border border-transparent bg-transparent px-1.5 py-1 text-sm outline-none transition-colors hover:border-border focus:border-gold focus:bg-card";
+  "w-full rounded-md border border-transparent bg-transparent px-1.5 py-1 text-sm outline-none transition-colors hover:border-border focus:border-brand focus:bg-card";
 
 type Draft = Omit<EntryFormValues, "date">;
 
@@ -252,7 +252,7 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
               <SelectTrigger
                 aria-label="Case type"
                 title="Click to change the type"
-                className="h-7 w-full cursor-pointer justify-start border-transparent bg-transparent px-1 shadow-none hover:border-border focus:border-gold data-[state=open]:border-gold [&_svg]:hidden"
+                className="h-7 w-full cursor-pointer justify-start border-transparent bg-transparent px-1 shadow-none hover:border-border focus:border-brand data-[state=open]:border-brand [&_svg]:hidden"
               >
                 <Badge variant="secondary" className={cn("font-medium", typeStyle(draft.caseType).chip)}>
                   {CASE_TYPE_LABELS[draft.caseType]}

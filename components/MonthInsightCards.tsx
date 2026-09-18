@@ -117,7 +117,7 @@ export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
                 >
                   <span
                     aria-hidden
-                    className="absolute inset-0 rounded-md bg-gold"
+                    className="absolute inset-0 rounded-md bg-brand"
                     style={{ opacity: 0.25 + 0.75 * (day.count / maxCount) }}
                   />
                   <span className="relative">{dayNumber}</span>

@@ -35,7 +35,7 @@ export default async function AppLayout({
       <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
           <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Case Log home">
-            <span className="inline-flex shrink-0 items-center rounded-md bg-[#042126] px-2 py-1">
+            <span className="inline-flex shrink-0 items-center rounded-md bg-ink px-2 py-1">
               <Image
                 src="/brand/acentra-logo.webp"
                 alt="Acentra Health"

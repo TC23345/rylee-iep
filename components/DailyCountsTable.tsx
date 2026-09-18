@@ -71,7 +71,7 @@ export function DailyCountsTable({ rows, mix, highlight, emptyTitle, emptyMessag
             const segments = mixByDate.get(r.date) ?? [];
             const dayMinutes = segments.reduce((s, m) => s + m.minutes, 0);
             return (
-              <TableRow key={r.date} className={cn(r.date === highlight && "bg-gold/10")}>
+              <TableRow key={r.date} className={cn(r.date === highlight && "bg-accent/25")}>
                 <TableCell>
                   <Link
                     href={`/month/${monthOf(r.date)}?d=${r.date}`}
@@ -108,7 +108,7 @@ export function DailyCountsTable({ rows, mix, highlight, emptyTitle, emptyMessag
                   ) : (
                     <div className="h-2 w-full rounded-full bg-muted" aria-hidden>
                       <div
-                        className="h-2 rounded-full bg-gold"
+                        className="h-2 rounded-full bg-brand"
                         style={{ width: `${(r.count / barMax) * 100}%` }}
                       />
                     </div>
