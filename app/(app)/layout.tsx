@@ -43,20 +43,23 @@ export default async function AppLayout({
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
-          <Link href="/" className="flex min-w-0 items-center" aria-label="Case Log home">
+        {/* One line: wordmark, the tabs, then the avatar pushed to the right. */}
+        <div className="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4 sm:gap-6">
+          <Link href="/" className="flex shrink-0 items-center" aria-label="Case Log home">
             <Image
               src="/brand/acentra-wordmark.png"
               alt="Acentra"
               width={330}
               height={57}
               priority
-              className="h-6 w-auto shrink-0"
+              className="h-5 w-auto sm:h-6"
             />
           </Link>
-          <AccountMenu members={members} selfId={actor.userId} currentId={actor.orgId} />
+          <MonthNav months={months} />
+          <div className="ml-auto flex shrink-0 items-center">
+            <AccountMenu members={members} selfId={actor.userId} currentId={actor.orgId} />
+          </div>
         </div>
-        <MonthNav months={months} />
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
         <CaseTypesProvider types={caseTypes}>{children}</CaseTypesProvider>
