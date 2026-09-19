@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { GripVertical, Plus, RotateCcw, Trash2, X } from "lucide-react";
+import { GripVertical, Plus, RotateCcw, X } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -21,6 +21,7 @@ import {
 } from "@/lib/case-types";
 import { cn } from "@/lib/utils";
 import { useCaseTypes } from "@/components/CaseTypesProvider";
+import { HoldToDeleteButton } from "@/components/HoldToDeleteButton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -201,16 +202,16 @@ function TypeRow({ type, rows, onRemoved }: { type: CaseTypeDef; rows?: number; 
           }
         }}
       />
-      <button
-        type="button"
-        onClick={remove}
+      <HoldToDeleteButton
+        label={
+          rows
+            ? `Hold to archive ${type.label} (${rowsText(rows)} keep it)`
+            : `Hold to remove ${type.label}`
+        }
+        onHold={remove}
         disabled={pending}
-        aria-label={`Remove ${type.label}`}
-        title={rows ? `Archive (${rowsText(rows)} keep this type)` : "Remove"}
-        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
-      >
-        <Trash2 className="size-4" />
-      </button>
+        className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+      />
     </li>
   );
 }

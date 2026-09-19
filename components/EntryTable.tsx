@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { ArrowDown, ArrowUp, ArrowUpDown, Pencil, Trash2 } from "lucide-react";
+import { useState, useTransition } from "react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 import { createEntry, deleteEntry, updateEntry } from "@/app/actions/entries";
@@ -9,6 +9,7 @@ import type { CaseEntry } from "@/lib/entries";
 import type { CaseType, EntryFormValues } from "@/lib/entry-schema";
 import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { CaseTypesDialog } from "@/components/CaseTypesDialog";
+import { HoldToDeleteButton } from "@/components/HoldToDeleteButton";
 import { formatDuration, formatTime12, minutesBetween } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import type { TypeFilter } from "@/components/TypeMix";
@@ -54,8 +55,6 @@ function sameDraft(a: Draft, b: Draft): boolean {
   );
 }
 
-const HOLD_MS = 1500;
-
 function toFormValues(e: CaseEntry): EntryFormValues {
   return {
     date: e.date,
@@ -68,34 +67,13 @@ function toFormValues(e: CaseEntry): EntryFormValues {
 }
 
 /**
- * Press and hold for 1.5 s to delete the row; letting go early cancels. The
- * deletion is announced in a toast whose Undo puts the row back. Keyboard
- * users delete with Enter or Space and rely on the same Undo.
+ * Hold the trash icon to delete the row. The deletion is announced in a toast
+ * whose Undo puts the row back.
  */
-function HoldToDeleteButton({ entry }: { entry: CaseEntry }) {
-  const [holding, setHolding] = useState(false);
+function DeleteRowButton({ entry }: { entry: CaseEntry }) {
   const [pending, startTransition] = useTransition();
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { label: typeLabel } = useCaseTypes();
   const what = entry.caseNumber ? `case ${entry.caseNumber}` : typeLabel(entry.caseType).toLowerCase();
-
-  function cancel() {
-    if (timer.current) {
-      clearTimeout(timer.current);
-      timer.current = null;
-    }
-    setHolding(false);
-  }
-
-  function begin() {
-    if (pending || timer.current) return;
-    setHolding(true);
-    timer.current = setTimeout(() => {
-      timer.current = null;
-      setHolding(false);
-      remove();
-    }, HOLD_MS);
-  }
 
   function remove() {
     startTransition(async () => {
@@ -123,33 +101,12 @@ function HoldToDeleteButton({ entry }: { entry: CaseEntry }) {
   }
 
   return (
-    <button
-      type="button"
-      aria-label={`Hold to delete ${what}`}
-      title="Hold 1.5 s to delete"
+    <HoldToDeleteButton
+      label={`Hold to delete ${what}`}
+      onHold={remove}
       disabled={pending}
-      onPointerDown={(e) => {
-        if (e.button === 0) begin();
-      }}
-      onPointerUp={cancel}
-      onPointerLeave={cancel}
-      onPointerCancel={cancel}
-      onContextMenu={(e) => e.preventDefault()}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          remove();
-        }
-      }}
-      className="relative inline-flex size-7 touch-none select-none items-center justify-center overflow-hidden rounded-md text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
-    >
-      <span
-        aria-hidden
-        className="absolute inset-y-0 left-0 bg-destructive/25 transition-[width] ease-linear"
-        style={{ width: holding ? "100%" : 0, transitionDuration: holding ? `${HOLD_MS}ms` : "150ms" }}
-      />
-      <Trash2 className="relative size-4" />
-    </button>
+      className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100"
+    />
   );
 }
 
@@ -318,7 +275,7 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
             />
           </Cell>
           <Cell className="justify-end px-1">
-            {shown && <HoldToDeleteButton entry={entry} />}
+            {shown && <DeleteRowButton entry={entry} />}
           </Cell>
         </div>
       </div>
