@@ -46,6 +46,8 @@
   --color-ink: var(--ink);
   --color-sand: var(--sand);
   --color-mint: var(--mint);
+  /* table header rows: a pale green that sits apart from both the page and the rows */
+  --color-table-head: var(--table-head);
   --color-teal: var(--teal);
 
   /* calendar heat ramp: bg-heat-1 (lightest day) to bg-heat-5 (busiest) */
@@ -121,6 +123,7 @@
   --secondary: #005f68;
   --secondary-foreground: #ffffff;
   --muted: #e8eeee;
+  --table-head: #e3f4e5;
   --muted-foreground: #4f6b6e;
   --accent: #acf2e5;
   --accent-foreground: #042126;
@@ -172,6 +175,7 @@
   --accent-foreground: #cdeacd;
   --destructive: #f0705a;
   --muted: #22272b;
+  --table-head: #1a2a1f;
   --muted-foreground: #9aa3a8;
   --border: #2b3236;
   --input: #2b3236;
