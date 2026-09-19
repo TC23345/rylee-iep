@@ -46,7 +46,7 @@
   --color-ink: var(--ink);
   --color-sand: var(--sand);
   --color-mint: var(--mint);
-  /* table header rows: a pale green that sits apart from both the page and the rows */
+  /* table header rows: a deeper warm tone that sits apart from the page and the rows */
   --color-table-head: var(--table-head);
   --color-teal: var(--teal);
 
@@ -102,34 +102,35 @@
   --gold: var(--brand);
   --gold-dim: var(--brand-dim);
   --text: #042126;
-  --text-muted: #4f6b6e;
-  --bg: #f4f6f6;
-  --bg-card: #ffffff;
+  --text-muted: #6b6155;
+  --bg: #f3ede4;
+  --bg-card: #fffcf7;
   --sidebar-bg: #042126;
   --sidebar-text: #e6f1f0;
   --sidebar-dim: #9db9bc;
   --check-done: #1c8b38;
   --badge-pre: rgba(43, 188, 43, 0.18);
 
-  /* shadcn semantic mapping (light) */
-  --background: #f4f6f6;
+  /* shadcn semantic mapping (light). Warm neutrals built from the brand sand:
+     a sand page, ivory cards and rows, taupe borders and muted text. */
+  --background: #f3ede4;
   --foreground: #042126;
-  --card: #ffffff;
+  --card: #fffcf7;
   --card-foreground: #042126;
-  --popover: #ffffff;
+  --popover: #fffcf7;
   --popover-foreground: #042126;
   --primary: #2bbc2b;
   --primary-foreground: #042126;
   --secondary: #005f68;
   --secondary-foreground: #ffffff;
-  --muted: #e8eeee;
-  --table-head: #e3f4e5;
-  --muted-foreground: #4f6b6e;
+  --muted: #ece4d8;
+  --table-head: #ebe2d4;
+  --muted-foreground: #6b6155;
   --accent: #acf2e5;
   --accent-foreground: #042126;
   --destructive: #b42318;
-  --border: #d6e0e1;
-  --input: #d6e0e1;
+  --border: #e2d8ca;
+  --input: #dcd1c1;
   --ring: #2bbc2b;
   --radius: 0.5rem;
 
@@ -175,7 +176,7 @@
   --accent-foreground: #cdeacd;
   --destructive: #f0705a;
   --muted: #22272b;
-  --table-head: #1a2a1f;
+  --table-head: #1e2326;
   --muted-foreground: #9aa3a8;
   --border: #2b3236;
   --input: #2b3236;

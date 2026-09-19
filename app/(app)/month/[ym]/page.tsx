@@ -70,10 +70,17 @@ export default async function MonthPage({
     <div className="space-y-8">
       {dbError && <DbNotice />}
 
-      <header className="space-y-4">
-        {/* The tab strip already names the month; keep the heading for screen readers only. */}
-        <h1 className="sr-only">{title}</h1>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {/* The tab strip already names the month; keep the heading for screen readers only. */}
+      <h1 className="sr-only">{title}</h1>
+
+      {/* Day header first, then the month's totals, then the day's rows. */}
+      <DayPanel
+        date={selected}
+        today={today}
+        entries={entries}
+        actions={<SpreadsheetActions ym={ym} />}
+      >
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Month totals">
           <StatTile
             label="Cases"
             value={totalCases}
@@ -83,14 +90,7 @@ export default async function MonthPage({
           <StatTile label="Cases per day" value={avg} hint="on logged days" />
           <StatTile label="Minutes per case" value={perCase} hint="average" />
         </div>
-      </header>
-
-      <DayPanel
-        date={selected}
-        today={today}
-        entries={entries}
-        actions={<SpreadsheetActions ym={ym} />}
-      />
+      </DayPanel>
 
     </div>
   );

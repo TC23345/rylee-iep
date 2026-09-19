@@ -13,13 +13,15 @@ interface DayPanelProps {
   entries: CaseEntry[];
   /** Extra buttons shown beside "Add a row" (the month tabs add import / export). */
   actions?: React.ReactNode;
+  /** Shown between the day header and the log (the month tabs put their totals here). */
+  children?: React.ReactNode;
 }
 
 function dayHref(date: string): string {
   return `/month/${monthOf(date)}?d=${date}`;
 }
 
-export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
+export function DayPanel({ date, today, entries, actions, children }: DayPanelProps) {
   const isToday = date === today;
   const canGoForward = date < today;
 
@@ -82,6 +84,8 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
           {actions}
         </div>
       </header>
+
+      {children}
 
       <DayLog entries={entries} />
     </section>

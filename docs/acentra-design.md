@@ -124,12 +124,13 @@ green held back to a single accent.
 
 | Token | Value | Derivation |
 |---|---|---|
-| `--background` | `#F4F6F6` | ink at 4% over white; cooler than the current cream |
-| `--card` | `#FFFFFF` | their page white |
+| `--background` | `#F3EDE4` | their sand; warm page (2026-09-18, replaced the cool `#F4F6F6`) |
+| `--card` / `--popover` | `#FFFCF7` | warm ivory instead of pure white |
 | `--foreground` | `#042126` | ink |
-| `--muted` | `#E8EEEE` | ink at 9% |
-| `--muted-foreground` | `#4F6B6E` | ink lightened to 4.5:1 on white |
-| `--border` / `--input` | `#D6E0E1` | ink at 16% |
+| `--muted` | `#ECE4D8` | deeper sand |
+| `--table-head` | `#EBE2D4` | table header rows; warm tan, never green |
+| `--muted-foreground` | `#6B6155` | warm taupe, over 4.5:1 on ivory |
+| `--border` / `--input` | `#E2D8CA` / `#DCD1C1` | taupe |
 | `--brand` (replaces gold) | `#2BBC2B` | their primary green |
 | `--brand-dim` | `#1C8B38` | their deep green, for text on light surfaces |
 | `--primary` / `--primary-foreground` | `#2BBC2B` / `#042126` | their primary button exactly |
