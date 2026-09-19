@@ -368,11 +368,9 @@ export function CaseTypesDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle className="font-serif text-xl">Case types</DialogTitle>
-          <DialogDescription>
-            Rename or recolour a type, or drag it to another section. Changes save as you go and apply to every row.
-          </DialogDescription>
+        <DialogHeader className="border-b border-border pb-3">
+          <DialogTitle className="font-serif text-xl">Case Types</DialogTitle>
+          <DialogDescription>Create a new or edit an existing case type below</DialogDescription>
         </DialogHeader>
 
         <div className="-mx-1 max-h-[60vh] space-y-4 overflow-y-auto px-1">
@@ -402,8 +400,8 @@ export function CaseTypesDialog({
                   over === c.value && "border-brand/60 bg-brand/5"
                 )}
               >
-                <h3 className="flex items-baseline gap-2 text-xs font-medium text-muted-foreground">
-                  <span className="text-foreground">{c.label}</span>
+                <h3 className="flex items-baseline gap-2 pb-1 text-xs text-muted-foreground">
+                  <span className="font-serif text-base font-semibold text-foreground">{c.label}</span>
                   <span>{c.hint}</span>
                 </h3>
                 {list.length === 0 ? (
@@ -426,8 +424,8 @@ export function CaseTypesDialog({
 
           {archived.length > 0 && (
             <section aria-label="Archived">
-              <h3 className="flex items-baseline gap-2 text-xs font-medium text-muted-foreground">
-                <span className="text-foreground">Archived</span>
+              <h3 className="flex items-baseline gap-2 pb-1 text-xs text-muted-foreground">
+                <span className="font-serif text-base font-semibold text-foreground">Archived</span>
                 <span>Hidden from the pickers; old rows keep them</span>
               </h3>
               <ul>

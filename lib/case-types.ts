@@ -12,8 +12,8 @@
 export type CaseCategory = "case" | "other" | "break";
 
 export const CATEGORIES: { value: CaseCategory; label: string; hint: string }[] = [
-  { value: "case", label: "Case work", hint: "Needs a case number; counts as a case" },
-  { value: "other", label: "Other time", hint: "Counts as a case only with a case number" },
+  { value: "case", label: "Case Work", hint: "Needs a case number; counts as a case" },
+  { value: "other", label: "Other Time", hint: "Counts as a case only with a case number" },
   { value: "break", label: "Break", hint: "Never counts" },
 ];
 
