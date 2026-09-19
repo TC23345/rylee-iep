@@ -15,9 +15,9 @@ Live at https://rylee-iep-production.up.railway.app (Clerk sign-in required).
 
 The workbook's "Daily Case Counts" sheet on its own tab: every logged day, newest first, with a stacked bar of time by type and a footer of totals.
 
-### Month tabs
+### Case Tracker (month pages)
 
-One tab per month from July 2026 through the current month, plus any month added with the **+** button at the end of the strip (it adds the month after the last tab). Double-click a tab to rename it; Enter or clicking away saves, Escape cancels. Names live in the `month_tabs` collection.
+The **Case Tracker** tab opens a menu of months, newest first, with a check on the one you are viewing. Months appear on their own: the list runs from July 2026 through the current month, so a new month shows up on its 1st. There is nothing to add by hand. A month added early with the old + button stays hidden until its 1st; older custom month names in the `month_tabs` collection still show.
 
 A month page shows the month's four totals and then **one day's log**:
 
@@ -34,7 +34,7 @@ A month page shows the month's four totals and then **one day's log**:
 
 Every log starts with eleven types, matching the workbook's dropdown, in three categories. **Case work** (needs a case number and counts as a case): Reconsideration, Recon Reply, Continuation, BCBA Reply, Authorization Revision, Additional Info, Initial. **Other time** (counts as a case only when a case number is given): Phone Call, Meeting, Admin Tasks. **Break** (never counts): Lunch.
 
-The **pencil on the day table's Type header** opens the Case types dialog: rename, recolour or recategorise a type, add a new one, or remove one. Changes save as you go and reach every row, chip and count at once, since rows store a stable key and look up the label. Removing a type no row uses deletes it; removing one that rows use archives it (hidden from the pickers, still labelling those rows), with Restore in the dialog and Undo in the toast. Types are per log. Built-ins live in `lib/case-types.ts`; overrides and added types in the `case_types` collection.
+The **pencil on the day table's Type header** opens the Case types dialog: rename or recolour a type, drag it between the Case work, Other time and Break sections to change its category, add one with **+ Add New Case Type**, or remove one with the trash icon that shows on hover. Changes save as you go and reach every row, chip and count at once, since rows store a stable key and look up the label. Removing a type no row uses deletes it; removing one that rows use archives it (hidden from the pickers, still labelling those rows), with Restore in the dialog and Undo in the toast. Types are per log. Built-ins live in `lib/case-types.ts`; overrides and added types in the `case_types` collection.
 
 ### Accounts, viewing as, dark mode
 
@@ -59,7 +59,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `app/(app)/layout.tsx` | Header: wordmark, tabs, account menu |
 | `app/actions/entries.ts` | Server actions: create / update / delete a row |
 | `app/actions/import.ts`, `app/api/export/[ym]/route.ts` | Workbook import and export |
-| `app/actions/months.ts`, `lib/months.ts` | Month tabs: add the next month, rename |
+| `lib/months.ts` | The months the Case Tracker menu lists |
 | `app/actions/view-as.ts`, `lib/authz.ts` | Sign-in check, admin list, view-as cookie |
 | `lib/entries.ts` | MongoDB access for `case_entries` and the daily / monthly aggregates |
 | `lib/entry-schema.ts` | Zod row schema |
@@ -70,7 +70,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `components/DayPanel.tsx`, `DayLog.tsx`, `EntryTable.tsx` | The day header, filter chips, and inline-editable rows |
 | `components/AddEntryDialog.tsx`, `EntryForm.tsx` | The two-step add dialog and the shared form |
 | `components/MonthInsightCards.tsx`, `DailyCountsTable.tsx`, `TypeMix.tsx` | Calendar card, daily sheet, type bar and chips |
-| `components/MonthNav.tsx`, `AccountMenu.tsx`, `ClerkAppearanceProvider.tsx` | Header pieces; the account menu carries the theme switch and View as |
+| `components/MonthNav.tsx`, `AccountMenu.tsx`, `ClerkAppearanceProvider.tsx` | Header pieces: Calendar, Case Counts and the Case Tracker month menu; the account menu carries the theme switch and View as |
 | `proxy.ts` | Clerk middleware; everything except `/sign-in` and `/api/health` requires sign-in |
 
 MongoDB collections: `case_entries` (rows), `month_tabs` (added or renamed tabs), `case_types` (renamed, recoloured, archived, removed or added types), `audit_events`. All are scoped by `orgId`, which is the Clerk user id unless an admin is viewing as someone else.

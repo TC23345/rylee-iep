@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { Plus, RotateCcw, Trash2 } from "lucide-react";
+import { GripVertical, Plus, RotateCcw, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -98,13 +98,22 @@ function rowsText(n: number | undefined): string {
   return `${n} ${n === 1 ? "row" : "rows"}`;
 }
 
+/** dataTransfer type for a dragged case type row. */
+const DRAG_TYPE = "application/x-case-type";
+
 /**
- * One editable type: colour, name (saves on blur or Enter), category, row count
- * and remove. Keyed on the stored label by its parent, so a saved rename resets it.
+ * One editable type: grip, colour, name (saves on blur or Enter) and remove,
+ * which shows on hover. Drag the row (anywhere but the name box or colour) into
+ * another section to change its category. Keyed on the stored label by its
+ * parent, so a saved rename resets it.
  */
 function TypeRow({ type, rows, onRemoved }: { type: CaseTypeDef; rows?: number; onRemoved: () => void }) {
   const [label, setLabel] = useState(type.label);
   const [pending, startTransition] = useTransition();
+  // Only arm dragging when the press starts outside the inputs, so typing and
+  // selecting text in the name box still work.
+  const [armed, setArmed] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   function save(patch: { label?: string; color?: ColorKey; category?: CaseCategory }) {
     startTransition(async () => {
@@ -153,7 +162,29 @@ function TypeRow({ type, rows, onRemoved }: { type: CaseTypeDef; rows?: number; 
   }
 
   return (
-    <li className={cn("flex items-center gap-2 py-1.5", pending && "opacity-60")}>
+    <li
+      draggable={armed}
+      onPointerDown={(e) => setArmed(!(e.target as HTMLElement).closest("input, button"))}
+      onDragStart={(e) => {
+        e.dataTransfer.setData(DRAG_TYPE, type.key);
+        e.dataTransfer.effectAllowed = "move";
+        setDragging(true);
+      }}
+      onDragEnd={() => {
+        setDragging(false);
+        setArmed(false);
+      }}
+      className={cn(
+        "group flex items-center gap-2 rounded-md py-1.5 pr-1",
+        armed && "cursor-grabbing",
+        dragging && "opacity-40",
+        pending && "opacity-60"
+      )}
+    >
+      <GripVertical
+        aria-hidden
+        className="size-4 shrink-0 cursor-grab text-muted-foreground/40 transition-colors group-hover:text-muted-foreground"
+      />
       <ColorPicker value={type.color} onChange={(color) => save({ color })} disabled={pending} />
       <Input
         value={label}
@@ -170,17 +201,13 @@ function TypeRow({ type, rows, onRemoved }: { type: CaseTypeDef; rows?: number; 
           }
         }}
       />
-      <span className="hidden w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground sm:inline">
-        {rowsText(rows)}
-      </span>
-      <CategoryPicker value={type.category} onChange={(category) => save({ category })} disabled={pending} />
       <button
         type="button"
         onClick={remove}
         disabled={pending}
         aria-label={`Remove ${type.label}`}
-        title={rows ? "Archive (rows keep this type)" : "Remove"}
-        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
+        title={rows ? `Archive (${rowsText(rows)} keep this type)` : "Remove"}
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-50"
       >
         <Trash2 className="size-4" />
       </button>
@@ -188,12 +215,24 @@ function TypeRow({ type, rows, onRemoved }: { type: CaseTypeDef; rows?: number; 
   );
 }
 
+/**
+ * A full-width "Add New Case Type" button that turns into the add row: colour,
+ * name, category and Add. Escape or the X folds it back; a successful add does too.
+ */
 function AddTypeForm({ usedColors }: { usedColors: Set<ColorKey> }) {
   const firstFree = COLOR_KEYS.find((c) => !usedColors.has(c)) ?? COLOR_KEYS[0];
+  const [open, setOpen] = useState(false);
   const [label, setLabel] = useState("");
   const [color, setColor] = useState<ColorKey | null>(null);
   const [category, setCategory] = useState<CaseCategory>("case");
   const [pending, startTransition] = useTransition();
+
+  function close() {
+    setOpen(false);
+    setLabel("");
+    setColor(null);
+    setCategory("case");
+  }
 
   function add() {
     const name = label.trim();
@@ -205,9 +244,18 @@ function AddTypeForm({ usedColors }: { usedColors: Set<ColorKey> }) {
         return;
       }
       toast.success(`${name} added.`);
-      setLabel("");
-      setColor(null);
+      close();
     });
+  }
+
+  if (!open) {
+    return (
+      <div className="border-t border-border pt-3">
+        <Button type="button" className="btn-primary btn-soft w-full gap-1.5" onClick={() => setOpen(true)}>
+          <Plus className="size-4" /> Add New Case Type
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -220,17 +268,35 @@ function AddTypeForm({ usedColors }: { usedColors: Set<ColorKey> }) {
     >
       <ColorPicker value={color ?? firstFree} onChange={setColor} disabled={pending} />
       <Input
+        autoFocus
         value={label}
         placeholder="New type"
         aria-label="New type name"
         maxLength={40}
         className="h-7 min-w-0 flex-1"
         onChange={(e) => setLabel(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            // Fold the row back instead of closing the whole dialog.
+            e.preventDefault();
+            e.stopPropagation();
+            close();
+          }
+        }}
       />
       <CategoryPicker value={category} onChange={setCategory} disabled={pending} />
       <Button type="submit" size="sm" className="btn-primary btn-soft gap-1" disabled={pending || !label.trim()}>
         <Plus className="size-3.5" /> Add
       </Button>
+      <button
+        type="button"
+        onClick={close}
+        aria-label="Cancel adding a type"
+        title="Cancel"
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <X className="size-4" />
+      </button>
     </form>
   );
 }
@@ -264,6 +330,32 @@ export function CaseTypesDialog({
   const archived = types.all.filter((t) => t.archived);
   const usedColors = new Set(types.active.map((t) => t.color));
 
+  // Dragging a row into another section changes its category. The move shows at
+  // once; the override clears when the saved list comes back from the server.
+  const [moved, setMoved] = useState<Record<string, CaseCategory>>({});
+  const [over, setOver] = useState<CaseCategory | null>(null);
+  const [, startMove] = useTransition();
+  const categoryOf = (t: CaseTypeDef) => moved[t.key] ?? t.category;
+
+  function moveTo(key: string, to: CaseCategory) {
+    const t = types.get(key);
+    if (!t || categoryOf(t) === to) return;
+    setMoved((m) => ({ ...m, [key]: to }));
+    startMove(async () => {
+      const res = await updateCaseType(key, { category: to });
+      if (res.ok) {
+        toast.success(`${t.label} moved to ${CATEGORIES.find((c) => c.value === to)?.label}.`);
+      } else {
+        toast.error(res.error);
+      }
+      setMoved((m) => {
+        const next = { ...m };
+        delete next[key];
+        return next;
+      });
+    });
+  }
+
   function restore(t: CaseTypeDef) {
     startRestore(async () => {
       const res = await restoreCaseType(t.key);
@@ -278,30 +370,55 @@ export function CaseTypesDialog({
         <DialogHeader>
           <DialogTitle className="font-serif text-xl">Case types</DialogTitle>
           <DialogDescription>
-            Rename, recolour or add the types rows can use. Changes save as you go and apply to every row.
+            Rename or recolour a type, or drag it to another section. Changes save as you go and apply to every row.
           </DialogDescription>
         </DialogHeader>
 
         <div className="-mx-1 max-h-[60vh] space-y-4 overflow-y-auto px-1">
           {CATEGORIES.map((c) => {
-            const list = types.active.filter((t) => t.category === c.value);
-            if (list.length === 0) return null;
+            const list = types.active.filter((t) => categoryOf(t) === c.value);
             return (
-              <section key={c.value} aria-label={c.label}>
+              <section
+                key={c.value}
+                aria-label={c.label}
+                onDragOver={(e) => {
+                  if (!e.dataTransfer.types.includes(DRAG_TYPE)) return;
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = "move";
+                  if (over !== c.value) setOver(c.value);
+                }}
+                onDragLeave={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOver(null);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setOver(null);
+                  const key = e.dataTransfer.getData(DRAG_TYPE);
+                  if (key) moveTo(key, c.value);
+                }}
+                className={cn(
+                  "rounded-lg border border-dashed border-transparent px-1.5 py-1 transition-colors",
+                  over === c.value && "border-brand/60 bg-brand/5"
+                )}
+              >
                 <h3 className="flex items-baseline gap-2 text-xs font-medium text-muted-foreground">
                   <span className="text-foreground">{c.label}</span>
                   <span>{c.hint}</span>
                 </h3>
-                <ul>
-                  {list.map((t) => (
-                    <TypeRow
-                      key={`${t.key}:${t.label}`}
-                      type={t}
-                      rows={usage ? usage[t.key] ?? 0 : undefined}
-                      onRemoved={loadUsage}
-                    />
-                  ))}
-                </ul>
+                {list.length === 0 ? (
+                  <p className="py-2 text-xs text-muted-foreground/70">Drag a type here.</p>
+                ) : (
+                  <ul>
+                    {list.map((t) => (
+                      <TypeRow
+                        key={`${t.key}:${t.label}`}
+                        type={t}
+                        rows={usage ? usage[t.key] ?? 0 : undefined}
+                        onRemoved={loadUsage}
+                      />
+                    ))}
+                  </ul>
+                )}
               </section>
             );
           })}
