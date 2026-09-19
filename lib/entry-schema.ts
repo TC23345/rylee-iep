@@ -7,6 +7,15 @@ import { z } from "zod";
 /** A case type's stable key (see CaseTypeDef.key). */
 export type CaseType = string;
 
+/** A case number worked recently, for the add dialog's suggestions. */
+export interface RecentCase {
+  caseNumber: string;
+  /** Latest day it was logged. */
+  lastDate: string;
+  /** Its type on that latest row. */
+  lastType: CaseType;
+}
+
 const TIME = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
 const entryShape = z.object({
@@ -20,14 +29,28 @@ const entryShape = z.object({
 
 export type EntryFormValues = z.infer<typeof entryShape>;
 
+/** Every case number Rylee works is nine digits. */
+export const CASE_NUMBER_LENGTH = 9;
+
 /**
  * The row schema for one log. Whether a case number is required depends on the
- * type's category, which the log's own type list decides.
+ * type's category, which the log's own type list decides. `strictCaseNumber`
+ * requires a given number to be exactly nine digits; it is off for rows kept
+ * from older data (an edit that leaves the number alone, an Undo, an import).
  */
-export function makeEntryFormSchema(requiresCaseNumber: (type: string) => boolean) {
+export function makeEntryFormSchema(
+  requiresCaseNumber: (type: string) => boolean,
+  { strictCaseNumber = true }: { strictCaseNumber?: boolean } = {}
+) {
   return entryShape.superRefine((v, ctx) => {
     if (requiresCaseNumber(v.caseType) && !v.caseNumber) {
       ctx.addIssue({ code: "custom", path: ["caseNumber"], message: "Case # is required" });
+    } else if (strictCaseNumber && v.caseNumber && v.caseNumber.length !== CASE_NUMBER_LENGTH) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["caseNumber"],
+        message: `Case # is ${CASE_NUMBER_LENGTH} digits`,
+      });
     }
     if (v.startTime && v.endTime && v.endTime < v.startTime) {
       ctx.addIssue({ code: "custom", path: ["endTime"], message: "End time is before start time" });

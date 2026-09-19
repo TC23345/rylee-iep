@@ -1,5 +1,5 @@
 import { requireSignedInUser } from "@/lib/authz";
-import { todayIso } from "@/lib/dates";
+import { userToday } from "@/lib/timezone";
 import { getDailyCounts, getDailyTypeMix, type DailyCount, type DailyTypeMixRow } from "@/lib/entries";
 import { DailyCountsTable } from "@/components/DailyCountsTable";
 import { DbNotice } from "@/components/DbNotice";
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 // newest first, with a stacked bar of time by type and a footer of totals.
 export default async function CaseCountsPage() {
   const actor = await requireSignedInUser();
-  const today = todayIso();
+  const today = await userToday();
 
   let allDays: DailyCount[] = [];
   let dailyMix: DailyTypeMixRow[] = [];

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { addDays, dayLabel, monthDayOrdinal, monthOf } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
+import type { CaseType, RecentCase } from "@/lib/entry-schema";
 import { AddEntryDialog } from "@/components/AddEntryDialog";
 import { DayLog } from "@/components/DayLog";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,8 @@ interface DayPanelProps {
   date: string;
   today: string;
   entries: CaseEntry[];
+  /** Case numbers worked lately, for the add dialog's suggestions. */
+  recentCases?: RecentCase[];
   /** Extra buttons shown beside "Add a row" (the month tabs add import / export). */
   actions?: React.ReactNode;
   /** Shown between the day header and the log (the month tabs put their totals here). */
@@ -21,15 +24,25 @@ function dayHref(date: string): string {
   return `/month/${monthOf(date)}?d=${date}`;
 }
 
-export function DayPanel({ date, today, entries, actions, children }: DayPanelProps) {
+export function DayPanel({ date, today, entries, recentCases = [], actions, children }: DayPanelProps) {
   const isToday = date === today;
   const canGoForward = date < today;
 
-  // The new row starts where the latest row ended.
+  // On a past day the new row starts where the latest row ended.
   const byEnd = [...entries]
     .filter((e) => e.endTime)
     .sort((a, b) => ((a.endTime ?? "") < (b.endTime ?? "") ? 1 : -1));
   const last = byEnd[0] ?? null;
+
+  // Entries arrive newest first; the latest row's type is where the picker
+  // starts, and the types used most recently become one-tap chips.
+  const lastType = entries[0]?.caseType ?? null;
+  const recentTypes: CaseType[] = [];
+  for (const e of entries) {
+    if (recentTypes.includes(e.caseType)) continue;
+    recentTypes.push(e.caseType);
+    if (recentTypes.length === 5) break;
+  }
 
   return (
     <section aria-label={`Cases for ${dayLabel(date)}`} className="space-y-4">
@@ -79,6 +92,9 @@ export function DayPanel({ date, today, entries, actions, children }: DayPanelPr
               date={date}
               isToday={isToday}
               lastEnd={last?.endTime ?? null}
+              lastType={lastType}
+              recentTypes={recentTypes}
+              recentCases={recentCases}
             />
           </div>
           {actions}

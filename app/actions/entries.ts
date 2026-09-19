@@ -8,6 +8,7 @@ import { getCaseTypes } from "@/lib/case-types-db";
 import { isIsoDate, minutesBetween } from "@/lib/dates";
 import {
   deleteEntry as deleteEntryDoc,
+  getEntry,
   insertEntry,
   updateEntry as updateEntryDoc,
   type EntryPatch,
@@ -33,10 +34,11 @@ async function actor(): Promise<WorkspaceUser | null> {
  */
 async function parse(
   orgId: string,
-  values: EntryFormValues
+  values: EntryFormValues,
+  strictCaseNumber: boolean
 ): Promise<{ patch: EntryPatch } | { error: string; field?: string }> {
   const types = caseTypeHelpers(await getCaseTypes(orgId));
-  const parsed = makeEntryFormSchema(types.requiresCaseNumber).safeParse(values);
+  const parsed = makeEntryFormSchema(types.requiresCaseNumber, { strictCaseNumber }).safeParse(values);
   if (!parsed.success) {
     const first = parsed.error.issues[0];
     return { error: first?.message ?? "Invalid input.", field: first?.path.join(".") };
@@ -65,12 +67,19 @@ function refresh() {
 
 const DB_ERROR = "Could not save. Check the database connection.";
 
-export async function createEntry(values: EntryFormValues): Promise<EntryActionResult> {
+/**
+ * Add a row. `restore` is the delete toast's Undo putting a row back as it was,
+ * so an older row whose case number is not nine digits can still return.
+ */
+export async function createEntry(
+  values: EntryFormValues,
+  { restore = false }: { restore?: boolean } = {}
+): Promise<EntryActionResult> {
   const user = await actor();
   if (!user) return { ok: false, error: "Please sign in again." };
 
   try {
-    const result = await parse(user.orgId, values);
+    const result = await parse(user.orgId, values, !restore);
     if ("error" in result) return { ok: false, error: result.error, field: result.field };
     const id = await insertEntry(user.orgId, user.userId, result.patch);
     await tryWriteAuditEvent({
@@ -95,7 +104,12 @@ export async function updateEntry(
   if (!user) return { ok: false, error: "Please sign in again." };
 
   try {
-    const result = await parse(user.orgId, values);
+    // Only a changed case number has to be nine digits; editing another field of
+    // an older row keeps its number as it was.
+    const stored = await getEntry(user.orgId, id);
+    if (!stored) return { ok: false, error: "That row no longer exists." };
+    const numberChanged = values.caseNumber.trim() !== stored.caseNumber;
+    const result = await parse(user.orgId, values, numberChanged);
     if ("error" in result) return { ok: false, error: result.error, field: result.field };
     const found = await updateEntryDoc(user.orgId, id, result.patch);
     if (!found) return { ok: false, error: "That row no longer exists." };

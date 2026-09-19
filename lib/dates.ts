@@ -1,8 +1,13 @@
 // Pure date helpers for the case log. Dates are ISO "YYYY-MM-DD" strings and months
 // are "YYYY-MM". All arithmetic runs in UTC so a local timezone never shifts a day.
-// "Today" is resolved in Rylee's timezone.
+// "Today" and "now" follow the user's own machine: the browser reads its clock
+// directly, and the server uses the timezone the browser reports in a cookie
+// (lib/timezone.ts), falling back to DEFAULT_TIME_ZONE until it arrives.
 
-export const TIME_ZONE = "America/Chicago";
+export const DEFAULT_TIME_ZONE = "America/Chicago";
+
+/** Cookie the browser sets with its IANA timezone, e.g. "America/New_York". */
+export const TIME_ZONE_COOKIE = "tz";
 
 /** First month that gets a tab. Tabs run from here through the current month. */
 export const FIRST_MONTH = "2026-07";
@@ -27,23 +32,44 @@ export function isIsoMonth(s: string): boolean {
   return m >= 1 && m <= 12;
 }
 
-export function todayIso(now = new Date()): string {
+/** Today's date in `timeZone` (server side; the browser uses localTodayIso). */
+export function todayIso(now = new Date(), timeZone = DEFAULT_TIME_ZONE): string {
   return new Intl.DateTimeFormat("en-CA", {
-    timeZone: TIME_ZONE,
+    timeZone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   }).format(now);
 }
 
-/** Current wall-clock time in Rylee's timezone as "HH:MM". */
+/** Today's date on this machine's clock. Browser only. */
+export function localTodayIso(now = new Date()): string {
+  return [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("-");
+}
+
+/** Current wall-clock time on this machine's clock as "HH:MM". Browser only. */
 export function nowTime(now = new Date()): string {
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: TIME_ZONE,
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }).format(now);
+  return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+}
+
+/** Seconds since "HH:MM" today on this machine's clock (0 if it is still ahead). */
+export function secondsSince(hhmm: string, now = new Date()): number {
+  const [h, m] = hhmm.split(":").map(Number);
+  const start = new Date(now);
+  start.setHours(h, m, 0, 0);
+  return Math.max(0, Math.floor((now.getTime() - start.getTime()) / 1000));
+}
+
+/** 452 → "0:07:32" */
+export function formatElapsed(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
 export function addDays(iso: string, n: number): string {

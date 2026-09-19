@@ -1,5 +1,6 @@
 import { requireSignedInUser } from "@/lib/authz";
-import { addDays, formatDuration, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
+import { addDays, formatDuration, monthLabel, monthOf, monthRange } from "@/lib/dates";
+import { userToday } from "@/lib/timezone";
 import {
   getDailyCounts,
   getMonthlySummaries,
@@ -17,7 +18,7 @@ export const dynamic = "force-dynamic";
 // logging lives under the month tabs.
 export default async function CalendarPage() {
   const actor = await requireSignedInUser();
-  const today = todayIso();
+  const today = await userToday();
   const ym = monthOf(today);
   const weekStart = addDays(today, -6);
 

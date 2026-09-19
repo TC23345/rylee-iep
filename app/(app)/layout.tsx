@@ -6,8 +6,9 @@ import { BUILTIN_CASE_TYPES, type CaseTypeDef } from "@/lib/case-types";
 import { getCaseTypes } from "@/lib/case-types-db";
 import { MonthNav } from "@/components/MonthNav";
 import { requireSignedInUser } from "@/lib/authz";
-import { todayIso } from "@/lib/dates";
+import { TimeZoneCookie } from "@/components/TimeZoneCookie";
 import { getMonthTabs, type MonthTab } from "@/lib/months";
+import { timeZoneCookie, userToday } from "@/lib/timezone";
 import { listWorkspaceMembers, type WorkspaceMember } from "@/lib/users";
 
 export default async function AppLayout({
@@ -17,7 +18,7 @@ export default async function AppLayout({
 
   let months: MonthTab[] = [];
   try {
-    months = await getMonthTabs(actor.orgId, todayIso());
+    months = await getMonthTabs(actor.orgId, await userToday());
   } catch {
     months = [];
   }
@@ -42,6 +43,7 @@ export default async function AppLayout({
 
   return (
     <div className="flex min-h-dvh flex-col">
+      <TimeZoneCookie current={await timeZoneCookie()} />
       <header className="sticky top-0 z-10 border-b border-border bg-card/85 backdrop-blur">
         {/* One line: wordmark, the tabs, then the avatar pushed to the right. */}
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-3 px-4 sm:gap-6">

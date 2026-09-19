@@ -3,7 +3,7 @@ import "server-only";
 import { ObjectId, type Collection, type WithId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
 import { getBreakKeys } from "@/lib/case-types-db";
-import type { CaseType } from "@/lib/entry-schema";
+import type { CaseType, RecentCase } from "@/lib/entry-schema";
 
 export interface CaseEntryDoc {
   orgId: string;
@@ -105,6 +105,40 @@ export async function listEntriesForDate(orgId: string, date: string): Promise<C
     .sort({ startTime: -1, createdAt: -1 })
     .toArray();
   return docs.map(toEntry);
+}
+
+/** Distinct case numbers logged on or after `since`, most recently worked first. */
+export async function listRecentCaseNumbers(
+  orgId: string,
+  since: string,
+  limit = 200
+): Promise<RecentCase[]> {
+  const col = await getEntriesCollection();
+  const rows = await col
+    .aggregate<{ _id: string; lastDate: string; lastType: CaseType }>([
+      { $match: { orgId, date: { $gte: since }, caseNumber: { $nin: ["", null] } } },
+      { $sort: { date: -1, startTime: -1, createdAt: -1 } },
+      {
+        $group: {
+          _id: "$caseNumber",
+          lastDate: { $first: "$date" },
+          lastType: { $first: "$caseType" },
+        },
+      },
+      { $sort: { lastDate: -1 } },
+      { $limit: limit },
+    ])
+    .toArray();
+  return rows.map((r) => ({ caseNumber: r._id, lastDate: r.lastDate, lastType: r.lastType }));
+}
+
+/** One row by id, or null. */
+export async function getEntry(orgId: string, id: string): Promise<CaseEntry | null> {
+  const _id = parseId(id);
+  if (!_id) return null;
+  const col = await getEntriesCollection();
+  const doc = await col.findOne({ _id, orgId });
+  return doc ? toEntry(doc) : null;
 }
 
 /** Every row in a date range, in the order the day unfolded. */

@@ -1,12 +1,15 @@
 import { notFound } from "next/navigation";
 import { requireSignedInUser } from "@/lib/authz";
-import { formatDuration, isIsoDate, isIsoMonth, monthLabel, monthOf, monthRange, todayIso } from "@/lib/dates";
+import { addDays, formatDuration, isIsoDate, isIsoMonth, monthLabel, monthOf, monthRange } from "@/lib/dates";
 import {
   getDailyCounts,
   listEntriesForDate,
+  listRecentCaseNumbers,
   type CaseEntry,
   type DailyCount,
 } from "@/lib/entries";
+import type { RecentCase } from "@/lib/entry-schema";
+import { userToday } from "@/lib/timezone";
 import { getMonthTabLabel } from "@/lib/months";
 import { DayPanel } from "@/components/DayPanel";
 import { DbNotice } from "@/components/DbNotice";
@@ -28,7 +31,7 @@ export default async function MonthPage({
   if (!isIsoMonth(ym)) notFound();
 
   const { d } = await searchParams;
-  const today = todayIso();
+  const today = await userToday();
   const range = monthRange(ym);
 
   const actor = await requireSignedInUser();
@@ -52,19 +55,27 @@ export default async function MonthPage({
   else if (monthOf(today) === ym) selected = today;
 
   let entries: CaseEntry[] = [];
+  let recentCases: RecentCase[] = [];
   if (!dbError) {
     try {
-      entries = await listEntriesForDate(actor.orgId, selected);
+      [entries, recentCases] = await Promise.all([
+        listEntriesForDate(actor.orgId, selected),
+        // Suggestions for the add dialog: numbers worked in the last 30 days.
+        listRecentCaseNumbers(actor.orgId, addDays(today, -30)),
+      ]);
     } catch {
       dbError = true;
     }
   }
 
-  const totalCases = counts.reduce((sum, c) => sum + c.count, 0);
-  const totalMinutes = counts.reduce((sum, c) => sum + c.minutes, 0);
-  const daysLogged = counts.length;
-  const avg = daysLogged ? (totalCases / daysLogged).toFixed(1) : "0";
-  const perCase = totalCases ? Math.round(totalMinutes / totalCases) : 0;
+  // Tiles show the selected day; the month's cases-per-day is the yardstick.
+  const monthCases = counts.reduce((sum, c) => sum + c.count, 0);
+  const monthAvg = counts.length ? (monthCases / counts.length).toFixed(1) : "0";
+  const day = counts.find((c) => c.date === selected);
+  const dayCases = day?.count ?? 0;
+  const dayMinutes = day?.minutes ?? 0;
+  const dayPerCase = dayCases ? Math.round(dayMinutes / dayCases) : 0;
+  const dayLabelShort = selected === today ? "today" : "this day";
 
   return (
     <div className="space-y-8">
@@ -78,17 +89,14 @@ export default async function MonthPage({
         date={selected}
         today={today}
         entries={entries}
+        recentCases={recentCases}
         actions={<SpreadsheetActions ym={ym} />}
       >
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Month totals">
-          <StatTile
-            label="Cases"
-            value={totalCases}
-            hint={`${daysLogged} ${daysLogged === 1 ? "day" : "days"} logged`}
-          />
-          <StatTile label="Case time" value={formatDuration(totalMinutes)} hint="hours:minutes" />
-          <StatTile label="Cases per day" value={avg} hint="on logged days" />
-          <StatTile label="Minutes per case" value={perCase} hint="average" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" aria-label="Day totals">
+          <StatTile label="Cases" value={dayCases} hint={`Month avg ${monthAvg} per day`} />
+          <StatTile label="Case time" value={formatDuration(dayMinutes)} hint="hours:minutes" />
+          <StatTile label="Minutes per case" value={dayPerCase} hint={`average ${dayLabelShort}`} />
+          <StatTile label="Rows logged" value={entries.length} hint={dayLabelShort} />
         </div>
       </DayPanel>
 

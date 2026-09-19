@@ -1,19 +1,31 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useForm, useWatch, type Control, type FieldPath } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Clock, Plus, X } from "lucide-react";
+import { ArrowLeft, CalendarDays, Clock, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { makeEntryFormSchema, type EntryFormValues } from "@/lib/entry-schema";
+import {
+  CASE_NUMBER_LENGTH,
+  makeEntryFormSchema,
+  type CaseType,
+  type EntryFormValues,
+  type RecentCase,
+} from "@/lib/entry-schema";
 import { useCaseTypes } from "@/components/CaseTypesProvider";
-import { formatDuration, minutesBetween, nowTime } from "@/lib/dates";
+import {
+  dayLabel,
+  formatDuration,
+  localTodayIso,
+  minutesBetween,
+  nowTime,
+  shortDayLabel,
+} from "@/lib/dates";
 import type { EntryActionResult } from "@/app/actions/entries";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
@@ -49,12 +61,13 @@ interface EntryFormProps {
    * note). Off for editing, where every field sits on one screen.
    */
   stepped?: boolean;
-  /** Show the date picker (edit dialog, or logging a past day). */
-  showDate?: boolean;
-  /** Fill an empty start / end time with the current clock once mounted. */
+  /** Fill an empty start time with the current clock once mounted. */
   nowStart?: boolean;
-  nowEnd?: boolean;
   autoFocus?: boolean;
+  /** Types used recently that day, offered as one-tap picks above the Type select. */
+  recentTypes?: CaseType[];
+  /** Case numbers worked lately, suggested while the number is typed. */
+  recentCases?: RecentCase[];
   /** Called after a successful save; the caller decides whether to close. */
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -124,7 +137,17 @@ function TimeField({
   );
 }
 
-const STEP_ONE_FIELDS: FieldPath<EntryFormValues>[] = ["caseNumber", "caseType"];
+const STEP_ONE_FIELDS: FieldPath<EntryFormValues>[] = ["date", "caseNumber", "caseType"];
+
+const MAX_SUGGESTIONS = 5;
+
+/** Recent case numbers containing the typed digits anywhere, most recent first. */
+function matchCases(recent: RecentCase[], typed: string): RecentCase[] {
+  if (typed.length < 2) return [];
+  return recent
+    .filter((r) => r.caseNumber !== typed && r.caseNumber.includes(typed))
+    .slice(0, MAX_SUGGESTIONS);
+}
 
 export function EntryForm({
   defaultValues,
@@ -132,10 +155,10 @@ export function EntryForm({
   submitLabel,
   successMessage,
   stepped = false,
-  showDate = false,
   nowStart = false,
-  nowEnd = false,
   autoFocus = false,
+  recentTypes = [],
+  recentCases = [],
   onSuccess,
   onCancel,
   onStepChange,
@@ -154,18 +177,37 @@ export function EntryForm({
   // The note field stays hidden until asked for, unless the row already has one.
   const [noteOpen, setNoteOpen] = useState(defaultValues.note.trim() !== "");
 
-  // Clock defaults are applied after mount so server and client markup match.
+  // The clock default is applied after mount so server and client markup match.
   useEffect(() => {
     if (nowStart && !form.getValues("startTime")) form.setValue("startTime", nowTime());
-    if (nowEnd && !form.getValues("endTime")) form.setValue("endTime", nowTime());
-  }, [nowStart, nowEnd, form]);
+  }, [nowStart, form]);
 
-  const [startTime, endTime, caseType] = useWatch({
+  const [date, caseNumber, startTime, endTime, caseType] = useWatch({
     control,
-    name: ["startTime", "endTime", "caseType"],
+    name: ["date", "caseNumber", "startTime", "endTime", "caseType"],
   });
   const duration = minutesBetween(startTime, endTime);
   const needsCase = requiresCaseNumber(caseType);
+
+  const dateInput = useRef<HTMLInputElement>(null);
+  const [suggestOpen, setSuggestOpen] = useState(false);
+  const [highlight, setHighlight] = useState(-1);
+  const suggestions = suggestOpen ? matchCases(recentCases, caseNumber) : [];
+  const today = localTodayIso();
+
+  function pickCase(r: RecentCase) {
+    form.setValue("caseNumber", r.caseNumber, { shouldValidate: true });
+    setSuggestOpen(false);
+    setHighlight(-1);
+  }
+
+  function openDatePicker() {
+    try {
+      dateInput.current?.showPicker?.();
+    } catch {
+      dateInput.current?.focus();
+    }
+  }
 
   function goTo(next: 1 | 2) {
     setStep(next);
@@ -207,23 +249,16 @@ export function EntryForm({
   const showIdentity = !stepped || step === 1;
   const showTiming = !stepped || step === 2;
 
+  // Recent types that are still offered: no breaks, nothing archived or removed.
+  const typeChips = recentTypes
+    .filter((t) => {
+      const def = types.get(t);
+      return def && !def.archived && !types.isBreak(t);
+    })
+    .slice(0, 4);
+
   const identity = (
     <div className="space-y-3">
-      {showDate && (
-        <FormField
-          control={control}
-          name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date</FormLabel>
-              <FormControl>
-                <Input type="date" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
       <FormField
         control={control}
         name="caseNumber"
@@ -235,21 +270,162 @@ export function EntryForm({
                 <span className="ml-1 font-normal text-muted-foreground">optional</span>
               )}
             </FormLabel>
-            <FormControl>
-              <Input
-                inputMode="numeric"
-                pattern="[0-9]*"
-                placeholder={needsCase ? "262104140" : "If it was about a case"}
-                autoComplete="off"
-                autoFocus={autoFocus}
-                className="font-mono"
-                {...field}
-              />
-            </FormControl>
+            <div className="relative">
+              {/* The date rides along as an icon: it is almost always today. */}
+              <InputGroup>
+                <FormControl>
+                  <InputGroupInput
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={CASE_NUMBER_LENGTH}
+                    autoComplete="off"
+                    autoFocus={autoFocus}
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded={suggestions.length > 0}
+                    aria-controls="case-suggestions"
+                    aria-activedescendant={highlight >= 0 ? `case-suggestion-${highlight}` : undefined}
+                    className="font-mono tabular-nums"
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value.replace(/\D/g, ""));
+                      setSuggestOpen(true);
+                      setHighlight(-1);
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      setSuggestOpen(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (suggestions.length === 0) return;
+                      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                        e.preventDefault();
+                        const last = suggestions.length - 1;
+                        setHighlight((h) =>
+                          e.key === "ArrowDown" ? (h >= last ? 0 : h + 1) : h <= 0 ? last : h - 1
+                        );
+                      } else if (e.key === "Enter" && highlight >= 0) {
+                        // Pick the suggestion rather than moving to step two.
+                        e.preventDefault();
+                        e.stopPropagation();
+                        pickCase(suggestions[highlight]);
+                      } else if (e.key === "Escape") {
+                        e.stopPropagation();
+                        setSuggestOpen(false);
+                      }
+                    }}
+                  />
+                </FormControl>
+                <InputGroupAddon align="inline-end" className="relative">
+                  <InputGroupButton
+                    type="button"
+                    size="icon-xs"
+                    aria-label={`Date: ${dayLabel(date)}. Change the date`}
+                    title={dayLabel(date)}
+                    onClick={openDatePicker}
+                  >
+                    <CalendarDays />
+                  </InputGroupButton>
+                  {/* Invisible date input the icon opens; sits under the icon so the picker anchors there. */}
+                  <input
+                    ref={dateInput}
+                    type="date"
+                    tabIndex={-1}
+                    aria-hidden
+                    value={date}
+                    max={today}
+                    onChange={(e) => {
+                      if (e.target.value) form.setValue("date", e.target.value, { shouldValidate: true });
+                    }}
+                    className="pointer-events-none absolute inset-0 opacity-0"
+                  />
+                </InputGroupAddon>
+              </InputGroup>
+              {suggestions.length > 0 && (
+                <ul
+                  id="case-suggestions"
+                  role="listbox"
+                  aria-label="Recent case numbers"
+                  className="absolute inset-x-0 top-full z-50 mt-1 overflow-hidden rounded-md border border-border bg-popover py-1 shadow-md"
+                >
+                  {suggestions.map((r, i) => (
+                    <li
+                      key={r.caseNumber}
+                      id={`case-suggestion-${i}`}
+                      role="option"
+                      aria-selected={i === highlight}
+                      // mousedown, not click: it lands before the input's blur closes the list.
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        pickCase(r);
+                      }}
+                      onMouseEnter={() => setHighlight(i)}
+                      className={cn(
+                        "flex cursor-pointer items-center gap-3 px-3 py-1.5 text-sm",
+                        i === highlight && "bg-muted"
+                      )}
+                    >
+                      <span className="font-mono tabular-nums">{r.caseNumber}</span>
+                      <span
+                        className={cn(
+                          "rounded-full px-2 py-0.5 text-xs font-medium",
+                          types.style(r.lastType).chip
+                        )}
+                      >
+                        {types.label(r.lastType)}
+                      </span>
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {r.lastDate === today ? "today" : shortDayLabel(r.lastDate)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {date !== defaultValues.date && (
+              <p className="text-xs text-muted-foreground">
+                Logging for <span className="font-medium text-foreground">{dayLabel(date)}</span>
+                {" · "}
+                <button
+                  type="button"
+                  className="underline-offset-2 hover:text-foreground hover:underline"
+                  onClick={() => form.setValue("date", defaultValues.date, { shouldValidate: true })}
+                >
+                  back to {defaultValues.date === today ? "today" : dayLabel(defaultValues.date)}
+                </button>
+              </p>
+            )}
             <FormMessage />
           </FormItem>
         )}
       />
+      {typeChips.length > 0 && (
+        <div className="space-y-1.5">
+          <span className="text-xs text-muted-foreground">Used today</span>
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Recent types">
+            {typeChips.map((t) => {
+              const active = caseType === t;
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => form.setValue("caseType", t, { shouldValidate: true })}
+                  className={cn(
+                    "flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors",
+                    active
+                      ? "border-brand bg-brand/15 text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-brand/60 hover:text-foreground"
+                  )}
+                >
+                  <span aria-hidden className={cn("size-1.5 rounded-full", types.style(t).bar)} />
+                  {types.label(t)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
       <FormField
         control={control}
         name="caseType"
@@ -298,7 +474,13 @@ export function EntryForm({
         control={control}
         name="endTime"
         label="End"
-        trailing={duration === null ? undefined : `Length ${formatDuration(duration)}`}
+        trailing={
+          duration !== null
+            ? `Length ${formatDuration(duration)}`
+            : !endTime && date === today
+              ? "Leave blank to keep the clock running"
+              : undefined
+        }
         onNow={() => form.setValue("endTime", nowTime(), { shouldValidate: true })}
       />
       {noteOpen ? (

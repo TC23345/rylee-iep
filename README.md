@@ -2,7 +2,7 @@
 
 A private, phone-friendly case log for Rylee's workday. It replaces the Excel workbook she kept by hand: a **Daily Case Counts** sheet plus one sheet per month with every case she touched.
 
-Live at https://rylee-iep-production.up.railway.app (Clerk sign-in required).
+Live at https://acentra-case-tracker.up.railway.app (Clerk sign-in required).
 
 ## What it does
 
@@ -19,15 +19,22 @@ The workbook's "Daily Case Counts" sheet on its own tab: every logged day, newes
 
 The **Case Tracker** tab opens a menu of months, newest first, with a check on the one you are viewing. Months appear on their own: the list runs from July 2026 through the current month, so a new month shows up on its 1st. There is nothing to add by hand. A month added early with the old + button stays hidden until its 1st; older custom month names in the `month_tabs` collection still show.
 
-A month page shows the month's four totals and then **one day's log**:
+A month page shows four tiles for the **selected day** (cases, with the month's cases-per-day average underneath; case time; minutes per case; rows logged) and then **that day's log**:
 
 - `<` `>` arrows beside the day title step through days; forward stops at today, where an empty day is ready for its first row.
+- **Pages of rows.** The log shows as many rows as fit the window (5 to 15), with a "1–11 of 33" pager underneath, so the page itself never scrolls. It goes back to page 1 when the sort, filter or day changes, or when a row is added.
+- **Running clock.** A row logged today with a start and no end is still open: its End cell shows a live `0:07:32` clock. Click it to stop, which stamps End with the current time. Several cases can run at once; nothing stops on its own.
 - A row of **filter chips** (All, then one per type with its count). A chip collapses the other rows with an animation; rows stay mounted so nothing is lost.
 - Rows are listed **newest first**: the latest start time on top, so a row just added appears at the top of the table.
 - **Sortable columns.** Click Case #, Start, End, or Length to sort by it; click again to reverse. The first click gives the lowest case number, or the latest start / end, or the longest length. Rows missing that value sort last. The sort resets to newest first on reload.
 - **Rows edit in place.** Click a case number, type chip, start, end, or note and change it; it saves when the field loses focus (type saves on pick). Length is recomputed.
 - **Delete** by holding the trash icon (visible on the hovered row) for 1.5 s. A toast at the bottom offers **Undo**, which recreates the row.
-- **Add a row** opens a two-step dialog: case number and type (defaults to Reconsideration), then start and end with a clock icon that stamps the current time, plus an optional note (a blank box, no template).
+- **Add a row** opens a two-step dialog.
+  - Step one is the case number, with a calendar icon at its right end for logging a different day. Below it are "Used today" type chips, then the Type, which starts on the last row's type, or Reconsideration on the first row of a day.
+  - The case number must be exactly **9 digits**. While typing, up to five recent case numbers (from the last 30 days) that contain the typed digits are suggested; pick one with the arrow keys and Enter, or click.
+  - Step two is start and end, each with a clock icon that stamps the current time, plus an optional note. On today Start is the current time and End is left blank, so the case runs as a clock in the log. On a past day Start picks up where that day's last row ended.
+  - The 9-digit rule applies to new rows and to changing a row's number. Older rows keep their numbers when other fields are edited, and so do Undo and spreadsheet imports.
+- **Time follows the user's machine.** "Now" is the browser's clock, and the server learns the browser's timezone from a `tz` cookie (`components/TimeZoneCookie.tsx`, `lib/timezone.ts`). Rylee's Eastern PC therefore shows Eastern time; before the cookie arrives the server falls back to `America/Chicago`.
 - **Import Excel** and **Export to .xlsx** icons next to Add a row. Import reads a workbook in the layout below and skips rows already logged; export writes the month back in the same layout.
 
 ### Case types
@@ -66,7 +73,8 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `lib/case-types.ts`, `lib/case-types-db.ts`, `app/actions/case-types.ts` | Built-in types, colour palette and category rules; per-log overrides; the dialog's server actions |
 | `components/CaseTypesProvider.tsx`, `CaseTypesDialog.tsx` | The log's types for every client component (`useCaseTypes()`); the edit dialog |
 | `lib/spreadsheet.ts` | Workbook parser used by the import dialog |
-| `lib/dates.ts` | Date helpers; "today" resolves in `America/Chicago` |
+| `lib/dates.ts` | Date helpers; `nowTime` / `localTodayIso` read the browser clock, `todayIso(now, tz)` the server's view |
+| `lib/timezone.ts`, `components/TimeZoneCookie.tsx` | The browser reports its timezone in the `tz` cookie; `userToday()` gives the server "today" |
 | `components/DayPanel.tsx`, `DayLog.tsx`, `EntryTable.tsx` | The day header, filter chips, and inline-editable rows |
 | `components/AddEntryDialog.tsx`, `EntryForm.tsx` | The two-step add dialog and the shared form |
 | `components/MonthInsightCards.tsx`, `DailyCountsTable.tsx`, `TypeMix.tsx` | Calendar card, daily sheet, type bar and chips |

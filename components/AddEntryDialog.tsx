@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 
 import { createEntry } from "@/app/actions/entries";
-import { emptyEntryValues } from "@/lib/entry-schema";
+import { emptyEntryValues, type CaseType, type RecentCase } from "@/lib/entry-schema";
 import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
 import { useCaseTypes } from "@/components/CaseTypesProvider";
@@ -20,8 +20,14 @@ import {
 interface AddEntryDialogProps {
   date: string;
   isToday: boolean;
-  /** End time of the last row that day; the new row starts there. */
+  /** End time of the last row that day; on a past day the new row starts there. */
   lastEnd: string | null;
+  /** Case type of the latest row that day; the picker starts on it. */
+  lastType: CaseType | null;
+  /** Types used most recently that day, offered as one-tap picks on step one. */
+  recentTypes: CaseType[];
+  /** Case numbers worked lately, suggested while typing the number. */
+  recentCases: RecentCase[];
 }
 
 const STEP_HINTS: Record<1 | 2, string> = {
@@ -34,11 +40,17 @@ export function AddEntryDialog({
   date,
   isToday,
   lastEnd,
+  lastType,
+  recentTypes,
+  recentCases,
 }: AddEntryDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
-  // Reconsideration (Rylee's most common), or the first case type if it was removed.
-  const { defaultKey } = useCaseTypes();
+  const types = useCaseTypes();
+  // The last row's type if it is still offered; else Reconsideration (Rylee's
+  // most common), or the first case type if that was removed.
+  const lastUsable = lastType && types.get(lastType) && !types.get(lastType)?.archived ? lastType : null;
+  const startType = lastUsable ?? types.defaultKey;
 
   function onOpenChange(next: boolean) {
     setOpen(next);
@@ -76,19 +88,21 @@ export function AddEntryDialog({
           </DialogHeader>
           {open && (
             <EntryForm
-              key={`${date}:${lastEnd ?? ""}`}
+              key={`${date}:${lastEnd ?? ""}:${startType}`}
               defaultValues={emptyEntryValues(date, {
-                startTime: lastEnd ?? "",
-                caseType: defaultKey,
+                // Today a case starts now and its End stays open (the day log
+                // runs a clock); a past day picks up where its last row ended.
+                startTime: isToday ? "" : lastEnd ?? "",
+                caseType: startType,
               })}
               action={createEntry}
               submitLabel="Add case"
               successMessage="Case added."
               stepped
-              showDate={!isToday}
-              nowStart={isToday && !lastEnd}
-              nowEnd={isToday}
+              nowStart={isToday}
               autoFocus
+              recentTypes={recentTypes}
+              recentCases={recentCases}
               onStepChange={setStep}
               onSuccess={() => setOpen(false)}
               onCancel={() => setOpen(false)}
