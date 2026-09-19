@@ -445,10 +445,15 @@ interface EntryTableProps {
   filter?: TypeFilter;
 }
 
+/**
+ * Rows added on top of what fits the window. Taylor asked for four more, so a
+ * page runs a little past the fold and the pager sits a short scroll down.
+ */
+const EXTRA_ROWS = 4;
 /** Rows per page before the viewport is measured (about a 1080p desktop). */
-const DEFAULT_PER_PAGE = 10;
-const MIN_PER_PAGE = 5;
-const MAX_PER_PAGE = 15;
+const DEFAULT_PER_PAGE = 14;
+const MIN_PER_PAGE = 9;
+const MAX_PER_PAGE = 19;
 /** Fallbacks for the measurement: one row, the column header, the pager. */
 const ROW_PX = 45;
 const HEADER_PX = 48;
@@ -457,8 +462,8 @@ const PAGER_PX = 44;
 const BOTTOM_PX = 24;
 
 /**
- * How many rows fit between the table's top and the bottom of the window, so
- * the day's log sits on screen without scrolling.
+ * How many rows fit between the table's top and the bottom of the window, plus
+ * EXTRA_ROWS.
  */
 function useRowsPerPage(ref: React.RefObject<HTMLElement | null>, hasRows: boolean): number {
   const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
@@ -470,7 +475,7 @@ function useRowsPerPage(ref: React.RefObject<HTMLElement | null>, hasRows: boole
       const top = el.getBoundingClientRect().top + window.scrollY;
       const row = el.querySelector<HTMLElement>("[data-entry-row]")?.offsetHeight || ROW_PX;
       const fit = Math.floor((window.innerHeight - top - HEADER_PX - PAGER_PX - BOTTOM_PX) / row);
-      setPerPage(Math.min(MAX_PER_PAGE, Math.max(MIN_PER_PAGE, fit)));
+      setPerPage(Math.min(MAX_PER_PAGE, Math.max(MIN_PER_PAGE, fit + EXTRA_ROWS)));
     }
     measure();
     window.addEventListener("resize", measure);

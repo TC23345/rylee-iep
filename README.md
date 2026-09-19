@@ -24,7 +24,7 @@ The **Case Tracker** tab opens a menu of months, newest first, with a check on t
 A month page shows four tiles for the **selected day** (cases, with the month's cases-per-day average underneath; case time; minutes per case; rows logged) and then **that day's log**:
 
 - `<` `>` arrows beside the day title step through days; forward stops at today, where an empty day is ready for its first row.
-- **Pages of rows.** The log shows as many rows as fit the window (5 to 15), with a "1–11 of 33" pager underneath, so the page itself never scrolls. It goes back to page 1 when the sort, filter or day changes, or when a row is added.
+- **Pages of rows.** The log shows as many rows as fit the window plus four more (9 to 19), with a "1–15 of 33" pager underneath, so the page runs a short scroll past the fold. It goes back to page 1 when the sort, filter or day changes, or when a row is added.
 - **Running clock.** A row logged today with a start and no end is still open: its End cell shows a live `0:07:32` clock. Click it to stop, which stamps End with the current time. Several cases can run at once; nothing stops on its own.
 - A row of **filter chips** (All, then one per type with its count). A chip collapses the other rows with an animation; rows stay mounted so nothing is lost.
 - Rows are listed **newest first**: the latest start time on top, so a row just added appears at the top of the table.
