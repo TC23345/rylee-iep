@@ -23,6 +23,7 @@ A month page shows the month's four totals and then **one day's log**:
 
 - `<` `>` arrows beside the day title step through days; forward stops at today, where an empty day is ready for its first row.
 - The **type-mix bar** and a row of **filter chips** (All, then one per type with its count). A chip collapses the other rows with an animation; rows stay mounted so nothing is lost.
+- Rows are listed **newest first**: the latest start time on top, so a row just added appears at the top of the table.
 - **Rows edit in place.** Click a case number, type chip, start, end, or note and change it; it saves when the field loses focus (type saves on pick). Length is recomputed.
 - **Delete** by holding the trash icon (visible on the hovered row) for 1.5 s. A toast at the bottom offers **Undo**, which recreates the row.
 - **Add a row** opens a two-step dialog: case number and type (with quick-pick chips for types already used that day), then start and end with a clock icon that stamps the current time, plus an optional note. Reconsideration notes prefill from a template in `lib/entry-schema.ts`.

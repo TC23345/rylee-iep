@@ -87,11 +87,12 @@ function rangeMatch(orgId: string, range?: { from: string; to: string }) {
   return range ? { orgId, date: { $gte: range.from, $lte: range.to } } : { orgId };
 }
 
+/** One day's rows, newest first: the latest start time (and so the row just added) on top. */
 export async function listEntriesForDate(orgId: string, date: string): Promise<CaseEntry[]> {
   const col = await getEntriesCollection();
   const docs = await col
     .find({ orgId, date })
-    .sort({ startTime: 1, createdAt: 1 })
+    .sort({ startTime: -1, createdAt: -1 })
     .toArray();
   return docs.map(toEntry);
 }
