@@ -22,7 +22,7 @@ const ACTIVE = "border-brand text-foreground";
 const IDLE = "border-transparent text-muted-foreground hover:text-foreground";
 
 /**
- * Calendar, Case Counts, and Case Tracker, whose menu lists the month sheets
+ * Case Tracker (first), Calendar and Case Counts. Case Tracker's menu lists the month sheets
  * newest first. Months appear on their own: the list runs from the first
  * tracked month through the current one, so a new month shows up on its 1st.
  */
@@ -34,28 +34,6 @@ export function MonthNav({ months }: { months: MonthTab[] }) {
   return (
     <nav aria-label="Sheets" className="min-w-0 self-stretch overflow-x-auto" style={{ scrollbarWidth: "none" }}>
       <ul className="flex h-full items-stretch gap-0.5 sm:gap-1">
-        <li className="shrink-0">
-          <Link
-            href="/"
-            title="Calendar"
-            aria-current={pathname === "/" ? "page" : undefined}
-            className={cn(TAB, pathname === "/" ? ACTIVE : IDLE)}
-          >
-            <CalendarDays className="size-4" aria-hidden />
-            <span className={LABEL}>Calendar</span>
-          </Link>
-        </li>
-        <li className="shrink-0">
-          <Link
-            href="/counts"
-            title="Case Counts"
-            aria-current={pathname === "/counts" ? "page" : undefined}
-            className={cn(TAB, pathname === "/counts" ? ACTIVE : IDLE)}
-          >
-            <BarChart3 className="size-4" aria-hidden />
-            <span className={LABEL}>Case Counts</span>
-          </Link>
-        </li>
         <li className="shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -91,6 +69,28 @@ export function MonthNav({ months }: { months: MonthTab[] }) {
               })}
             </DropdownMenuContent>
           </DropdownMenu>
+        </li>
+        <li className="shrink-0">
+          <Link
+            href="/"
+            title="Calendar"
+            aria-current={pathname === "/" ? "page" : undefined}
+            className={cn(TAB, pathname === "/" ? ACTIVE : IDLE)}
+          >
+            <CalendarDays className="size-4" aria-hidden />
+            <span className={LABEL}>Calendar</span>
+          </Link>
+        </li>
+        <li className="shrink-0">
+          <Link
+            href="/counts"
+            title="Case Counts"
+            aria-current={pathname === "/counts" ? "page" : undefined}
+            className={cn(TAB, pathname === "/counts" ? ACTIVE : IDLE)}
+          >
+            <BarChart3 className="size-4" aria-hidden />
+            <span className={LABEL}>Case Counts</span>
+          </Link>
         </li>
       </ul>
     </nav>
