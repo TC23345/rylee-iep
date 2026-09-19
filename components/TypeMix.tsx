@@ -164,7 +164,7 @@ function Chip({
       <span
         className={cn(
           "rounded px-1 text-[10.5px] tabular-nums",
-          active ? "bg-muted text-muted-foreground" : "text-muted-foreground/70"
+          active ? "text-muted-foreground" : "text-muted-foreground/70"
         )}
       >
         {count}
