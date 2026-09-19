@@ -299,9 +299,8 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
           <Cell>
             <input
               value={draft.note}
-              placeholder="Add a note"
               aria-label="Notes"
-              className={cn(FIELD, "text-foreground/80 placeholder:text-muted-foreground/50")}
+              className={cn(FIELD, "text-foreground/80")}
               onChange={(e) => setDraft({ ...draft, note: e.target.value })}
               onBlur={(e) => commit({ note: e.target.value })}
               onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
