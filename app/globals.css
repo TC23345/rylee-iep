@@ -484,3 +484,23 @@
   background: #5fd65f;
   border-color: #5fd65f;
 }
+/* A lighter green for "Add a row", so the day header's main action sits softer
+   than the dialog's own Next / Save buttons. */
+.btn-soft {
+  background: #c6efc6;
+  border-color: #c6efc6;
+  color: #0f4a1f;
+}
+.btn-soft:hover {
+  background: #b2e7b2;
+  border-color: #b2e7b2;
+}
+.dark .btn-soft {
+  background: #1f4d2a;
+  border-color: #1f4d2a;
+  color: #cdeacd;
+}
+.dark .btn-soft:hover {
+  background: #265c33;
+  border-color: #265c33;
+}

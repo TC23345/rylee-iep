@@ -60,13 +60,22 @@ interface TypeMixProps {
    */
   filter?: TypeFilter;
   onFilterChange?: (next: TypeFilter) => void;
+  /** Show the stacked bar above the legend (default true). */
+  showBar?: boolean;
 }
 
 /**
  * How the time was spent: the stacked bar plus a legend that doubles as the
  * per-type tally, or as filter chips when a handler is supplied.
  */
-export function TypeMix({ mix, size = "md", className, filter, onFilterChange }: TypeMixProps) {
+export function TypeMix({
+  mix,
+  size = "md",
+  className,
+  filter,
+  onFilterChange,
+  showBar = true,
+}: TypeMixProps) {
   const total = mix.reduce((sum, m) => sum + m.minutes, 0);
   const rows = mix.reduce((sum, m) => sum + m.rows, 0);
   if (mix.length === 0 || total === 0) return null;
@@ -75,7 +84,7 @@ export function TypeMix({ mix, size = "md", className, filter, onFilterChange }:
 
   return (
     <div className={cn("space-y-2", className)}>
-      <TypeBar mix={mix} size={size} />
+      {showBar && <TypeBar mix={mix} size={size} />}
 
       {chips ? (
         <div

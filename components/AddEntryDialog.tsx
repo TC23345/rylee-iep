@@ -50,7 +50,7 @@ export function AddEntryDialog({
 
   return (
     <>
-      <Button className="btn-primary gap-1.5" onClick={() => onOpenChange(true)}>
+      <Button className="btn-primary btn-soft gap-1.5" onClick={() => onOpenChange(true)}>
         <Plus className="size-4" /> Add a row
       </Button>
       <Dialog open={open} onOpenChange={onOpenChange}>

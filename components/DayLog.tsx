@@ -20,7 +20,12 @@ export function DayLog({ entries }: { entries: CaseEntry[] }) {
 
   return (
     <div className="space-y-4">
-      <TypeMix mix={mix} filter={filterUsable ? filter : "all"} onFilterChange={setFilter} />
+      <TypeMix
+        mix={mix}
+        showBar={false}
+        filter={filterUsable ? filter : "all"}
+        onFilterChange={setFilter}
+      />
 
       {active && (
         <p className="text-sm text-muted-foreground" aria-live="polite">

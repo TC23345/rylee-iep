@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { createEntry, deleteEntry, updateEntry } from "@/app/actions/entries";
@@ -316,6 +316,78 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
   );
 }
 
+type SortKey = "case" | "start" | "end" | "length";
+type SortDir = "asc" | "desc";
+interface Sort {
+  key: SortKey;
+  dir: SortDir;
+}
+
+/** Newest first, the order the server sends. */
+const DEFAULT_SORT: Sort = { key: "start", dir: "desc" };
+
+/** First click on a column: latest times, longest length, lowest case number. */
+const FIRST_DIR: Record<SortKey, SortDir> = { case: "asc", start: "desc", end: "desc", length: "desc" };
+
+function sortValue(e: CaseEntry, key: SortKey): string | number | null {
+  switch (key) {
+    case "case":
+      return e.caseNumber ? Number(e.caseNumber) : null;
+    case "start":
+      return e.startTime || null;
+    case "end":
+      return e.endTime || null;
+    case "length":
+      return minutesBetween(e.startTime ?? "", e.endTime ?? "");
+  }
+}
+
+/** Rows missing the sorted value always go last; ties keep the server order. */
+function sortEntries(entries: CaseEntry[], { key, dir }: Sort): CaseEntry[] {
+  const sign = dir === "asc" ? 1 : -1;
+  return [...entries].sort((a, b) => {
+    const va = sortValue(a, key);
+    const vb = sortValue(b, key);
+    if (va === null || vb === null) return va === vb ? 0 : va === null ? 1 : -1;
+    return va < vb ? -sign : va > vb ? sign : 0;
+  });
+}
+
+function SortHeader({
+  label,
+  column,
+  sort,
+  onSort,
+}: {
+  label: string;
+  column: SortKey;
+  sort: Sort;
+  onSort: (key: SortKey) => void;
+}) {
+  const active = sort.key === column;
+  const Icon = !active ? ArrowUpDown : sort.dir === "asc" ? ArrowUp : ArrowDown;
+  return (
+    <div
+      role="columnheader"
+      aria-sort={active ? (sort.dir === "asc" ? "ascending" : "descending") : "none"}
+      className="flex h-12 min-w-0 items-center px-1.5"
+    >
+      <button
+        type="button"
+        onClick={() => onSort(column)}
+        title={`Sort by ${label.toLowerCase()}`}
+        className={cn(
+          "inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-xs font-medium transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+          active && "text-foreground"
+        )}
+      >
+        {label}
+        <Icon className={cn("size-3.5", !active && "opacity-40")} aria-hidden />
+      </button>
+    </div>
+  );
+}
+
 interface EntryTableProps {
   entries: CaseEntry[];
   /** "all" or one case type; other rows collapse away. */
@@ -323,13 +395,21 @@ interface EntryTableProps {
 }
 
 export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
+  const [sort, setSort] = useState<Sort>(DEFAULT_SORT);
+
+  function onSort(key: SortKey) {
+    setSort((s) =>
+      s.key === key ? { key, dir: s.dir === "asc" ? "desc" : "asc" } : { key, dir: FIRST_DIR[key] }
+    );
+  }
+
   if (entries.length === 0) {
     return (
       <Empty className="border border-dashed border-border py-10">
         <EmptyHeader>
           <EmptyTitle className="font-serif">No rows for this day</EmptyTitle>
           <EmptyDescription>
-            Add a row above and it will show up here, newest at the bottom.
+            Add a row above and it will show up here, newest at the top.
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
@@ -351,16 +431,16 @@ export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
           role="row"
           className={cn("grid border-b border-border text-muted-foreground", COLUMNS)}
         >
-          <Cell header className="h-12 px-3 text-xs font-medium">Case #</Cell>
+          <SortHeader label="Case #" column="case" sort={sort} onSort={onSort} />
           <Cell header className="h-12 px-3 text-xs font-medium">Type</Cell>
-          <Cell header className="h-12 px-3 text-xs font-medium">Start</Cell>
-          <Cell header className="h-12 px-3 text-xs font-medium">End</Cell>
-          <Cell header className="h-12 px-3 text-xs font-medium">Length</Cell>
+          <SortHeader label="Start" column="start" sort={sort} onSort={onSort} />
+          <SortHeader label="End" column="end" sort={sort} onSort={onSort} />
+          <SortHeader label="Length" column="length" sort={sort} onSort={onSort} />
           <Cell header className="h-12 px-3 text-xs font-medium">Notes</Cell>
           <Cell header className="h-12" />
         </div>
         <div role="rowgroup" className="[&>[role=row]:last-child_.border-b]:border-0">
-          {entries.map((e) => (
+          {sortEntries(entries, sort).map((e) => (
             <EntryRow key={e.id} entry={e} shown={filter === "all" || e.caseType === filter} />
           ))}
         </div>
