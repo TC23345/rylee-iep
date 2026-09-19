@@ -3,7 +3,8 @@ import * as XLSX from "xlsx";
 import { requireSignedInUser } from "@/lib/authz";
 import { formatDuration, formatTime12, isIsoMonth, monthRange, numericDate } from "@/lib/dates";
 import { getDailyCounts, listEntriesForRange } from "@/lib/entries";
-import { typeLabel } from "@/lib/entry-schema";
+import { caseTypeHelpers } from "@/lib/case-types";
+import { getCaseTypes } from "@/lib/case-types-db";
 import { monthSheetName } from "@/lib/spreadsheet";
 
 export const dynamic = "force-dynamic";
@@ -24,10 +25,12 @@ export async function GET(_req: Request, ctx: { params: Promise<{ ym: string }> 
   if (!isIsoMonth(ym)) return NextResponse.json({ error: "Bad month" }, { status: 400 });
 
   const range = monthRange(ym);
-  const [counts, entries] = await Promise.all([
+  const [counts, entries, types] = await Promise.all([
     getDailyCounts(orgId, range),
     listEntriesForRange(orgId, range),
+    getCaseTypes(orgId),
   ]);
+  const typeLabel = caseTypeHelpers(types).label;
 
   const countsSheet = XLSX.utils.aoa_to_sheet([
     ["Date", "Case Count"],

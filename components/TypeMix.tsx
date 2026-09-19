@@ -1,7 +1,10 @@
+"use client";
+
 import { formatDuration } from "@/lib/dates";
 import type { CaseEntry, TypeMixRow } from "@/lib/entries";
-import { typeLabel, typeStyle, type CaseType } from "@/lib/entry-schema";
+import type { CaseType } from "@/lib/entry-schema";
 import { cn } from "@/lib/utils";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 
 /** Fold a day's rows into per-type totals, most minutes first. */
 export function mixFromEntries(entries: CaseEntry[]): TypeMixRow[] {
@@ -27,6 +30,7 @@ export function TypeBar({
   size?: "sm" | "md";
   className?: string;
 }) {
+  const { label: typeLabel, style: typeStyle } = useCaseTypes();
   const total = mix.reduce((sum, m) => sum + m.minutes, 0);
   if (total === 0) return null;
   return (
@@ -76,6 +80,7 @@ export function TypeMix({
   onFilterChange,
   showBar = true,
 }: TypeMixProps) {
+  const { label: typeLabel, style: typeStyle } = useCaseTypes();
   const total = mix.reduce((sum, m) => sum + m.minutes, 0);
   const rows = mix.reduce((sum, m) => sum + m.rows, 0);
   if (mix.length === 0 || total === 0) return null;

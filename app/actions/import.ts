@@ -6,6 +6,7 @@ import { requireSignedInUser } from "@/lib/authz";
 import { minutesBetween } from "@/lib/dates";
 import { insertEntries, type EntryPatch } from "@/lib/entries";
 import { importRowSchema, type ImportRow } from "@/lib/spreadsheet";
+import { getCaseTypes } from "@/lib/case-types-db";
 import { tryWriteAuditEvent } from "@/lib/audit";
 
 export type ImportResult =
@@ -32,7 +33,16 @@ export async function importEntries(rows: ImportRow[]): Promise<ImportResult> {
     return { ok: false, error: `Could not read the rows (${parsed.error.issues[0]?.message ?? "invalid"}).` };
   }
 
-  const patches: EntryPatch[] = parsed.data.map((r) => ({
+  // Only types this log has; the browser resolved them, the server double-checks.
+  let known: Set<string>;
+  try {
+    known = new Set((await getCaseTypes(user.orgId)).map((t) => t.key));
+  } catch {
+    return { ok: false, error: "Could not save. Check the database connection." };
+  }
+  const usable = parsed.data.filter((r) => known.has(r.caseType));
+
+  const patches: EntryPatch[] = usable.map((r) => ({
     date: r.date,
     caseNumber: r.caseNumber,
     caseType: r.caseType,
@@ -52,7 +62,7 @@ export async function importEntries(rows: ImportRow[]): Promise<ImportResult> {
       createdAt: new Date(),
     });
     revalidatePath("/", "layout");
-    return { ok: true, inserted, skipped, invalid: rows.length - parsed.data.length };
+    return { ok: true, inserted, skipped, invalid: rows.length - usable.length };
   } catch {
     return { ok: false, error: "Could not save. Check the database connection." };
   }

@@ -2,6 +2,7 @@ import "server-only";
 
 import { ObjectId, type Collection, type WithId } from "mongodb";
 import { getDb } from "@/lib/mongodb";
+import { getBreakKeys } from "@/lib/case-types-db";
 import type { CaseType } from "@/lib/entry-schema";
 
 export interface CaseEntryDoc {
@@ -32,7 +33,7 @@ export interface CaseEntry {
 
 export interface DailyCount {
   date: string;
-  /** Rows that count as cases (lunch and rows without a case number excluded). */
+  /** Rows that count as cases (break types and rows without a case number excluded). */
   count: number;
   /** Minutes across case rows. */
   minutes: number;
@@ -78,10 +79,19 @@ function parseId(id: string): ObjectId | null {
   return ObjectId.isValid(id) ? new ObjectId(id) : null;
 }
 
-// Mirrors countsAsCase() in entry-schema.ts for the aggregation pipeline.
-const IS_CASE = {
-  $and: [{ $ne: ["$caseType", "lunch"] }, { $ne: [{ $ifNull: ["$caseNumber", ""] }, ""] }],
-};
+/**
+ * Mirrors countsAsCase() in lib/case-types.ts for the aggregation pipelines: a
+ * row is a case when it has a case number and its type is not a break type.
+ */
+async function isCaseExpr(orgId: string) {
+  const breakKeys = await getBreakKeys(orgId);
+  return {
+    $and: [
+      { $not: [{ $in: ["$caseType", breakKeys] }] },
+      { $ne: [{ $ifNull: ["$caseNumber", ""] }, ""] },
+    ],
+  };
+}
 
 function rangeMatch(orgId: string, range?: { from: string; to: string }) {
   return range ? { orgId, date: { $gte: range.from, $lte: range.to } } : { orgId };
@@ -116,6 +126,7 @@ export async function getDailyCounts(
   range?: { from: string; to: string }
 ): Promise<DailyCount[]> {
   const col = await getEntriesCollection();
+  const IS_CASE = await isCaseExpr(orgId);
   const rows = await col
     .aggregate<{ _id: string; count: number; minutes: number }>([
       { $match: rangeMatch(orgId, range) },
@@ -201,6 +212,7 @@ export interface MonthSummary {
 
 export async function getMonthlySummaries(orgId: string): Promise<MonthSummary[]> {
   const col = await getEntriesCollection();
+  const IS_CASE = await isCaseExpr(orgId);
   const rows = await col
     .aggregate<{
       _id: { ym: string; caseType: CaseType };

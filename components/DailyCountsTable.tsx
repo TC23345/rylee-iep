@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { formatDuration, monthOf, numericDate, shortDayLabel } from "@/lib/dates";
 import type { DailyCount, DailyTypeMixRow } from "@/lib/entries";
-import { typeLabel, typeStyle } from "@/lib/entry-schema";
 import { cn } from "@/lib/utils";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import {
   Table,
@@ -29,6 +31,7 @@ interface DailyCountsTableProps {
  * busiest day (stacked by type when the mix is supplied), and a footer of totals.
  */
 export function DailyCountsTable({ rows, mix, highlight, emptyTitle, emptyMessage }: DailyCountsTableProps) {
+  const { label: typeLabel, style: typeStyle, isBreak } = useCaseTypes();
   if (rows.length === 0) {
     return (
       <Empty className="border border-dashed border-border py-10">
@@ -42,7 +45,7 @@ export function DailyCountsTable({ rows, mix, highlight, emptyTitle, emptyMessag
 
   const mixByDate = new Map<string, DailyTypeMixRow[]>();
   for (const m of mix ?? []) {
-    if (m.caseType === "lunch") continue;
+    if (isBreak(m.caseType)) continue;
     mixByDate.set(m.date, [...(mixByDate.get(m.date) ?? []), m]);
   }
   const barMax = mix

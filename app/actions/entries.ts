@@ -2,7 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { requireSignedInUser, type WorkspaceUser } from "@/lib/authz";
-import { entryFormSchema, type EntryFormValues } from "@/lib/entry-schema";
+import { makeEntryFormSchema, type EntryFormValues } from "@/lib/entry-schema";
+import { caseTypeHelpers } from "@/lib/case-types";
+import { getCaseTypes } from "@/lib/case-types-db";
 import { isIsoDate, minutesBetween } from "@/lib/dates";
 import {
   deleteEntry as deleteEntryDoc,
@@ -24,15 +26,25 @@ async function actor(): Promise<WorkspaceUser | null> {
   }
 }
 
-function parse(
+/**
+ * Validate a row against the log's own case types. Archived types are accepted
+ * (the pickers hide them, but an edit or an Undo may carry one); removed or
+ * unknown types are not.
+ */
+async function parse(
+  orgId: string,
   values: EntryFormValues
-): { patch: EntryPatch } | { error: string; field?: string } {
-  const parsed = entryFormSchema.safeParse(values);
+): Promise<{ patch: EntryPatch } | { error: string; field?: string }> {
+  const types = caseTypeHelpers(await getCaseTypes(orgId));
+  const parsed = makeEntryFormSchema(types.requiresCaseNumber).safeParse(values);
   if (!parsed.success) {
     const first = parsed.error.issues[0];
     return { error: first?.message ?? "Invalid input.", field: first?.path.join(".") };
   }
   const v = parsed.data;
+  if (!types.get(v.caseType)) {
+    return { error: "Pick a case type from the list.", field: "caseType" };
+  }
   if (!isIsoDate(v.date)) return { error: "That date does not exist.", field: "date" };
   return {
     patch: {
@@ -56,10 +68,10 @@ const DB_ERROR = "Could not save. Check the database connection.";
 export async function createEntry(values: EntryFormValues): Promise<EntryActionResult> {
   const user = await actor();
   if (!user) return { ok: false, error: "Please sign in again." };
-  const result = parse(values);
-  if ("error" in result) return { ok: false, error: result.error, field: result.field };
 
   try {
+    const result = await parse(user.orgId, values);
+    if ("error" in result) return { ok: false, error: result.error, field: result.field };
     const id = await insertEntry(user.orgId, user.userId, result.patch);
     await tryWriteAuditEvent({
       orgId: user.orgId,
@@ -81,10 +93,10 @@ export async function updateEntry(
 ): Promise<EntryActionResult> {
   const user = await actor();
   if (!user) return { ok: false, error: "Please sign in again." };
-  const result = parse(values);
-  if ("error" in result) return { ok: false, error: result.error, field: result.field };
 
   try {
+    const result = await parse(user.orgId, values);
+    if ("error" in result) return { ok: false, error: result.error, field: result.field };
     const found = await updateEntryDoc(user.orgId, id, result.patch);
     if (!found) return { ok: false, error: "That row no longer exists." };
     await tryWriteAuditEvent({

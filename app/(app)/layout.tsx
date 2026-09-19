@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AccountMenu } from "@/components/AccountMenu";
+import { CaseTypesProvider } from "@/components/CaseTypesProvider";
+import { BUILTIN_CASE_TYPES, type CaseTypeDef } from "@/lib/case-types";
+import { getCaseTypes } from "@/lib/case-types-db";
 import { MonthNav } from "@/components/MonthNav";
 import { requireSignedInUser } from "@/lib/authz";
 import { todayIso } from "@/lib/dates";
@@ -17,6 +20,14 @@ export default async function AppLayout({
     months = await getMonthTabs(actor.orgId, todayIso());
   } catch {
     months = [];
+  }
+
+  // The viewed log's case types; a failed lookup falls back to the built-ins.
+  let caseTypes: CaseTypeDef[] = BUILTIN_CASE_TYPES;
+  try {
+    caseTypes = await getCaseTypes(actor.orgId);
+  } catch {
+    caseTypes = BUILTIN_CASE_TYPES;
   }
 
   // Only admins get "View as" entries; a failed Clerk lookup just hides them.
@@ -47,7 +58,9 @@ export default async function AppLayout({
         </div>
         <MonthNav months={months} />
       </header>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">{children}</main>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
+        <CaseTypesProvider types={caseTypes}>{children}</CaseTypesProvider>
+      </main>
     </div>
   );
 }

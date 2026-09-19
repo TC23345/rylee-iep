@@ -2,105 +2,30 @@ import { z } from "zod";
 
 // Client-safe schema for one row of the case log. Mirrors the columns of Rylee's
 // spreadsheet: Date, Case #, Case Type, Start Time, End Time, (Duration), Notes.
+// The case types themselves live per log; see lib/case-types.ts.
 
-// The eleven picks in the spreadsheet's Case Type dropdown, grouped the way the
-// form shows them: case work first, then the other things a workday holds.
-export const caseTypes = [
-  "reconsideration",
-  "recon_reply",
-  "continuation",
-  "bcba_reply",
-  "authorization_revision",
-  "additional_info",
-  "initial",
-  "phone_call",
-  "meeting",
-  "admin_tasks",
-  "lunch",
-] as const;
-
-export type CaseType = (typeof caseTypes)[number];
-
-export const CASE_TYPE_LABELS: Record<CaseType, string> = {
-  reconsideration: "Reconsideration",
-  recon_reply: "Recon Reply",
-  continuation: "Continuation",
-  bcba_reply: "BCBA Reply",
-  authorization_revision: "Authorization Revision",
-  additional_info: "Additional Info",
-  initial: "Initial",
-  phone_call: "Phone Call",
-  meeting: "Meeting",
-  admin_tasks: "Admin Tasks",
-  lunch: "Lunch",
-};
-
-/** Types that are a case review and therefore need a case number. */
-const CASE_WORK: ReadonlySet<CaseType> = new Set<CaseType>([
-  "reconsideration",
-  "recon_reply",
-  "continuation",
-  "bcba_reply",
-  "authorization_revision",
-  "additional_info",
-  "initial",
-]);
-
-export const CASE_TYPE_GROUPS: { label: string; types: CaseType[] }[] = [
-  { label: "Case work", types: caseTypes.filter((t) => CASE_WORK.has(t)) },
-  { label: "Other time", types: caseTypes.filter((t) => !CASE_WORK.has(t)) },
-];
-
-export function requiresCaseNumber(type: CaseType): boolean {
-  return CASE_WORK.has(type);
-}
-
-/**
- * A row counts toward the daily case count when it is tied to a case number.
- * Lunch never counts. A phone call or meeting counts only if it was about a
- * specific case and the number was logged.
- */
-export function countsAsCase(type: CaseType, caseNumber: string): boolean {
-  return type !== "lunch" && caseNumber.trim() !== "";
-}
-
-/** Colour coding that matches the spreadsheet's cell fills (chip + bar segment). */
-export const CASE_TYPE_STYLES: Record<CaseType, { chip: string; bar: string }> = {
-  reconsideration: { chip: "bg-amber-100 text-amber-900 dark:bg-amber-400/20 dark:text-amber-200", bar: "bg-amber-400" },
-  recon_reply: { chip: "bg-lime-100 text-lime-900 dark:bg-lime-400/20 dark:text-lime-200", bar: "bg-lime-400" },
-  continuation: { chip: "bg-fuchsia-100 text-fuchsia-900 dark:bg-fuchsia-400/20 dark:text-fuchsia-200", bar: "bg-fuchsia-400" },
-  bcba_reply: { chip: "bg-sky-100 text-sky-900 dark:bg-sky-400/20 dark:text-sky-200", bar: "bg-sky-400" },
-  authorization_revision: { chip: "bg-emerald-100 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-200", bar: "bg-emerald-400" },
-  additional_info: { chip: "bg-yellow-100 text-yellow-900 dark:bg-yellow-400/20 dark:text-yellow-200", bar: "bg-yellow-300" },
-  initial: { chip: "bg-indigo-100 text-indigo-900 dark:bg-indigo-400/20 dark:text-indigo-200", bar: "bg-indigo-400" },
-  phone_call: { chip: "bg-orange-100 text-orange-900 dark:bg-orange-400/20 dark:text-orange-200", bar: "bg-orange-400" },
-  meeting: { chip: "bg-violet-100 text-violet-900 dark:bg-violet-400/20 dark:text-violet-200", bar: "bg-violet-400" },
-  admin_tasks: { chip: "bg-stone-200 text-stone-800 dark:bg-stone-500/25 dark:text-stone-200", bar: "bg-stone-400" },
-  lunch: { chip: "bg-muted text-muted-foreground", bar: "bg-stone-300" },
-};
-
-const FALLBACK_STYLE = { chip: "bg-muted text-foreground", bar: "bg-stone-300" };
-
-/** Tolerates a type that is no longer in the list (older rows). */
-export function typeLabel(type: string): string {
-  return CASE_TYPE_LABELS[type as CaseType] ?? type;
-}
-export function typeStyle(type: string): { chip: string; bar: string } {
-  return CASE_TYPE_STYLES[type as CaseType] ?? FALLBACK_STYLE;
-}
+/** A case type's stable key (see CaseTypeDef.key). */
+export type CaseType = string;
 
 const TIME = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
-export const entryFormSchema = z
-  .object({
-    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a date"),
-    caseNumber: z.string().trim().regex(/^\d{0,12}$/, "Digits only"),
-    caseType: z.enum(caseTypes),
-    startTime: z.string().regex(TIME, "Use HH:MM").or(z.literal("")),
-    endTime: z.string().regex(TIME, "Use HH:MM").or(z.literal("")),
-    note: z.string().trim().max(2000, "Keep notes under 2000 characters"),
-  })
-  .superRefine((v, ctx) => {
+const entryShape = z.object({
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a date"),
+  caseNumber: z.string().trim().regex(/^\d{0,12}$/, "Digits only"),
+  caseType: z.string().min(1, "Pick a type").max(64),
+  startTime: z.string().regex(TIME, "Use HH:MM").or(z.literal("")),
+  endTime: z.string().regex(TIME, "Use HH:MM").or(z.literal("")),
+  note: z.string().trim().max(2000, "Keep notes under 2000 characters"),
+});
+
+export type EntryFormValues = z.infer<typeof entryShape>;
+
+/**
+ * The row schema for one log. Whether a case number is required depends on the
+ * type's category, which the log's own type list decides.
+ */
+export function makeEntryFormSchema(requiresCaseNumber: (type: string) => boolean) {
+  return entryShape.superRefine((v, ctx) => {
     if (requiresCaseNumber(v.caseType) && !v.caseNumber) {
       ctx.addIssue({ code: "custom", path: ["caseNumber"], message: "Case # is required" });
     }
@@ -108,8 +33,7 @@ export const entryFormSchema = z
       ctx.addIssue({ code: "custom", path: ["endTime"], message: "End time is before start time" });
     }
   });
-
-export type EntryFormValues = z.infer<typeof entryFormSchema>;
+}
 
 export function emptyEntryValues(
   date: string,

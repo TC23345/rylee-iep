@@ -6,14 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Clock, Plus, X } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  CASE_TYPE_GROUPS,
-  CASE_TYPE_LABELS,
-  entryFormSchema,
-  requiresCaseNumber,
-  typeStyle,
-  type EntryFormValues,
-} from "@/lib/entry-schema";
+import { makeEntryFormSchema, type EntryFormValues } from "@/lib/entry-schema";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { formatDuration, minutesBetween, nowTime } from "@/lib/dates";
 import type { EntryActionResult } from "@/app/actions/entries";
 import { cn } from "@/lib/utils";
@@ -148,8 +142,10 @@ export function EntryForm({
 }: EntryFormProps) {
   const [pending, startTransition] = useTransition();
   const [step, setStep] = useState<1 | 2>(1);
+  const types = useCaseTypes();
+  const { requiresCaseNumber } = types;
   const form = useForm<EntryFormValues>({
-    resolver: zodResolver(entryFormSchema),
+    resolver: zodResolver(makeEntryFormSchema(requiresCaseNumber)),
     defaultValues,
     mode: "onSubmit",
   });
@@ -267,16 +263,16 @@ export function EntryForm({
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {CASE_TYPE_GROUPS.map((group) => (
+                {types.groups.map((group) => (
                   <SelectGroup key={group.label}>
                     <SelectLabel>{group.label}</SelectLabel>
                     {group.types.map((t) => (
-                      <SelectItem key={t} value={t}>
+                      <SelectItem key={t.key} value={t.key}>
                         <span
                           aria-hidden
-                          className={cn("inline-block size-2.5 rounded-full", typeStyle(t).bar)}
+                          className={cn("inline-block size-2.5 rounded-full", types.style(t.key).bar)}
                         />
-                        {CASE_TYPE_LABELS[t]}
+                        {t.label}
                       </SelectItem>
                     ))}
                   </SelectGroup>

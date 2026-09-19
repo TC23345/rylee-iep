@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { CASE_TYPE_LABELS, caseTypes, type CaseType } from "@/lib/entry-schema";
+import { normalizeTypeWord, type CaseTypeDef } from "@/lib/case-types";
+import type { CaseType } from "@/lib/entry-schema";
 
 // Reading and writing Rylee's workbook layout. Client-safe: the SheetJS module
 // is handed in by the caller so it only loads where it is used.
@@ -15,7 +16,7 @@ type Cell = string | number | boolean | Date | null | undefined;
 export const importRowSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   caseNumber: z.string().regex(/^\d{0,12}$/),
-  caseType: z.enum(caseTypes),
+  caseType: z.string().min(1).max(64),
   startTime: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/).nullable(),
   endTime: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/).nullable(),
   note: z.string().max(2000),
@@ -45,30 +46,33 @@ export interface ParsedWorkbook {
 
 const DAILY_COUNTS = /daily\s*case\s*counts/i;
 
-/** "Recon Reply", "recon_reply", "RECON REPLY" all resolve to the same type. */
-const TYPE_LOOKUP: Record<string, CaseType> = Object.fromEntries(
-  caseTypes.flatMap((t) => [
-    [normalizeWord(t), t],
-    [normalizeWord(CASE_TYPE_LABELS[t]), t],
-  ])
-);
-// Spellings seen in the workbook that differ from the app's labels.
-Object.assign(TYPE_LOOKUP, {
-  [normalizeWord("Lunch / break")]: "lunch",
-  [normalizeWord("Break")]: "lunch",
-  [normalizeWord("Recon")]: "reconsideration",
-  [normalizeWord("Auth Revision")]: "authorization_revision",
-  [normalizeWord("Phone")]: "phone_call",
-  [normalizeWord("Admin")]: "admin_tasks",
-} satisfies Record<string, CaseType>);
+// Spellings seen in the workbook that differ from the built-in labels, mapped to
+// built-in keys. Used only while the log still has that type.
+const BUILTIN_ALIASES: Record<string, CaseType> = {
+  "Lunch / break": "lunch",
+  Break: "lunch",
+  Recon: "reconsideration",
+  "Auth Revision": "authorization_revision",
+  Phone: "phone_call",
+  Admin: "admin_tasks",
+};
 
-function normalizeWord(s: string): string {
-  return s.toLowerCase().replace(/[^a-z]/g, "");
-}
-
-export function caseTypeFromLabel(raw: Cell): CaseType | null {
-  if (typeof raw !== "string") return null;
-  return TYPE_LOOKUP[normalizeWord(raw)] ?? null;
+/**
+ * Resolve a Case Type cell against the log's own types: its label or key in any
+ * case or spacing ("Recon Reply", "recon_reply", "RECON REPLY"), or a known
+ * workbook spelling of a built-in.
+ */
+export function typeResolver(types: CaseTypeDef[]): (raw: Cell) => CaseType | null {
+  const lookup = new Map<string, CaseType>();
+  const known = new Set(types.map((t) => t.key));
+  for (const [alias, key] of Object.entries(BUILTIN_ALIASES)) {
+    if (known.has(key)) lookup.set(normalizeTypeWord(alias), key);
+  }
+  for (const t of types) {
+    lookup.set(normalizeTypeWord(t.key), t.key);
+    lookup.set(normalizeTypeWord(t.label), t.key);
+  }
+  return (raw) => (typeof raw === "string" ? lookup.get(normalizeTypeWord(raw)) ?? null : null);
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -165,7 +169,8 @@ function findHeader(rows: Cell[][]): { index: number; columns: ColumnMap } | nul
 }
 
 /** Read every month sheet in the workbook into rows the app can store. */
-export function parseWorkbook(xlsx: SheetJs, data: ArrayBuffer): ParsedWorkbook {
+export function parseWorkbook(xlsx: SheetJs, data: ArrayBuffer, types: CaseTypeDef[]): ParsedWorkbook {
+  const caseTypeFromLabel = typeResolver(types);
   const wb = xlsx.read(data, { type: "array", cellDates: false });
   const out: ParsedWorkbook = { rows: [], issues: [], sheets: [] };
 

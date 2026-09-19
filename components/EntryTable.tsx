@@ -1,19 +1,14 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { ArrowDown, ArrowUp, ArrowUpDown, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { createEntry, deleteEntry, updateEntry } from "@/app/actions/entries";
 import type { CaseEntry } from "@/lib/entries";
-import {
-  CASE_TYPE_GROUPS,
-  CASE_TYPE_LABELS,
-  typeLabel,
-  typeStyle,
-  type CaseType,
-  type EntryFormValues,
-} from "@/lib/entry-schema";
+import type { CaseType, EntryFormValues } from "@/lib/entry-schema";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
+import { CaseTypesDialog } from "@/components/CaseTypesDialog";
 import { formatDuration, formatTime12, minutesBetween } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import type { TypeFilter } from "@/components/TypeMix";
@@ -81,6 +76,7 @@ function HoldToDeleteButton({ entry }: { entry: CaseEntry }) {
   const [holding, setHolding] = useState(false);
   const [pending, startTransition] = useTransition();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { label: typeLabel } = useCaseTypes();
   const what = entry.caseNumber ? `case ${entry.caseNumber}` : typeLabel(entry.caseType).toLowerCase();
 
   function cancel() {
@@ -184,7 +180,11 @@ function Cell({
 function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
   const [draft, setDraft] = useState<Draft>(() => toDraft(entry));
   const [saving, startTransition] = useTransition();
-  const isBreak = draft.caseType === "lunch";
+  const types = useCaseTypes();
+  const isBreak = types.isBreak(draft.caseType);
+  // The picker offers active types, plus this row's own type if it was archived.
+  const current = types.get(draft.caseType);
+  const archivedCurrent = current?.archived ? current : null;
 
   // Pick up changes that arrive from the server (another tab, an import) by
   // resetting the draft whenever the row's stored values change.
@@ -254,24 +254,33 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
                 title="Click to change the type"
                 className="h-7 w-full cursor-pointer justify-start border-transparent bg-transparent px-1 shadow-none hover:border-border focus:border-brand data-[state=open]:border-brand [&_svg]:hidden"
               >
-                <Badge variant="secondary" className={cn("font-medium", typeStyle(draft.caseType).chip)}>
-                  {CASE_TYPE_LABELS[draft.caseType]}
+                <Badge variant="secondary" className={cn("font-medium", types.style(draft.caseType).chip)}>
+                  {types.label(draft.caseType)}
                 </Badge>
               </SelectTrigger>
               {/* Popper, not item-aligned: item-aligned mis-measures inside the
                   collapsing rows and lands the menu off-screen. */}
               <SelectContent position="popper" align="start">
-                {CASE_TYPE_GROUPS.map((group) => (
+                {types.groups.map((group) => (
                   <SelectGroup key={group.label}>
                     <SelectLabel>{group.label}</SelectLabel>
                     {group.types.map((t) => (
-                      <SelectItem key={t} value={t}>
-                        <span aria-hidden className={cn("inline-block size-2.5 rounded-full", typeStyle(t).bar)} />
-                        {CASE_TYPE_LABELS[t]}
+                      <SelectItem key={t.key} value={t.key}>
+                        <span aria-hidden className={cn("inline-block size-2.5 rounded-full", types.style(t.key).bar)} />
+                        {t.label}
                       </SelectItem>
                     ))}
                   </SelectGroup>
                 ))}
+                {archivedCurrent && (
+                  <SelectGroup>
+                    <SelectLabel>Archived</SelectLabel>
+                    <SelectItem value={archivedCurrent.key}>
+                      <span aria-hidden className={cn("inline-block size-2.5 rounded-full", types.style(archivedCurrent.key).bar)} />
+                      {archivedCurrent.label}
+                    </SelectItem>
+                  </SelectGroup>
+                )}
               </SelectContent>
             </Select>
           </Cell>
@@ -397,6 +406,8 @@ interface EntryTableProps {
 
 export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
   const [sort, setSort] = useState<Sort>(DEFAULT_SORT);
+  const [typesOpen, setTypesOpen] = useState(false);
+  const { label: typeLabel } = useCaseTypes();
 
   function onSort(key: SortKey) {
     setSort((s) =>
@@ -433,7 +444,18 @@ export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
           className={cn("grid border-b border-border text-muted-foreground", COLUMNS)}
         >
           <SortHeader label="Case #" column="case" sort={sort} onSort={onSort} />
-          <Cell header className="h-12 px-3 text-xs font-medium">Type</Cell>
+          <div role="columnheader" className="flex h-12 min-w-0 items-center px-1.5">
+            <button
+              type="button"
+              onClick={() => setTypesOpen(true)}
+              title="Edit case types"
+              aria-label="Type. Edit case types"
+              className="group/types inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-xs font-medium transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            >
+              Type
+              <Pencil className="size-3.5 opacity-50 transition-opacity group-hover/types:opacity-100" aria-hidden />
+            </button>
+          </div>
           <SortHeader label="Start" column="start" sort={sort} onSort={onSort} />
           <SortHeader label="End" column="end" sort={sort} onSort={onSort} />
           <SortHeader label="Length" column="length" sort={sort} onSort={onSort} />
@@ -451,6 +473,7 @@ export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
           </p>
         )}
       </div>
+      <CaseTypesDialog open={typesOpen} onOpenChange={setTypesOpen} />
     </div>
   );
 }

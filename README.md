@@ -32,7 +32,9 @@ A month page shows the month's four totals and then **one day's log**:
 
 ### Case types
 
-Eleven types, matching the workbook's dropdown, in two groups. **Case work** (needs a case number and counts as a case): Reconsideration, Recon Reply, Continuation, BCBA Reply, Authorization Revision, Additional Info, Initial. **Other time**: Phone Call, Meeting, Admin Tasks (count as a case only when a case number is given), and Lunch (never counts). Labels, colours and grouping are defined once in `lib/entry-schema.ts`.
+Every log starts with eleven types, matching the workbook's dropdown, in three categories. **Case work** (needs a case number and counts as a case): Reconsideration, Recon Reply, Continuation, BCBA Reply, Authorization Revision, Additional Info, Initial. **Other time** (counts as a case only when a case number is given): Phone Call, Meeting, Admin Tasks. **Break** (never counts): Lunch.
+
+The **pencil on the day table's Type header** opens the Case types dialog: rename, recolour or recategorise a type, add a new one, or remove one. Changes save as you go and reach every row, chip and count at once, since rows store a stable key and look up the label. Removing a type no row uses deletes it; removing one that rows use archives it (hidden from the pickers, still labelling those rows), with Restore in the dialog and Undo in the toast. Types are per log. Built-ins live in `lib/case-types.ts`; overrides and added types in the `case_types` collection.
 
 ### Accounts, viewing as, dark mode
 
@@ -60,7 +62,9 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `app/actions/months.ts`, `lib/months.ts` | Month tabs: add the next month, rename |
 | `app/actions/view-as.ts`, `lib/authz.ts` | Sign-in check, admin list, view-as cookie |
 | `lib/entries.ts` | MongoDB access for `case_entries` and the daily / monthly aggregates |
-| `lib/entry-schema.ts` | Zod schema, case types, colours |
+| `lib/entry-schema.ts` | Zod row schema |
+| `lib/case-types.ts`, `lib/case-types-db.ts`, `app/actions/case-types.ts` | Built-in types, colour palette and category rules; per-log overrides; the dialog's server actions |
+| `components/CaseTypesProvider.tsx`, `CaseTypesDialog.tsx` | The log's types for every client component (`useCaseTypes()`); the edit dialog |
 | `lib/spreadsheet.ts` | Workbook parser used by the import dialog |
 | `lib/dates.ts` | Date helpers; "today" resolves in `America/Chicago` |
 | `components/DayPanel.tsx`, `DayLog.tsx`, `EntryTable.tsx` | The day header, filter chips, and inline-editable rows |
@@ -69,7 +73,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `components/MonthNav.tsx`, `AccountMenu.tsx`, `ClerkAppearanceProvider.tsx` | Header pieces; the account menu carries the theme switch and View as |
 | `proxy.ts` | Clerk middleware; everything except `/sign-in` and `/api/health` requires sign-in |
 
-MongoDB collections: `case_entries` (rows), `month_tabs` (added or renamed tabs), `audit_events`. All are scoped by `orgId`, which is the Clerk user id unless an admin is viewing as someone else.
+MongoDB collections: `case_entries` (rows), `month_tabs` (added or renamed tabs), `case_types` (renamed, recoloured, archived, removed or added types), `audit_events`. All are scoped by `orgId`, which is the Clerk user id unless an admin is viewing as someone else.
 
 ## Local development
 

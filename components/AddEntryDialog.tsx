@@ -7,6 +7,7 @@ import { createEntry } from "@/app/actions/entries";
 import { emptyEntryValues } from "@/lib/entry-schema";
 import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,9 +24,6 @@ interface AddEntryDialogProps {
   lastEnd: string | null;
 }
 
-/** Rylee's most common type, so the picker starts there. */
-const DEFAULT_TYPE = "reconsideration";
-
 const STEP_HINTS: Record<1 | 2, string> = {
   1: "Which case, and what kind of work.",
   2: "When it started and ended.",
@@ -39,6 +37,8 @@ export function AddEntryDialog({
 }: AddEntryDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
+  // Reconsideration (Rylee's most common), or the first case type if it was removed.
+  const { defaultKey } = useCaseTypes();
 
   function onOpenChange(next: boolean) {
     setOpen(next);
@@ -79,7 +79,7 @@ export function AddEntryDialog({
               key={`${date}:${lastEnd ?? ""}`}
               defaultValues={emptyEntryValues(date, {
                 startTime: lastEnd ?? "",
-                caseType: DEFAULT_TYPE,
+                caseType: defaultKey,
               })}
               action={createEntry}
               submitLabel="Add case"

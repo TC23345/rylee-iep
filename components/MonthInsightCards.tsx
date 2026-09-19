@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { daysInMonth, formatDuration, monthLabel, numericDate } from "@/lib/dates";
 import type { DailyCount, MonthSummary } from "@/lib/entries";
-import { typeLabel, typeStyle } from "@/lib/entry-schema";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { cn } from "@/lib/utils";
 import { StatTile } from "@/components/StatTile";
 import { TypeBar } from "@/components/TypeMix";
@@ -54,6 +54,7 @@ function heatStep(count: number, min: number, max: number): number {
 export function MonthInsightCards({ months, days }: MonthInsightCardsProps) {
   const [index, setIndex] = useState(0);
   const [breakdownOpen, setBreakdownOpen] = useState(true);
+  const { label: typeLabel, style: typeStyle } = useCaseTypes();
 
   if (months.length === 0) return null;
   const month = months[Math.min(index, months.length - 1)];

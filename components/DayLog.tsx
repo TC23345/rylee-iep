@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { formatDuration } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
-import { typeLabel } from "@/lib/entry-schema";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { EntryTable } from "@/components/EntryTable";
 import { TypeMix, mixFromEntries, type TypeFilter } from "@/components/TypeMix";
 
@@ -14,6 +14,7 @@ import { TypeMix, mixFromEntries, type TypeFilter } from "@/components/TypeMix";
  */
 export function DayLog({ entries }: { entries: CaseEntry[] }) {
   const [filter, setFilter] = useState<TypeFilter>("all");
+  const { label: typeLabel } = useCaseTypes();
   const mix = mixFromEntries(entries);
   const active = filter === "all" ? null : mix.find((m) => m.caseType === filter) ?? null;
   const filterUsable = filter === "all" || Boolean(active);

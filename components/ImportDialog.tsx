@@ -7,8 +7,8 @@ import { toast } from "sonner";
 
 import { importEntries } from "@/app/actions/import";
 import { numericDate, shortDayLabel } from "@/lib/dates";
-import { countsAsCase } from "@/lib/entry-schema";
 import { parseWorkbook, type ParsedWorkbook } from "@/lib/spreadsheet";
+import { useCaseTypes } from "@/components/CaseTypesProvider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,7 +38,10 @@ interface DaySummary {
   cases: number;
 }
 
-function summarizeDays(parsed: ParsedWorkbook): DaySummary[] {
+function summarizeDays(
+  parsed: ParsedWorkbook,
+  countsAsCase: (type: string, caseNumber: string) => boolean
+): DaySummary[] {
   const byDate = new Map<string, DaySummary>();
   for (const r of parsed.rows) {
     const d = byDate.get(r.date) ?? { date: r.date, rows: 0, cases: 0 };
@@ -55,6 +58,7 @@ function summarizeDays(parsed: ParsedWorkbook): DaySummary[] {
  */
 export function ImportDialog({ open, onOpenChange }: ImportDialogProps) {
   const router = useRouter();
+  const types = useCaseTypes();
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [parsed, setParsed] = useState<ParsedWorkbook | null>(null);
@@ -80,7 +84,7 @@ export function ImportDialog({ open, onOpenChange }: ImportDialogProps) {
     setFileName(file.name);
     try {
       const [xlsx, data] = await Promise.all([import("xlsx"), file.arrayBuffer()]);
-      setParsed(parseWorkbook(xlsx, data));
+      setParsed(parseWorkbook(xlsx, data, types.all));
     } catch {
       setReadError("That file could not be opened as a spreadsheet.");
     }
@@ -101,7 +105,7 @@ export function ImportDialog({ open, onOpenChange }: ImportDialogProps) {
     });
   }
 
-  const days = parsed ? summarizeDays(parsed) : [];
+  const days = parsed ? summarizeDays(parsed, types.countsAsCase) : [];
   const totalCases = days.reduce((sum, d) => sum + d.cases, 0);
 
   return (
