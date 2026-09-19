@@ -10,7 +10,6 @@ import {
   CASE_TYPE_GROUPS,
   CASE_TYPE_LABELS,
   entryFormSchema,
-  noteTemplate,
   requiresCaseNumber,
   typeStyle,
   type EntryFormValues,
@@ -183,7 +182,6 @@ export function EntryForm({
   }
 
   function openNote() {
-    if (!form.getValues("note").trim()) form.setValue("note", noteTemplate(caseType));
     setNoteOpen(true);
   }
 
@@ -327,7 +325,6 @@ export function EntryForm({
                 <Textarea
                   rows={6}
                   autoFocus
-                  placeholder="Anything worth remembering"
                   className="font-mono text-sm"
                   {...field}
                 />
@@ -393,7 +390,7 @@ export function EntryForm({
                 Next
               </Button>
             ) : (
-              <Button key="submit" type="submit" className="btn-primary" disabled={pending}>
+              <Button key="submit" type="submit" className="btn-primary btn-soft" disabled={pending}>
                 {pending ? "Saving..." : submitLabel}
               </Button>
             )}

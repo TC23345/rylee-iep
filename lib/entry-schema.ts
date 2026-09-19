@@ -125,28 +125,3 @@ export function emptyEntryValues(
     ...overrides,
   };
 }
-
-/**
- * Starter text dropped into the Notes field when a note is added to a row of
- * this type. One template per type; only Reconsideration has one so far.
- */
-export const NOTE_TEMPLATES: Partial<Record<CaseType, string>> = {
-  reconsideration: [
-    "# Reconsideration Notes",
-    "",
-    "---",
-    "",
-    ">  Reason for Denial",
-    "",
-    ">  New Info Requested",
-    "",
-    ">  Decision:",
-    "",
-    ">  Next steps",
-    "",
-  ].join("\n"),
-};
-
-export function noteTemplate(type: CaseType): string {
-  return NOTE_TEMPLATES[type] ?? "";
-}

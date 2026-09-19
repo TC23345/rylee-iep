@@ -27,12 +27,12 @@ A month page shows the month's four totals and then **one day's log**:
 - **Sortable columns.** Click Case #, Start, End, or Length to sort by it; click again to reverse. The first click gives the lowest case number, or the latest start / end, or the longest length. Rows missing that value sort last. The sort resets to newest first on reload.
 - **Rows edit in place.** Click a case number, type chip, start, end, or note and change it; it saves when the field loses focus (type saves on pick). Length is recomputed.
 - **Delete** by holding the trash icon (visible on the hovered row) for 1.5 s. A toast at the bottom offers **Undo**, which recreates the row.
-- **Add a row** opens a two-step dialog: case number and type (defaults to Reconsideration), then start and end with a clock icon that stamps the current time, plus an optional note. Reconsideration notes prefill from a template in `lib/entry-schema.ts`.
+- **Add a row** opens a two-step dialog: case number and type (defaults to Reconsideration), then start and end with a clock icon that stamps the current time, plus an optional note (a blank box, no template).
 - **Import Excel** and **Export to .xlsx** icons next to Add a row. Import reads a workbook in the layout below and skips rows already logged; export writes the month back in the same layout.
 
 ### Case types
 
-Eleven types, matching the workbook's dropdown, in two groups. **Case work** (needs a case number and counts as a case): Reconsideration, Recon Reply, Continuation, BCBA Reply, Authorization Revision, Additional Info, Initial. **Other time**: Phone Call, Meeting, Admin Tasks (count as a case only when a case number is given), and Lunch (never counts). Labels, colours, grouping and note templates are defined once in `lib/entry-schema.ts`.
+Eleven types, matching the workbook's dropdown, in two groups. **Case work** (needs a case number and counts as a case): Reconsideration, Recon Reply, Continuation, BCBA Reply, Authorization Revision, Additional Info, Initial. **Other time**: Phone Call, Meeting, Admin Tasks (count as a case only when a case number is given), and Lunch (never counts). Labels, colours and grouping are defined once in `lib/entry-schema.ts`.
 
 ### Accounts, viewing as, dark mode
 
@@ -60,7 +60,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 | `app/actions/months.ts`, `lib/months.ts` | Month tabs: add the next month, rename |
 | `app/actions/view-as.ts`, `lib/authz.ts` | Sign-in check, admin list, view-as cookie |
 | `lib/entries.ts` | MongoDB access for `case_entries` and the daily / monthly aggregates |
-| `lib/entry-schema.ts` | Zod schema, case types, colours, note templates |
+| `lib/entry-schema.ts` | Zod schema, case types, colours |
 | `lib/spreadsheet.ts` | Workbook parser used by the import dialog |
 | `lib/dates.ts` | Date helpers; "today" resolves in `America/Chicago` |
 | `components/DayPanel.tsx`, `DayLog.tsx`, `EntryTable.tsx` | The day header, filter chips, and inline-editable rows |
