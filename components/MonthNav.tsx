@@ -72,10 +72,10 @@ export function MonthNav({ months }: { months: MonthTab[] }) {
         </li>
         <li className="shrink-0">
           <Link
-            href="/"
+            href="/calendar"
             title="Calendar"
-            aria-current={pathname === "/" ? "page" : undefined}
-            className={cn(TAB, pathname === "/" ? ACTIVE : IDLE)}
+            aria-current={pathname === "/calendar" ? "page" : undefined}
+            className={cn(TAB, pathname === "/calendar" ? ACTIVE : IDLE)}
           >
             <CalendarDays className="size-4" aria-hidden />
             <span className={LABEL}>Calendar</span>

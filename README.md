@@ -6,7 +6,9 @@ Live at https://acentra-case-tracker.up.railway.app (Clerk sign-in required).
 
 ## What it does
 
-### Calendar (home tab)
+The app opens on **today's log**: the site root (and the wordmark) goes to the current month's Case Tracker page, which selects today when no day is given.
+
+### Calendar (`/calendar`)
 
 - Three headline tiles: today, the last seven days, and the month so far.
 - A **month card** with a `<` `>` pager: a calendar where each day's shade shows how busy it was on a five-step green ramp (tap a day to open it), four totals underneath (cases, days logged, case time, minutes per case), the stacked **time-by-type bar**, and a collapsible per-type table (rows, time, share).
@@ -60,7 +62,8 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui ·
 
 | Path | Purpose |
 |---|---|
-| `app/(app)/page.tsx` | Calendar (home): tiles and the month card |
+| `app/(app)/page.tsx` | Site root: redirects to today's log (`/month/<current month>`) |
+| `app/(app)/calendar/page.tsx` | Calendar: tiles and the month card |
 | `app/(app)/counts/page.tsx` | Case Counts: the daily sheet |
 | `app/(app)/month/[ym]/page.tsx` | Month tab (`/month/2026-08?d=2026-08-17`) |
 | `app/(app)/layout.tsx` | Header: wordmark, tabs, account menu |
