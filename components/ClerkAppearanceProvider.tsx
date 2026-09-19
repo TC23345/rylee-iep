@@ -32,9 +32,9 @@ export function ClerkAppearanceProvider({ children }: { children: React.ReactNod
           : {
               colorPrimary: "#2bbc2b",
               colorText: "#042126",
-              colorTextSecondary: "#6b6155",
-              colorBackground: "#fffcf7",
-              colorInputBackground: "#fffcf7",
+              colorTextSecondary: "#4f6b6e",
+              colorBackground: "#ffffff",
+              colorInputBackground: "#ffffff",
               colorInputText: "#042126",
               colorNeutral: "#042126",
               borderRadius: "8px",

@@ -430,7 +430,7 @@ export function EntryTable({ entries, filter = "all" }: EntryTableProps) {
       <div role="table" className="min-w-[46rem]">
         <div
           role="row"
-          className={cn("grid border-b border-border bg-table-head text-muted-foreground", COLUMNS)}
+          className={cn("grid border-b border-border text-muted-foreground", COLUMNS)}
         >
           <SortHeader label="Case #" column="case" sort={sort} onSort={onSort} />
           <Cell header className="h-12 px-3 text-xs font-medium">Type</Cell>
