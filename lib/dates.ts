@@ -90,6 +90,17 @@ export function dayLabel(iso: string): string {
   }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
+/** "September 18th" */
+export function monthDayOrdinal(iso: string): string {
+  const [, m, d] = iso.split("-").map(Number);
+  const month = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long" }).format(
+    new Date(Date.UTC(2000, m - 1, 1))
+  );
+  const suffix =
+    d % 100 >= 11 && d % 100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" } as Record<number, string>)[d % 10] ?? "th";
+  return `${month} ${d}${suffix}`;
+}
+
 /** "8/17/2026" — matches the spreadsheet's date column. */
 export function numericDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);

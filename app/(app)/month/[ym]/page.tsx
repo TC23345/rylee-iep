@@ -71,7 +71,8 @@ export default async function MonthPage({
       {dbError && <DbNotice />}
 
       <header className="space-y-4">
-        <h1 className="font-serif text-3xl font-bold">{title}</h1>
+        {/* The tab strip already names the month; keep the heading for screen readers only. */}
+        <h1 className="sr-only">{title}</h1>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <StatTile
             label="Cases"

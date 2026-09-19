@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { addDays, dayLabel, formatDuration, formatTime12, monthOf } from "@/lib/dates";
+import { addDays, dayLabel, monthDayOrdinal, monthOf } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
-import { countsAsCase } from "@/lib/entry-schema";
 import { AddEntryDialog } from "@/components/AddEntryDialog";
 import { DayLog } from "@/components/DayLog";
 import { Button } from "@/components/ui/button";
@@ -21,15 +20,8 @@ function dayHref(date: string): string {
 }
 
 export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
-  const cases = entries.filter((e) => countsAsCase(e.caseType, e.caseNumber));
-  const caseMinutes = cases.reduce((sum, e) => sum + (e.durationMin ?? 0), 0);
   const isToday = date === today;
   const canGoForward = date < today;
-
-  const starts = entries.map((e) => e.startTime).filter((t): t is string => !!t);
-  const ends = entries.map((e) => e.endTime).filter((t): t is string => !!t);
-  const firstStart = starts.length ? starts.reduce((a, b) => (a < b ? a : b)) : null;
-  const lastEnd = ends.length ? ends.reduce((a, b) => (a > b ? a : b)) : null;
 
   // The new row starts where the latest row ended.
   const byEnd = [...entries]
@@ -37,24 +29,14 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
     .sort((a, b) => ((a.endTime ?? "") < (b.endTime ?? "") ? 1 : -1));
   const last = byEnd[0] ?? null;
 
-  const summary =
-    cases.length === 0
-      ? isToday
-        ? "Nothing logged yet."
-        : "No cases logged."
-      : `${cases.length} ${cases.length === 1 ? "case" : "cases"} in ${formatDuration(caseMinutes)}` +
-        (firstStart && lastEnd
-          ? `, ${formatTime12(firstStart)} to ${formatTime12(lastEnd)}`
-          : "");
-
   return (
     <section aria-label={`Cases for ${dayLabel(date)}`} className="space-y-4">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex min-w-0 items-start gap-1">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-1">
           <Button
             variant="ghost"
             size="icon-sm"
-            className="mt-1 shrink-0 text-muted-foreground"
+            className="shrink-0 text-muted-foreground"
             aria-label="Previous day"
             asChild
           >
@@ -62,20 +44,14 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
               <ChevronLeft className="size-4" />
             </Link>
           </Button>
-          <div className="min-w-0 flex-1">
-            <h2 className="font-serif text-2xl font-semibold leading-tight">
-              {isToday ? "Today" : dayLabel(date)}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {isToday ? `${dayLabel(date)}. ` : ""}
-              {summary}
-            </p>
-          </div>
+          <h2 className="min-w-0 flex-1 font-serif text-2xl font-semibold leading-tight">
+            {isToday ? `Today, ${monthDayOrdinal(date)}` : dayLabel(date)}
+          </h2>
           {canGoForward ? (
             <Button
               variant="ghost"
               size="icon-sm"
-              className="mt-1 shrink-0 text-muted-foreground"
+              className="shrink-0 text-muted-foreground"
               aria-label="Next day"
               asChild
             >
@@ -87,7 +63,7 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
             <Button
               variant="ghost"
               size="icon-sm"
-              className="mt-1 shrink-0"
+              className="shrink-0"
               aria-label="Next day"
               disabled
             >

@@ -325,7 +325,7 @@ export function EntryForm({
                 <Textarea
                   rows={6}
                   autoFocus
-                  className="font-mono text-sm"
+                  className="text-sm"
                   {...field}
                 />
               </FormControl>
