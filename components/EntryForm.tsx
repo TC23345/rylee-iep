@@ -13,7 +13,6 @@ import {
   noteTemplate,
   requiresCaseNumber,
   typeStyle,
-  type CaseType,
   type EntryFormValues,
 } from "@/lib/entry-schema";
 import { formatDuration, minutesBetween, nowTime } from "@/lib/dates";
@@ -68,8 +67,6 @@ interface EntryFormProps {
   onCancel?: () => void;
   /** Lets a dialog title reflect the current step ("Step 1 of 2"). */
   onStepChange?: (step: 1 | 2) => void;
-  /** Types used recently that day, offered as one-tap picks above the Type select. */
-  recentTypes?: CaseType[];
 }
 
 /**
@@ -149,7 +146,6 @@ export function EntryForm({
   onSuccess,
   onCancel,
   onStepChange,
-  recentTypes = [],
 }: EntryFormProps) {
   const [pending, startTransition] = useTransition();
   const [step, setStep] = useState<1 | 2>(1);
@@ -260,33 +256,6 @@ export function EntryForm({
           </FormItem>
         )}
       />
-      {recentTypes.length > 0 && (
-        <div className="space-y-1.5">
-          <span className="text-xs text-muted-foreground">Used today</span>
-          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Recent types">
-            {recentTypes.map((t) => {
-              const active = caseType === t;
-              return (
-                <button
-                  key={t}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => form.setValue("caseType", t, { shouldValidate: true })}
-                  className={cn(
-                    "flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors",
-                    active
-                      ? "border-brand bg-brand/15 text-foreground"
-                      : "border-border bg-card text-muted-foreground hover:border-brand/60 hover:text-foreground"
-                  )}
-                >
-                  <span aria-hidden className={cn("size-1.5 rounded-full", typeStyle(t).bar)} />
-                  {CASE_TYPE_LABELS[t]}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
       <FormField
         control={control}
         name="caseType"
@@ -415,7 +384,7 @@ export function EntryForm({
               <Button
                 key="next"
                 type="button"
-                className="btn-primary"
+                className="btn-primary btn-soft"
                 onClick={(event) => {
                   event.preventDefault();
                   void next();

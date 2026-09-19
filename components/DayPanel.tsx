@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { addDays, dayLabel, formatDuration, formatTime12, monthOf } from "@/lib/dates";
 import type { CaseEntry } from "@/lib/entries";
-import { countsAsCase, type CaseType } from "@/lib/entry-schema";
+import { countsAsCase } from "@/lib/entry-schema";
 import { AddEntryDialog } from "@/components/AddEntryDialog";
 import { DayLog } from "@/components/DayLog";
 import { Button } from "@/components/ui/button";
@@ -36,14 +36,6 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
     .filter((e) => e.endTime)
     .sort((a, b) => ((a.endTime ?? "") < (b.endTime ?? "") ? 1 : -1));
   const last = byEnd[0] ?? null;
-
-  // Types used most recently today, for one-tap picking in the add dialog.
-  const recentTypes: CaseType[] = [];
-  for (const e of byEnd) {
-    if (e.caseType === "lunch" || recentTypes.includes(e.caseType)) continue;
-    recentTypes.push(e.caseType);
-    if (recentTypes.length === 4) break;
-  }
 
   const summary =
     cases.length === 0
@@ -109,8 +101,6 @@ export function DayPanel({ date, today, entries, actions }: DayPanelProps) {
               date={date}
               isToday={isToday}
               lastEnd={last?.endTime ?? null}
-              lastType={last?.caseType ?? null}
-              recentTypes={recentTypes}
             />
           </div>
           {actions}

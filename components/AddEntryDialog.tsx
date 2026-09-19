@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 
 import { createEntry } from "@/app/actions/entries";
-import { emptyEntryValues, type CaseType } from "@/lib/entry-schema";
+import { emptyEntryValues } from "@/lib/entry-schema";
 import { cn } from "@/lib/utils";
 import { EntryForm } from "@/components/EntryForm";
 import { Button } from "@/components/ui/button";
@@ -21,11 +21,10 @@ interface AddEntryDialogProps {
   isToday: boolean;
   /** End time of the last row that day; the new row starts there. */
   lastEnd: string | null;
-  /** Case type of the last row that day; the picker defaults to it. */
-  lastType: CaseType | null;
-  /** Types used recently that day, offered as one-tap picks on step one. */
-  recentTypes?: CaseType[];
 }
+
+/** Rylee's most common type, so the picker starts there. */
+const DEFAULT_TYPE = "reconsideration";
 
 const STEP_HINTS: Record<1 | 2, string> = {
   1: "Which case, and what kind of work.",
@@ -37,8 +36,6 @@ export function AddEntryDialog({
   date,
   isToday,
   lastEnd,
-  lastType,
-  recentTypes = [],
 }: AddEntryDialogProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
@@ -79,16 +76,15 @@ export function AddEntryDialog({
           </DialogHeader>
           {open && (
             <EntryForm
-              key={`${date}:${lastEnd ?? ""}:${lastType ?? ""}`}
+              key={`${date}:${lastEnd ?? ""}`}
               defaultValues={emptyEntryValues(date, {
                 startTime: lastEnd ?? "",
-                caseType: lastType ?? "reconsideration",
+                caseType: DEFAULT_TYPE,
               })}
               action={createEntry}
               submitLabel="Add case"
               successMessage="Case added."
               stepped
-              recentTypes={recentTypes}
               showDate={!isToday}
               nowStart={isToday && !lastEnd}
               nowEnd={isToday}

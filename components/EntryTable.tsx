@@ -258,7 +258,9 @@ function EntryRow({ entry, shown }: { entry: CaseEntry; shown: boolean }) {
                   {CASE_TYPE_LABELS[draft.caseType]}
                 </Badge>
               </SelectTrigger>
-              <SelectContent>
+              {/* Popper, not item-aligned: item-aligned mis-measures inside the
+                  collapsing rows and lands the menu off-screen. */}
+              <SelectContent position="popper" align="start">
                 {CASE_TYPE_GROUPS.map((group) => (
                   <SelectGroup key={group.label}>
                     <SelectLabel>{group.label}</SelectLabel>
